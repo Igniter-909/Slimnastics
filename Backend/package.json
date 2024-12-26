@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "a backend folder for managing the gym website",
   "main": "src/index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
@@ -22,6 +22,7 @@
     "prettier": "^3.4.2"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
