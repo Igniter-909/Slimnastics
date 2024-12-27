@@ -34,9 +34,12 @@ app.use(cookieParser());
 //import routes
 import userRoutes from "./routes/user.routes.js"
 import membershipplanRoutes from "./routes/membership.routes.js"
-
+import attendanceRoutes from "./routes/attendance.routes.js"
+import adminRoutes from "./routes/admin.routes.js"
 
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/membership',membershipplanRoutes);
+app.use('/api/v1/attendance',attendanceRoutes);
+app.use("/api/v1/admin",adminRoutes)
 
 export default app;

@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
 const attendanceSchema = new Schema({
-    userId:{
+    user:{
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -10,12 +10,16 @@ const attendanceSchema = new Schema({
         type: Date,
         required: true
     },
-    checkin:{
-        type: Date,
+    status:{
+        type:String,
+        enum: ['Present','Ansent','On Leave'],
         required: true
     },
-    checkout:{
-        type: Date
+    remarks:{
+        type: Number,
+        required: true,
+        minvalue: 1,
+        maxvalue: 10
     }
 },{timestamps:true});
 
