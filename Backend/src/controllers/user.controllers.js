@@ -24,7 +24,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
 const registerUser = asyncHandler( async (req, res) => {
     // Register user logic here
 
-    const { name, email, password, DOB, gender, role,  joinDate } = req.body;
+    const { name, email, password, DOB, gender, role,  joinDate, experience, expertise } = req.body;
 
     if ( 
         [name, email, password, gender, DOB, joinDate].some((field) => field?.trim() == "")
@@ -49,16 +49,35 @@ const registerUser = asyncHandler( async (req, res) => {
          throw new ApiError (500, "Avatar could not be uploaded on cloudinary!!");
     }
 
-    const user = await User.create({
-        name,
-        email,
-        password,
-        DOB,
-        gender,
-        role,
-        joinDate,
-        avatar:avatar.url
-    });
+    let user;
+    if(role === "Trainer"){
+        if(!experience ||!expertise){
+            throw new ApiError(400,"Experience and expertise fields are required for trainer!!");
+        }
+        user = await User.create({
+            name,
+            email,
+            password,
+            DOB,
+            gender,
+            role,
+            joinDate,
+            experience,
+            expertise,
+            avatar: avatar.url
+        });
+    }else{
+        user = await User.create({
+            name,
+            email,
+            password,
+            DOB,
+            gender,
+            role,
+            joinDate,
+            avatar: avatar.url
+        });
+    }
 
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
@@ -223,7 +242,7 @@ const getUserProfile = asyncHandler( async (req,res ) => {
 
 const updateAccountDetails = asyncHandler(async (req,res ) => {
     try {
-        const { name, oldPassword, newPassword, DOB, gender } = req.body;
+        const { name, oldPassword, newPassword, DOB, gender, expertise, experience } = req.body;
         if (!name || !DOB || !gender || (oldPassword && !newPassword) || (!oldPassword && newPassword)) {
             throw new ApiError(400, "All required fields must be provided.");
         }
@@ -253,6 +272,8 @@ const updateAccountDetails = asyncHandler(async (req,res ) => {
                     name,
                     DOB,
                     gender,
+                    expertise,
+                    experience,
                 },
             },
             { new: true, runValidators: true }

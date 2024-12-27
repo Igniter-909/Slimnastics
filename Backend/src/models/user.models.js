@@ -49,6 +49,14 @@ const userSchema = new Schema({
     refreshToken:{
         type: String
     },
+    expertise:{
+        type: String,
+        default: null
+    },
+    experience:{
+        type: Number,
+        default: null
+    },
     membershipPlan : {
         planID:{
             type: Schema.Types.ObjectId,
