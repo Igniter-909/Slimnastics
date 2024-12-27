@@ -16,28 +16,7 @@ const membershipSchema = new Schema ({
     duration:{
         type: Number,
         required: true
-    },
-    participants:[
-        {
-            userId:{
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            },
-            startDate:{
-                type: Date,
-                required: true
-            },
-            endDate:{
-                type: Date,
-                required: true
-            },
-            status:{
-                type: String,
-                required: true,
-                enum: ['active','inactive','cancelled']
-            }
-        }
-    ]
+    }
 },{timestamps: true});
 
 const Membership = mongoose.model('Membership',membershipSchema);

@@ -5,6 +5,7 @@ import {uploadOnCloudinary} from '../utils/cloudinary.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from "jsonwebtoken";
 import logger from '../../logger.js';
+import Membership from '../models/membership.models.js';
 
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
@@ -350,6 +351,143 @@ const deleteAccount = asyncHandler ( async (req,res) => {
 })
 
 
+
+const viewPlan = asyncHandler( async (req,res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if(!user){
+            throw new ApiError(404, "User not found");
+        }
+        if(!user.membershipPlan.planId){
+            throw new ApiError(404, "No active plan found");
+        }
+        const plan = await Membership.findById(user.membershipPlan.planId);
+        if(!plan){
+            throw new ApiError(404, "Plan not found");
+        }
+        return res
+            .status(200)
+            .json(new ApiResponse(
+                200,
+                user.membershipPlan,
+                "Plan fetched successfully"
+            ))
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while trying to get the plan")
+    }
+})
+
+const addPlan = asyncHandler( async(req,res) => {
+    try {
+        const { planId, startDate } = req.body;
+        
+        if(!startDate){
+            throw new ApiError(400, "Start date are required.");
+        }
+        const plan = await Membership.findById(planId);
+        if(!plan){
+            throw new ApiError(404, "Plan not found");
+        }
+        const user = await User.findByIdAndUpdate(
+            planId,
+            {
+                membershipPlan:{
+                    planId,
+                    startDate: new Date(startDate),
+                    endDate: new Date(
+                        new Date(startDate).getTime() + plan.duration * 24 * 60 *60 *1000
+                    )
+                }
+            },
+            {
+                new: true
+            }
+        )
+        if(!user){
+            throw new ApiError(404, "User not found");
+        }
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    user.membershipPlan,
+                    "Plan added successfully to your account"
+                ))
+    } catch (error) {
+        throw new ApiError(500,"Something went wrong while adding a plan")
+    }
+})
+
+const upgradePlan = asyncHandler( async (req,res) => {
+    try {
+        const {newPlanId } = req.body;
+        if(!newPlanId) {
+            throw new ApiError(404,"Plan Id is required!!")
+        };
+        const newPlan = await Membership.findById(newPlanId);
+        if(!newPlan) {
+            throw new ApiError(404,"Plan not found")
+        };
+        const user = await User.findById(req.user._id);
+        if(!user) {
+            throw new ApiError(404,"User not found")
+        };
+        user.membershipPlan.planId = newPlanId;
+        user.membershipPlan.startDate = new Date();
+        user.membershipPlan.endDate = new Date(
+            new Date().getTime() + newPlan.duration * 24 * 60 * 60 * 1000
+        );
+        await user.save();
+
+        return res
+            .status(200)
+            .json(new ApiResponse(
+                200,
+                user.membershipPlan,
+                "Plan upgraded successfully to your account"
+            ))
+
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Something went wrong while upgrading the plan ")
+    }
+})
+
+const renewPlan = asyncHandler( async (req,res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if(!user) {
+            throw new ApiError(404,"User not found")
+        };
+        if(!user.membershipPlan.planId) {
+            throw new ApiError(404,"No active plan found")
+        }
+        const plan = await Membership.findById(user.membershipPlan.planId);
+        if(!plan){
+            throw new ApiError(404,"Plan not found or removed")
+        }
+        user.membershipPlan.expiryDate = new Date(
+            new Date(user.membershipPlan.endDate).getTime() + plan.duration * 24 * 60 * 60 * 1000
+        )
+        await user.save();
+        return res
+        .status(200)
+        .json(new ApiResponse(
+            200,
+            user.membershipPlan,
+            "Plan renewed successfully to your account"
+        ))
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Something went wrong while renewing your plan")
+    }
+})
+
+
+
+
+
+
+
 export { registerUser,
     loginUser,
     logoutUser,
@@ -357,5 +495,9 @@ export { registerUser,
     getUserProfile,
     updateAccountDetails,
     updateAvatar,
-    deleteAccount
+    deleteAccount,
+    addPlan,
+    upgradePlan,
+    renewPlan,
+    viewPlan
  };

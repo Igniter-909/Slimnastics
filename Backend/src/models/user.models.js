@@ -48,6 +48,21 @@ const userSchema = new Schema({
     },
     refreshToken:{
         type: String
+    },
+    membershipPlan : {
+        planID:{
+            type: Schema.Types.ObjectId,
+            ref: 'Membership',
+            default: null
+        },
+        startDate:{
+            type:String,
+            default: null
+        },
+        endDate:{
+            type: String,
+            default: null
+        }
     }
 },{timestamps: true})
 
