@@ -32,6 +32,6 @@ const trainerSchema = new Schema({
     }
 },{timestamps: true});
 
-const Trainer = Model('Trainer', trainerSchema);
+const Trainer = model('Trainer', trainerSchema);
 
 export default Trainer;

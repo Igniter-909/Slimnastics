@@ -25,6 +25,6 @@ const userWorkoutSchema = new Schema ({
     }
 },{timestamps: true})
 
-const UserWorkout = mongoose.Model('UserWorkout', userWorkoutSchema)
+const UserWorkout = mongoose.model('UserWorkout', userWorkoutSchema)
 
 export default UserWorkout;

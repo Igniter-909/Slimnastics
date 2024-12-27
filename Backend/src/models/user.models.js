@@ -25,7 +25,7 @@ const userSchema = new Schema({
         minlength: 8
     },
     DOB: {
-        type: Date,
+        type: String,
         required: true
     },
     gender:{
@@ -39,7 +39,7 @@ const userSchema = new Schema({
         default: 'User'
     },
     joinDate: {
-        type: Date,
+        type: String,
         default: Date.now,
         required:true
     },
@@ -54,7 +54,7 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function (next) {
 
-    if(!this.modified("password")) return next();
+    if(!this.isModified("password")) return next();
 
     this.password = await bcrypt.hash(this.password, 10)
 
@@ -85,6 +85,6 @@ userSchema.methods.generateRefreshToken = function() {
 }
 
 
-const User = mongoose.Model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
 export default User;

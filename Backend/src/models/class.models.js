@@ -40,6 +40,6 @@ const classSchema = new Schema({
     ]
 },{timestamps: true});
 
-const Class = mongoose.Model('Class', classSchema);
+const Class = mongoose.model('Class', classSchema);
 
 export default Class;
