@@ -15,14 +15,6 @@ const createWorkout = asyncHandler( async(req,res) =>{
             throw new ApiError(403, "You are not authorized to create a workout");
         }
         const {name,description,difficulty,duration,equipment,steps,caloriesBurned,muscleGroup} = req.body;
-        const picturePath = req.files?.picture[0]?.path;
-        if(!picturePath){
-            throw new ApiError(400,"Picture file is required!!");
-        }
-        const picture = await uploadOnCloudinary(picturePath);
-        if(!picture){
-            throw new ApiError (500, "Picture could not be uploaded on cloudinary!!");
-        }
         const newWorkout = await Workout.create({
             name,
             description,
@@ -33,7 +25,6 @@ const createWorkout = asyncHandler( async(req,res) =>{
             caloriesBurned,
             muscleGroup,
             trainerId:req.user._id,
-            picture: picture.url,
             participants: []
         });
         const createdWorkout = await Workout.findById(newWorkout._id);

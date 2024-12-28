@@ -34,9 +34,6 @@ const workoutSchema = new Schema ({
         type: String,
         required: true
     },
-    picture:{
-        type: String
-    },
     trainerId:{
         type: Schema.Types.ObjectId,
         ref: 'User'

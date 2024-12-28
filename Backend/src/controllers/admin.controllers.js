@@ -1,5 +1,6 @@
 import Attendance from "../models/attendance.models";
 import Class from "../models/class.models";
+import Progress from "../models/progress.models";
 import User from "../models/user.models";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
@@ -103,9 +104,32 @@ const getAllClass = asyncHandler( async(request,res) =>{
     }
 })
 
+const getAllProgress = asyncHandler( async(request,res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if(user.role!== "Admin"){
+            throw new ApiError(403, "You are not authorized to access this route");
+        }
+        const progress = await Progress.find({});
+        if(progress.length <= 0){
+            throw new ApiError(404, "No progress records found");
+        }
+        return res
+         .status(200)
+         .json(new ApiResponse(
+                200,
+                progress,
+                "Progress records fetched successfully"
+            ))
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Could not fetch all progress");
+    }
+})
+
 export {
     getAllUsers,
     getUserAttendance,
     getTrainerAttendance,
-    getAllClass
+    getAllClass,
+    getAllProgress
  };
