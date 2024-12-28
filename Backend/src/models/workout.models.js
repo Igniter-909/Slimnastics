@@ -36,7 +36,27 @@ const workoutSchema = new Schema ({
     },
     picture:{
         type: String
-    }
+    },
+    trainerId:{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    participants:[
+        {
+            userId:{
+                type: Schema.Types.ObjectId,
+                ref: 'User'
+            },
+            date:{
+                type: Date,
+                required: true
+            },
+            duration:{
+                type: Number,
+                required: true
+            }
+        }
+    ]
 });
 
 const Workout = mongoose.model('Workout', workoutSchema);
