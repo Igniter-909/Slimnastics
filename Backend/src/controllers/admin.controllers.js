@@ -1,4 +1,5 @@
 import Attendance from "../models/attendance.models";
+import Class from "../models/class.models";
 import User from "../models/user.models";
 import { ApiError } from "../utils/ApiError";
 import { ApiResponse } from "../utils/ApiResponse";
@@ -80,8 +81,31 @@ const getTrainerAttendance = asyncHandler( async(req,res) => {
     }
 })
 
+const getAllClass = asyncHandler( async(request,res) =>{
+    try {
+        const user = await User.findById(request.user._id);
+        if(user.role!== "Admin"){
+            throw new ApiError(403, "You are not authorized to access this route");
+        }
+        const classes = await Class.find({});
+        if(classes.length <= 0){
+            throw new ApiError(404, "No classes found");
+        }
+        return res
+           .status(200)
+           .json(new ApiResponse(
+                200,
+                classes,
+                "Classes fetched successfully"
+            ))
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Could not fetch all classes")
+    }
+})
+
 export {
     getAllUsers,
     getUserAttendance,
-    getTrainerAttendance
+    getTrainerAttendance,
+    getAllClass
  };

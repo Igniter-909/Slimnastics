@@ -16,8 +16,12 @@ const classSchema = new Schema({
         type: Date,
         required: true
     },
+    date:{
+        type: Date,
+        required: true
+    },
     capacity:{
-        type: Number,
+        type: Number, 
         required: true
     },
     trainer:{
@@ -27,15 +31,8 @@ const classSchema = new Schema({
     },
     students:[
         {
-            name:{
-                type: Schema.Types.ObjectId,
-                ref: 'User'
-            },
-            status:{
-                type: String,
-                enum: ['Enrolled', 'Cancelled'],
-                default: 'Enrolled'
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     ]
 },{timestamps: true});

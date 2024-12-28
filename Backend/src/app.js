@@ -36,10 +36,12 @@ import userRoutes from "./routes/user.routes.js"
 import membershipplanRoutes from "./routes/membership.routes.js"
 import attendanceRoutes from "./routes/attendance.routes.js"
 import adminRoutes from "./routes/admin.routes.js"
+import classRoutes from "./routes/class.routes.js";
 
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/membership',membershipplanRoutes);
 app.use('/api/v1/attendance',attendanceRoutes);
-app.use("/api/v1/admin",adminRoutes)
+app.use("/api/v1/admin",adminRoutes);
+app.use("/api/v1/class",classRoutes);
 
 export default app;
