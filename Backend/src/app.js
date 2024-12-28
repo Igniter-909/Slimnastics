@@ -38,6 +38,9 @@ import attendanceRoutes from "./routes/attendance.routes.js"
 import adminRoutes from "./routes/admin.routes.js"
 import classRoutes from "./routes/class.routes.js";
 import workoutRoutes from "./routes/workout.routes.js";
+import progressRoutes from "./routes/progress.routes.js";
+import productRoutes from "./routes/product.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
 
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/membership',membershipplanRoutes);
@@ -45,5 +48,8 @@ app.use('/api/v1/attendance',attendanceRoutes);
 app.use("/api/v1/admin",adminRoutes);
 app.use("/api/v1/class",classRoutes);
 app.use("/api/v1/workout",workoutRoutes);
+app.use("/api/v1/progress",progressRoutes);
+app.use("/api/v1/product",productRoutes);
+app.use("/api/v1/comment",commentRoutes);
 
 export default app;
