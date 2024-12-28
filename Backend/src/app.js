@@ -39,7 +39,7 @@ import adminRoutes from "./routes/admin.routes.js"
 import classRoutes from "./routes/class.routes.js";
 import workoutRoutes from "./routes/workout.routes.js";
 import progressRoutes from "./routes/progress.routes.js";
-import productRoutes from "./routes/product.routes.js";
+import productRoutes from "./routes/products.routes.js";
 import commentRoutes from "./routes/comment.routes.js";
 
 app.use('/api/v1/users',userRoutes);

@@ -8,8 +8,8 @@ import { loginUser,
     updateAvatar, deleteAccount, 
     viewPlan, 
     addPlan,
-    upgradePlan,
-    renewPlan} from "../controllers/user.controllers.js";
+    upgradePlan
+} from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.midlewares.js";
 import verifyJWT from "../middlewares/auth.middlewares.js";
 
@@ -40,6 +40,6 @@ router.route("/delete-profile").post(verifyJWT, deleteAccount);
 router.route("/view-plan").get(verifyJWT, viewPlan)
 router.route("/add-plan").post(verifyJWT,addPlan);
 router.route("/upgrade-plan").put(verifyJWT,upgradePlan);
-router.route("/renew-plan").post(verifyJWT, renewPlan);
+
 
 export default router;

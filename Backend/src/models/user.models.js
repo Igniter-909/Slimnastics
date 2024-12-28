@@ -25,7 +25,7 @@ const userSchema = new Schema({
         minlength: 8
     },
     DOB: {
-        type: String,
+        type: Date,
         required: true
     },
     gender:{
@@ -57,21 +57,18 @@ const userSchema = new Schema({
         type: Number,
         default: null
     },
-    membershipPlan : {
-        planID:{
+    membershipPlan : [{
+        planId:{
             type: Schema.Types.ObjectId,
-            ref: 'Membership',
-            default: null
+            ref: 'Membership'
         },
         startDate:{
-            type:String,
-            default: null
+            type:Date
         },
         endDate:{
-            type: String,
-            default: null
+            type: Date
         }
-    }
+    }]
 },{timestamps: true})
 
 

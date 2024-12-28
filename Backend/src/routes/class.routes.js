@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cancelEnrollment, createClass, deleteClass, enrollUser, getAvailableClass, getClass, updateClass } from "../controllers/class.controllers";
+import { cancelEnrollment, createClass, deleteClass, enrollUser, getAvailableClass, getClass, updateClass } from "../controllers/class.controllers.js";
 import verifyJWT from "../middlewares/auth.middlewares.js"
 
 const router = Router();

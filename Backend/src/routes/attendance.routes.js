@@ -1,6 +1,6 @@
 import { Router } from "express";
-import verifyJWT from "../middlewares/auth.middlewares";
-import { deleteAttendance, getAttendance, markAttendance, updateAttendance } from "../controllers/attendance.controllers";
+import verifyJWT from "../middlewares/auth.middlewares.js";
+import { deleteAttendance, getAttendance, markAttendance, updateAttendance } from "../controllers/attendance.controllers.js";
 
 const router = Router();
 

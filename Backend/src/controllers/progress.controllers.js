@@ -1,8 +1,8 @@
-import Progress from "../models/progress.models";
-import User from "../models/user.models";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import asyncHandler from "../utils/asyncHandler";
+import Progress from "../models/progress.models.js";
+import User from "../models/user.models.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
 const addProgress = asyncHandler( async (req,res ) => {
     try {

@@ -7,9 +7,6 @@ import  asyncHandler from "../utils/asyncHandler.js";
 const addMembershipPlan = asyncHandler( async (req,res ) => {
     try {
         const user = await User.findById(req.user._id);
-        if(user.role !== "Admin"){
-            throw new ApiError(403, "You do not have permission to add membership plans")
-        }
 
         const {plan, price, description, duration } = req.body;
 
@@ -67,10 +64,7 @@ const getAllMembershipPlans = asyncHandler( async (req,res) => {
 
 const updateMembershipPlan = asyncHandler( async(req,res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if(user.role !== "Admin"){
-            throw new ApiError(403,"You are not allowed to update the plans");
-        }
+        // const user = await User.findById(req.user._id);    
         const { plan, price, description, duration } = req.body;
         if(!plan || !price || !description || !duration ){
             throw new ApiError(400, "All fields are required")
@@ -106,9 +100,7 @@ const updateMembershipPlan = asyncHandler( async(req,res) => {
 const deleteMembershipPlan = asyncHandler( async (req,res ) => {
     try {
         const user = await User.findById(req.user._id);
-        if(user.role!== "Admin"){
-            throw new ApiError(403,"You are not allowed to delete the plans");
-        }
+        
         const { id } = req.params;
         const membershipPlan = await Membership.findByIdAndDelete(id);
         if(!membershipPlan){
@@ -145,15 +137,16 @@ const getaPlan = asyncHandler( async (req,res ) =>{
     }
  });
 
+ //get all participants of a particular plan
 const getAllParticipants = asyncHandler( async(req,res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if(user !== "Admin"){
-            throw new ApiError(403,"You are not allowed to view the participants");
-        }
         const {id} = req.params;
         if(!id){
             throw new ApiError(400, "Membership plan id is required")
+        }
+        const membershipPlan = await Membership.findById(id);
+        if(!membershipPlan){
+            throw new ApiError(404, "Membership plan not found")
         }
         const participants = await User.find({
             memberships: {

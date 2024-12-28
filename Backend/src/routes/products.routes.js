@@ -1,8 +1,8 @@
 
 import { Router } from "express";
-import verifyAdmin from "../middlewares/admin.middleware";
-import verifyJWT from "../middlewares/auth.middlewares";
-import { addProduct, deleteProduct, getAllProducts, getProduct, updateProduct } from "../controllers/product.controllers";
+import verifyAdmin from "../middlewares/admin.middleware.js";
+import verifyJWT from "../middlewares/auth.middlewares.js";
+import { addProduct, deleteProduct, getAllProducts, getProduct, updateProduct } from "../controllers/product.controllers.js";
 
 const router = Router();
 

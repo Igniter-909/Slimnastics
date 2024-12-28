@@ -7,7 +7,7 @@ import { createWorkout,
     addParticipant,
     removeParticipant,
     joinWorkout,
-    exitWorkout } from "../controllers/workout.controllers";
+    exitWorkout } from "../controllers/workout.controllers.js";
 
 import verifyJWT from "../middlewares/auth.middlewares.js";
 const router = Router();

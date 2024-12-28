@@ -64,7 +64,8 @@ const registerUser = asyncHandler( async (req, res) => {
             joinDate,
             experience,
             expertise,
-            avatar: avatar.url
+            avatar: avatar.url,
+            membershipPlan: []
         });
     }else{
         user = await User.create({
@@ -75,7 +76,8 @@ const registerUser = asyncHandler( async (req, res) => {
             gender,
             role,
             joinDate,
-            avatar: avatar.url
+            avatar: avatar.url,
+            membershipPlan: {}
         });
     }
 
@@ -379,18 +381,25 @@ const viewPlan = asyncHandler( async (req,res) => {
         if(!user){
             throw new ApiError(404, "User not found");
         }
-        if(!user.membershipPlan.planId){
+        if(!user.membershipPlan || user.membershipPlan.length <= 0 ){
             throw new ApiError(404, "No active plan found");
         }
-        const plan = await Membership.findById(user.membershipPlan.planId);
-        if(!plan){
-            throw new ApiError(404, "Plan not found");
-        }
+
+        const planData = await Promise.all(
+            user.membershipPlan.map(async (plan) => {
+                const membership = await Membership.findById(plan.planId);
+                return {
+                    ...plan.toObject(), 
+                    membership, 
+                };
+            })
+        );
+
         return res
             .status(200)
             .json(new ApiResponse(
                 200,
-                user.membershipPlan,
+                planData,
                 "Plan fetched successfully"
             ))
     } catch (error) {
@@ -409,15 +418,20 @@ const addPlan = asyncHandler( async(req,res) => {
         if(!plan){
             throw new ApiError(404, "Plan not found");
         }
+
+        const membershipPlan = {
+            planId:(plan._id),
+            startDate: new Date(startDate),
+            endDate: new Date(
+                new Date(startDate).getTime() + plan.duration * 24 * 60 *60 *1000
+            )
+        }
+
         const user = await User.findByIdAndUpdate(
-            planId,
+            req.user._id,
             {
-                membershipPlan:{
-                    planId,
-                    startDate: new Date(startDate),
-                    endDate: new Date(
-                        new Date(startDate).getTime() + plan.duration * 24 * 60 *60 *1000
-                    )
+                $push:{
+                    membershipPlan
                 }
             },
             {
@@ -436,13 +450,13 @@ const addPlan = asyncHandler( async(req,res) => {
                     "Plan added successfully to your account"
                 ))
     } catch (error) {
-        throw new ApiError(500,"Something went wrong while adding a plan")
+        throw new ApiError(500,error?.message || "Something went wrong while adding a plan")
     }
 })
 
 const upgradePlan = asyncHandler( async (req,res) => {
     try {
-        const {newPlanId } = req.body;
+        const {newPlanId, startDate } = req.body;
         if(!newPlanId) {
             throw new ApiError(404,"Plan Id is required!!")
         };
@@ -454,11 +468,18 @@ const upgradePlan = asyncHandler( async (req,res) => {
         if(!user) {
             throw new ApiError(404,"User not found")
         };
-        user.membershipPlan.planId = newPlanId;
-        user.membershipPlan.startDate = new Date();
-        user.membershipPlan.endDate = new Date(
-            new Date().getTime() + newPlan.duration * 24 * 60 * 60 * 1000
-        );
+        const newPlanEntry = {
+            planId: newPlanId,
+            startDate: new Date(
+                new Date(startDate).getTime()
+            ),
+            endDate: new Date(
+                new Date().getTime() + newPlan.duration * 24 * 60 * 60 * 1000
+            ),
+        };
+
+        user.membershipPlan.push(newPlanEntry);
+
         await user.save();
 
         return res
@@ -474,38 +495,6 @@ const upgradePlan = asyncHandler( async (req,res) => {
     }
 })
 
-const renewPlan = asyncHandler( async (req,res) => {
-    try {
-        const user = await User.findById(req.user._id);
-        if(!user) {
-            throw new ApiError(404,"User not found")
-        };
-        if(!user.membershipPlan.planId) {
-            throw new ApiError(404,"No active plan found")
-        }
-        const plan = await Membership.findById(user.membershipPlan.planId);
-        if(!plan){
-            throw new ApiError(404,"Plan not found or removed")
-        }
-        user.membershipPlan.expiryDate = new Date(
-            new Date(user.membershipPlan.endDate).getTime() + plan.duration * 24 * 60 * 60 * 1000
-        )
-        await user.save();
-        return res
-        .status(200)
-        .json(new ApiResponse(
-            200,
-            user.membershipPlan,
-            "Plan renewed successfully to your account"
-        ))
-    } catch (error) {
-        throw new ApiError(500,error?.message || "Something went wrong while renewing your plan")
-    }
-})
-
-
-
-
 
 
 
@@ -519,6 +508,5 @@ export { registerUser,
     deleteAccount,
     addPlan,
     upgradePlan,
-    renewPlan,
     viewPlan
  };

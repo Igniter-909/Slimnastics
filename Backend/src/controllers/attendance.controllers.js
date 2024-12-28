@@ -1,7 +1,7 @@
-import Attendance from "../models/attendance.models";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import asyncHandler from "../utils/asyncHandler";
+import Attendance from "../models/attendance.models.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
 const markAttendance = asyncHandler( async(req,res) => {
     try {
