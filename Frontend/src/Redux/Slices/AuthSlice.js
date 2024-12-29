@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    isLoggedIn: localStroage.getItem("isLoggedIn") || false,
-    role: localStroage.getItem("role") || "",
-    data: localStroage.getItem('data') || {}
+    isLoggedIn: localStorage.getItem("isLoggedIn") || false,
+    role: localStorage.getItem("role") || "",
+    data: localStorage.getItem('data') || {}
 }
 
 const authSlice = createSlice({
