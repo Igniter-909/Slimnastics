@@ -14,7 +14,7 @@ const addProgress = asyncHandler( async (req,res ) => {
         if(weight <=0 || height <=0 || targetWeight <=0 || fatPercent <=0){
             throw new ApiError(400, "Invalid weight, height, target weight, or fat percent");
         }
-        const bmi = weight / (height * height);
+        const bmi = weight * 10000 / (height * height);
 
         const progress = await Progress.create({
             userId: user._id,

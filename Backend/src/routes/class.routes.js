@@ -6,7 +6,7 @@ const router = Router();
 
 router.route('/create-class').post(verifyJWT, createClass);
 router.route("/update-class/:id").put(verifyJWT, updateClass);
-router.route('/delete-class').post(verifyJWT, deleteClass);
+router.route('/delete-class/:id').delete(verifyJWT, deleteClass);
 router.route('/get-class/:id').get(getClass);
 
 router.route("/enroll-user/:id").post(verifyJWT,enrollUser);

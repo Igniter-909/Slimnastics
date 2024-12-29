@@ -8,10 +8,6 @@ import asyncHandler from "../utils/asyncHandler.js";
 
 const getAllUsers = asyncHandler( async(req,res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if(user.role !== "Admin"){
-            throw new ApiError(403, "You are not authorized to access this route");
-        }
         const users = await User.find({});
         if(users.length <= 0){
             throw new ApiError(404, "No users found");
@@ -30,10 +26,7 @@ const getAllUsers = asyncHandler( async(req,res) => {
 
 const getUserAttendance = asyncHandler( async(req,res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if(user.role!== "Admin"){
-            throw new ApiError(403, "You are not authorized to access this route");
-        }
+        
         const attendance = await Attendance.find().populate('user');
         if(attendance.length <= 0){
             throw new ApiError(404, "No attendance records found");
@@ -51,16 +44,12 @@ const getUserAttendance = asyncHandler( async(req,res) => {
                 "Attendance records fetched successfully"
             ))
     } catch (error) {
-        throw new ApiError(500,"Could not get all attendance")
+        throw new ApiError(500,error?.message || "Could not get all attendance")
     }
 })
 
 const getTrainerAttendance = asyncHandler( async(req,res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if(user.role!== "Admin"){
-            throw new ApiError(403, "You are not authorized to access this route");
-        }
         const attendance = await Attendance.find().populate('user');
         if(attendance.length <= 0){
             throw new ApiError(404, "No attendance records found");
@@ -78,16 +67,12 @@ const getTrainerAttendance = asyncHandler( async(req,res) => {
                 "Attendance records fetched successfully"
             ))
     } catch (error) {
-        throw new ApiError(500,"Could not get all attendance")
+        throw new ApiError(500,error?.message || "Could not get all attendance")
     }
 })
 
 const getAllClass = asyncHandler( async(request,res) =>{
     try {
-        const user = await User.findById(request.user._id);
-        if(user.role!== "Admin"){
-            throw new ApiError(403, "You are not authorized to access this route");
-        }
         const classes = await Class.find({});
         if(classes.length <= 0){
             throw new ApiError(404, "No classes found");
@@ -106,10 +91,6 @@ const getAllClass = asyncHandler( async(request,res) =>{
 
 const getAllProgress = asyncHandler( async(request,res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if(user.role!== "Admin"){
-            throw new ApiError(403, "You are not authorized to access this route");
-        }
         const progress = await Progress.find({});
         if(progress.length <= 0){
             throw new ApiError(404, "No progress records found");

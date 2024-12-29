@@ -5,6 +5,6 @@ import verifyJWT from "../middlewares/auth.middlewares.js";
 const router = Router();
 
 router.route("/add-progress").post(verifyJWT, addProgress);
-router.route("/get-progress").post(verifyJWT, getProgress);
+router.route("/get-progress").get(verifyJWT, getProgress);
 
 export default router;

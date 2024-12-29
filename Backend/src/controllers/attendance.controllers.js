@@ -40,7 +40,7 @@ const markAttendance = asyncHandler( async(req,res) => {
 
 const getAttendance = asyncHandler( async( req,res ) => {
     try {
-        const { date } = req.query;
+        const { date } = req.body;
         const userId = req.user._id;
         if(!userId){
             throw new ApiError(401,"Invalid user")

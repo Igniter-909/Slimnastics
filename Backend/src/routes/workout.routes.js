@@ -14,7 +14,7 @@ const router = Router();
 
 router.route("/create-workout").post(verifyJWT, createWorkout);
 router.route("/get-workout/:id").get(getWorkout);
-router.route("get-workouts").get(getWorkouts);
+router.route("/get-workouts").get(getWorkouts);
 router.route("/delete-workout/:id").delete(verifyJWT, deleteWorkout);
 router.route("/update-workout/:id").put(verifyJWT, updateWorkout);
 

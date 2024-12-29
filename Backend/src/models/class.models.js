@@ -9,11 +9,11 @@ const classSchema = new Schema({
         type: String
     },
     startTime:{
-        type: Date,
+        type: String,
         required: true
     },
     endTime:{
-        type: Date,
+        type: String,
         required: true
     },
     date:{

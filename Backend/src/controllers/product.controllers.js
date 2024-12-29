@@ -10,14 +10,14 @@ const addProduct = asyncHandler(async (req, res) => {
     const { name, price, description, mfgDate, expiryDate, rating, company, category } = req.body;
 
     // Upload image to Cloudinary
-    const imagePath = req.files?.image[0].path;
-    if (!imagePath) {
-        throw new ApiError(400, "No image provided");
-    }
-    const image = await uploadOnCloudinary(imagePath);
-    if(!image){
-        throw new ApiError(400, "Invalid image");
-    }
+    // const imagePath = req.files?.image[0].path;
+    // if (!imagePath) {
+    //     throw new ApiError(400, "No image provided");
+    // }
+    // const image = await uploadOnCloudinary(imagePath);
+    // if(!image){
+    //     throw new ApiError(400, "Invalid image");
+    // }
         
 
     const product = await Product.create({
@@ -29,7 +29,7 @@ const addProduct = asyncHandler(async (req, res) => {
         rating,
         company,
         category,
-        image: image.secure_url,
+        // image: image.secure_url,
     })
     const createdProduct = await Product.findById(product._id);
     if(!createdProduct){
@@ -61,11 +61,11 @@ const getProduct = asyncHandler(async (req, res) => {
 
 const getAllProducts = asyncHandler( async(req,res) => {
     try {
-        const products = await Product.findAll();
+        const products = await Product.find({});
         if(!products){
             throw new ApiError(404, "No products found");
         }
-        return res.status.json(new ApiResponse(
+        return res.status(200).json(new ApiResponse(
             200,
             products,
             'Products fetched successfully'

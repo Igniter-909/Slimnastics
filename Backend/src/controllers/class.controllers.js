@@ -77,7 +77,7 @@ const updateClass = asyncHandler(async (req,res) => {
         if(!classData) {
             throw new ApiError(404,"Class not found")
         };
-        if (!classData.trainerId.equals(user._id)) {
+        if (!classData.trainer.equals(user._id)) {
             throw new ApiError(403, "Unauthorized to update this class");
         }
 
@@ -116,10 +116,10 @@ const deleteClass = asyncHandler(async (req,res) => {
         if(!classData) {
             throw new ApiError(404,"Class not found")
         };
-        if (!classData.trainerId.equals(user._id)) {
+        if (!classData.trainer.equals(user._id)) {
             throw new ApiError(403, "Unauthorized to delete this class");
         }
-        await classData.remove();
+        await classData.deleteOne();
         
         return res
         .status(200)
@@ -204,9 +204,9 @@ const cancelEnrollment = asyncHandler( async(req,res) =>{
 
 const getAvailableClass = asyncHandler( async(req,res) => {
     try {
-        const {date} = req.query;
+        const {date} = req.body;
         const availableClasses = await Class.find({
-            date: new Date(date).toUTCString(),
+            date: new Date(date),
             capacity: {$gt: 0}
         });
         if(!availableClasses){

@@ -80,8 +80,11 @@ const updateWorkout = asyncHandler(async(req,res) =>{
         if(user.role !== "Trainer"){
             throw new ApiError(403, "You are not authorized to update a workout");
         };
+        
         const ww = await Workout.findById(req.params.id);
-        if(ww._id !== user._id){
+        console.log(ww)
+        console.log(user)
+        if(ww.trainerId.toString() !== req.user._id.toString()){
             throw new ApiError(403, "You are not authorized to update this workout");
         };
         const {name,description,difficulty,duration,equipment,steps,caloriesBurned,muscleGroup} = req.body;
@@ -140,8 +143,13 @@ const addParticipant = asyncHandler(async(req,res) => {
         if(user.role !== "Trainer"){
             throw new ApiError(403, "You are not authorized to add a participant");
         };
+        const {date, duration} = req.body;
         const workout = await Workout.findByIdAndUpdate(req.params.workoutId, {
-            $push: { participants: req.params.participantId }
+            $push: { participants: {
+                userId: req.params.participantId,
+                date: date,
+                duration: duration
+            }}
         }, {new: true});
         if(!workout){
             throw new ApiError(404, "Workout not found");
@@ -166,7 +174,10 @@ const removeParticipant = asyncHandler(async(req,res) => {
             throw new ApiError(403, "You are not authorized to remove a participant");
         };
         const workout = await Workout.findByIdAndUpdate(req.params.workoutId, {
-            $pull: { participants: req.params.participantId }
+            $pull: { participants: {
+                userId : req.params.participantId
+                }
+            }
         }, {new: true});
         if(!workout){
             throw new ApiError(404, "Workout not found");
@@ -184,7 +195,7 @@ const removeParticipant = asyncHandler(async(req,res) => {
 const joinWorkout = asyncHandler( async( req,res ) =>{
     try {
         const user = await User.findById(req.user._id);
-        const { trainerApproval } = req.body;
+        const { trainerApproval, date, duration } = req.body;
         if(!user){
             throw new ApiError(404, "User not found");
         };
@@ -202,7 +213,12 @@ const joinWorkout = asyncHandler( async( req,res ) =>{
         if(workoutPlan.participants.includes(req.user._id)){
             throw new ApiError(403, "You have already joined this workout plan");
         }
-        workoutPlan.participants.push(req.user._id);
+        const participantData = {
+            userId:req.user._id,
+            date,
+            duration
+        }
+        workoutPlan.participants.push(participantData);
         await workoutPlan.save();
         return res.status(200).json(new ApiResponse(
             200,
@@ -225,11 +241,11 @@ const exitWorkout = asyncHandler( async(req,res) => {
         if(!workoutPlan){
             throw new ApiError(404, "Workout not found");
         }
-        if(!workoutPlan.participants.includes(req.user._id)){
+        if (!workoutPlan.participants.some(participant => participant.userId.equals(req.user._id))) {
             throw new ApiError(403, "You are not a participant of this workout plan");
         }
         workoutPlan.participants = workoutPlan.participants.filter(
-            (participantId) => !participantId.equals(req.user._id)
+            (participant) => !participant.userId.equals(req.user._id)
         );
 
         await workoutPlan.save();
