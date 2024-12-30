@@ -20,10 +20,44 @@ export const loginUser = createAsyncThunk(
                 },
                 error: "Failed to login"
             })
-            console.log(res);
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
+        }
+    }
+)
+
+export const signupUser = createAsyncThunk(
+    "auth/signup",
+    async(data) => {
+        try {
+            const res = axiosInstance.post("users/register",data);
+            toast.promise(res,{
+                loading:"Wait! registration in progress...",
+                success:(data) => {
+                    return data?.data?.message;
+                },
+                error: "Failed to signup"
+            })
+            return (await res).data
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+    }
+)
+
+export const logout = createAsyncThunk(
+    "auth/logout",
+    async() => {
+        try {
+            const res = axiosInstance.post("users/logout");
+            toast.promise(res,{
+                loading:"Wait! logout in progress...",
+                success:"Logged out successfully",
+                error: "Failed to logout"
+            })
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
         }
     }
 )
@@ -42,8 +76,16 @@ const authSlice = createSlice({
             state.role = action.payload.data.user.role;
             state.data = action.payload;
         })
+        .addCase(logout.fulfilled,(state) =>{
+            localStorage.setItem("isLoggedIn", false);
+            localStorage.setItem("role", "");
+            localStorage.setItem("data",null);
+            state.isLoggedIn = false;
+            state.role = "";
+            state.data = {};
+        })
     }
 });
 
-// export const {} = authSlice.actions;
+// export const {logout} = authSlice.actions;
 export default authSlice.reducer;
