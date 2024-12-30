@@ -1,14 +1,13 @@
 import {BsFacebook, BsInstagram, BsTwitter, BsLinkedin} from "react-icons/bs"
+import { Link } from "react-router-dom";
 
 function Footer() {
     return(
         <>
             <footer className="footer footer-center bg-base-300 text-base-content rounded p-10">
                 <nav className="grid grid-flow-col gap-4">
-                    <a className="link link-hover">About us</a>
-                    <a className="link link-hover">Contact</a>
-                    <a className="link link-hover">Jobs</a>
-                    <a className="link link-hover">Press kit</a>
+                    <Link to={"/about"} className="link link-hover">About us</Link>
+                    <Link to={"/contact"} className="link link-hover">Contact</Link>
                 </nav>
                 <nav>
                     <div className="grid grid-flow-col gap-4">
