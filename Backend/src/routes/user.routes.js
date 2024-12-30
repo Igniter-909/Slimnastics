@@ -8,7 +8,8 @@ import { loginUser,
     updateAvatar, deleteAccount, 
     viewPlan, 
     addPlan,
-    upgradePlan
+    upgradePlan,
+    getAllUsers
 } from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.midlewares.js";
 import verifyJWT from "../middlewares/auth.middlewares.js";
@@ -28,6 +29,7 @@ router.route("/logout").post(verifyJWT,logoutUser);
 router.route("/refresh-token").post(refreshAccessToken);
 router.route("/current-user").get(verifyJWT,getUserProfile);
 router.route("/update-profile").post(verifyJWT, updateAccountDetails);
+router.route("/allUsers").get(getAllUsers)
 router.route("/update-avatar").post(
     verifyJWT, 
     upload.fields([{

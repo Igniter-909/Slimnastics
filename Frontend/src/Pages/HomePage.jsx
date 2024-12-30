@@ -1,7 +1,9 @@
+import { useSelector } from "react-redux";
 import Card from "../components/Card";
 import HomeLayout from "../layout/HomeLayout";
 
 function HomePage () {
+    console.log(useSelector(state => state.auth.data))
     return (
       <HomeLayout>
             <div>

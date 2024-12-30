@@ -244,8 +244,8 @@ const getUserProfile = asyncHandler( async (req,res ) => {
 
 const updateAccountDetails = asyncHandler(async (req,res ) => {
     try {
-        const { name, oldPassword, newPassword, DOB, gender, expertise, experience } = req.body;
-        if (!name || !DOB || !gender || (oldPassword && !newPassword) || (!oldPassword && newPassword)) {
+        const { name, oldPassword, newPassword, gender, expertise, experience } = req.body;
+        if ((oldPassword && !newPassword) || (!oldPassword && newPassword)) {
             throw new ApiError(400, "All required fields must be provided.");
         }
         const user = await User.findById(req.user._id);
@@ -265,14 +265,13 @@ const updateAccountDetails = asyncHandler(async (req,res ) => {
 
             // Hash the new password before saving
             user.password = newPassword;
-            await user.save(); // Ensures pre-save hooks for hashing run
+            await user.save(); 
         }
         const updatedUser = await User.findByIdAndUpdate(
             req.user._id,
             {
                 $set: {
                     name,
-                    DOB,
                     gender,
                     expertise,
                     experience,
@@ -280,6 +279,8 @@ const updateAccountDetails = asyncHandler(async (req,res ) => {
             },
             { new: true, runValidators: true }
         ).select("-password");
+
+        console.log(updatedUser)
 
         return res
             .status(200)
@@ -333,7 +334,7 @@ const updateAvatar = asyncHandler( async( req,res) => {
         );
     } catch (error) {
         logger.error(error.message)
-        throw new ApiError(400,"Avatar could not be updated !!");
+        throw new ApiError(400,error?.message || "Avatar could not be updated !!");
     }
 })
 
@@ -370,6 +371,21 @@ const deleteAccount = asyncHandler ( async (req,res) => {
        )
     } catch (error) {
         throw new ApiError(400, error?.message || "Something went wrong while trying to delete the account ")
+    }
+})
+
+const getAllUsers = asyncHandler(async (req,res) =>{
+    try {
+        const users = await User.find({}, "-password -refreshToken");
+        return res
+       .status(200)
+       .json(new ApiResponse(
+            200,
+            users,
+            "Users fetched successfully"
+        ))
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while trying to get the users")
     }
 })
 
@@ -508,5 +524,6 @@ export { registerUser,
     deleteAccount,
     addPlan,
     upgradePlan,
-    viewPlan
+    viewPlan,
+    getAllUsers
  };

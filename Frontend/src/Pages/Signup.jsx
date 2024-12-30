@@ -43,7 +43,7 @@ function Signup () {
 
     async function onSignup (event) {
         event.preventDefault();
-        console.log(formData)
+        // console.log(formData)
         // if(!formData.email || !formData.password || !formData.name || !formData.gender){
         //     toast.error("Please enter all the details")
         //     return;

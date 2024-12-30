@@ -13,7 +13,8 @@ function Navbar() {
 
   // const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   // const role = localStorage.getItem('role') || "";
-  const avatar = (JSON.parse(localStorage.getItem('data')))?.data?.user?.avatar || "";
+  const avatar = useSelector((state) => state.auth.data.data.avatar) || ""
+  // const avatar = (JSON.parse(localStorage.getItem('data')))?.data?.user?.avatar || "";
   
   const handleLogout = async (e) => {
     e.preventDefault();
