@@ -10,11 +10,7 @@ function Navbar() {
 
   const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn)
   const role = useSelector((state) => state?.auth?.role) || "";
-
-  // const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-  // const role = localStorage.getItem('role') || "";
   const avatar = useSelector((state) => state.auth.data.data.avatar) || ""
-  // const avatar = (JSON.parse(localStorage.getItem('data')))?.data?.user?.avatar || "";
   
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -70,7 +66,7 @@ function Navbar() {
               Home
             </Link>
             <Link
-              to="/"
+              to="/plan"
               className="block lg:inline-block px-4 py-2 hover:bg-blue-200 rounded"
             >
               Plans

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import HomeLayout from "../../layout/HomeLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,8 @@ function EditProfile () {
     
     const { data } = useSelector((state) => state.auth);
     const Data = data.data;
-    const avatar = Data?.user?.avatar || "";
+    console.log(Data)
+    const avatar = Data.avatar || "";
 
 
     const [formData, setFormData] = useState({

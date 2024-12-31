@@ -5,6 +5,7 @@ import Signup from "./Pages/Signup"
 import AboutUs from "./Pages/AboutUs"
 import NotFound from "./Pages/NotFound"
 import EditProfile from "./Pages/user/EditProfile"
+import ShowPlan from "./Pages/plans/ShowPlan"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/editProfile" element={<EditProfile />} />
+        <Route path="/plan" element={<ShowPlan />} />
         <Route path="*" element={<NotFound />} /> 
       </Routes>  
     </>
