@@ -338,6 +338,8 @@ const updateAvatar = asyncHandler( async( req,res) => {
     }
 })
 
+
+
 const deleteAccount = asyncHandler ( async (req,res) => {
     try {
         const {password} = req.body;
@@ -425,6 +427,11 @@ const viewPlan = asyncHandler( async (req,res) => {
 
 const addPlan = asyncHandler( async(req,res) => {
     try {
+        const uu = await User.findById(req.user._id);
+        if(uu.role === "Admin"){
+            throw new ApiError(403, "Admins cannot add plans.");
+        }
+
         const { planId, startDate } = req.body;
         
         if(!startDate){
@@ -470,46 +477,7 @@ const addPlan = asyncHandler( async(req,res) => {
     }
 })
 
-const upgradePlan = asyncHandler( async (req,res) => {
-    try {
-        const {newPlanId, startDate } = req.body;
-        if(!newPlanId) {
-            throw new ApiError(404,"Plan Id is required!!")
-        };
-        const newPlan = await Membership.findById(newPlanId);
-        if(!newPlan) {
-            throw new ApiError(404,"Plan not found")
-        };
-        const user = await User.findById(req.user._id);
-        if(!user) {
-            throw new ApiError(404,"User not found")
-        };
-        const newPlanEntry = {
-            planId: newPlanId,
-            startDate: new Date(
-                new Date(startDate).getTime()
-            ),
-            endDate: new Date(
-                new Date().getTime() + newPlan.duration * 24 * 60 * 60 * 1000
-            ),
-        };
 
-        user.membershipPlan.push(newPlanEntry);
-
-        await user.save();
-
-        return res
-            .status(200)
-            .json(new ApiResponse(
-                200,
-                user.membershipPlan,
-                "Plan upgraded successfully to your account"
-            ))
-
-    } catch (error) {
-        throw new ApiError(500,error?.message || "Something went wrong while upgrading the plan ")
-    }
-})
 
 
 
@@ -523,7 +491,6 @@ export { registerUser,
     updateAvatar,
     deleteAccount,
     addPlan,
-    upgradePlan,
     viewPlan,
     getAllUsers
  };

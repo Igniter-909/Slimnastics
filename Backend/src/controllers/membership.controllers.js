@@ -66,9 +66,6 @@ const updateMembershipPlan = asyncHandler( async(req,res) => {
     try {
         // const user = await User.findById(req.user._id);    
         const { plan, price, description, duration } = req.body;
-        if(!plan || !price || !description || !duration ){
-            throw new ApiError(400, "All fields are required")
-        }
         const { id }= req.params;
         const membershipPlan = await Membership.findByIdAndUpdate(
             id,

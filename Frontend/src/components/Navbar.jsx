@@ -10,7 +10,12 @@ function Navbar() {
 
   const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn)
   const role = useSelector((state) => state?.auth?.role) || "";
-  const avatar = useSelector((state) => state.auth.data.data.avatar) || ""
+  let avatar;
+  if((useSelector((state) => state?.auth?.data)).length > 0){
+    avatar = useSelector((state) => state.auth.data.data.avatar)
+  } else{
+    avatar = ""
+  }
   
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -72,7 +77,7 @@ function Navbar() {
               Plans
             </Link>
             <Link
-              to="/"
+              to="/trainers"
               className="block lg:inline-block px-4 py-2 hover:bg-blue-200 rounded"
             >
               Trainers
@@ -123,6 +128,21 @@ function Navbar() {
         className={role === "Admin" ? "" : "hidden"}
       >
         Dashboard
+      </Link>
+    </li>
+    <li>
+      <Link 
+        to="/editProfile" 
+      >
+        Edit Profile
+      </Link>
+    </li>
+    <li>
+      <Link 
+        to="/plan/add" 
+        className={role === "Admin" ? "" : "hidden"}
+      >
+        Create Plan
       </Link>
     </li>
     <li>

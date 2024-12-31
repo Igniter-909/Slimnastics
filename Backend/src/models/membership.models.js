@@ -3,8 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const membershipSchema = new Schema ({
     plan:{
         type: String,
-        required: true,
-        enum: ['premium', 'standard','standard_cardio','cardio','zumba']
+        required: true
     },
     price:{
         type: Number,

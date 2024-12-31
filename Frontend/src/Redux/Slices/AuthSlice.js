@@ -27,6 +27,25 @@ export const loginUser = createAsyncThunk(
     }
 )
 
+export const enrollIntoPlan =createAsyncThunk(
+    "/plan/:id",
+    async(data) => {
+        try {
+            const res = axiosInstance.post(`/users/add-plan`,data);
+            toast.promise(res,{
+                loading:"Wait! enrolling in plan progress...",
+                success:(data) => {
+                    return data?.data?.message;
+                },
+                error: "Failed to enroll into plan"
+            });
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+    }
+)
+
 export const signupUser = createAsyncThunk(
     "auth/signup",
     async(data) => {
@@ -123,6 +142,8 @@ export const getUser = createAsyncThunk(
         }
     }
 )
+
+
 
 const authSlice = createSlice({
     name: 'auth',

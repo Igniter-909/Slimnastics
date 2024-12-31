@@ -1,11 +1,6 @@
-import {useSelector} from "react-redux"
-import { GrUpdate } from "react-icons/gr";
-import { MdDeleteForever } from "react-icons/md";
-import { FaUsers } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-function Card2({plan,description,duration,price,_id}) {
-
-    const role = useSelector(state => state.auth.role);
+function Card2({plan,description,duration,_id}) {
     
     return (
         <div key={_id} className="card lg:card-side bg-base-100 shadow-xl">
@@ -20,10 +15,7 @@ function Card2({plan,description,duration,price,_id}) {
                 <p className="card-title">Duration : {duration} days</p>
                 <div className="card-actions justify-end">
                 <div className="flex gap-4 justify-center items-center">
-                <button className="w-fit bg-lime-400 text-black font-bold px-3 py-3 rounded-full hover:bg-purple-500">{price}</button>
-                {role==="Admin" && <button className="w-fit bg-purple-700 text-white px-3 py-3 rounded-full hover:bg-purple-500">{<GrUpdate />}</button>}
-                {role==="Admin" && <button className="w-fit bg-purple-700 text-white px-3 py-3 rounded-full hover:bg-purple-500">{<FaUsers />}</button>}
-                {role==="Admin" && <button className="w-fit bg-red-700 text-white px-3 py-3 rounded-full hover:bg-red-500">{<MdDeleteForever />}</button>}
+                <button className="w-fit bg-lime-400 text-black font-bold px-3 py-3 rounded-full hover:bg-purple-500"><Link to={`/plan/${_id}`}>View</Link></button>
                 
                 </div>
                 </div>
