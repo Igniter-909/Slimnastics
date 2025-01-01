@@ -22,6 +22,10 @@ const PlanPage = () => {
 
     const role = useSelector(state => state.auth.role)
     const {plan} = useSelector(state => state.membership);
+    console.log("Plan",plan)
+
+    
+    
     const {users} = useSelector(state => state.user)
 
     const trainers = users.filter(user => user.role==="Trainer");
@@ -65,14 +69,22 @@ const PlanPage = () => {
         setIsBuyOpen(false);
     }
 
-    console.log("Plan",plan)
 
     const [formdata,setFormdata] = useState({
-        plan: plan.plan,
-        description: plan.description,
-        duration: plan.duration,
-        price: plan.price
+        plan:"",
+        description: "",
+        duration: "",
+        price: ""
     })
+
+    useEffect(() => {
+        setFormdata({
+            plan: plan.plan,
+            description: plan.description,
+            duration: plan.duration,
+            price: plan.price
+        })
+    },[plan])
 
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const handleUpdateClick = () => {
@@ -80,6 +92,7 @@ const PlanPage = () => {
     }
 
     const handleUpdateChange = (e) => {
+        e.preventDefault()
         setFormdata({
             ...formdata,
             [e.target.name]: e.target.value

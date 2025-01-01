@@ -1,5 +1,4 @@
 import Attendance from "../models/attendance.models.js";
-import Class from "../models/class.models.js";
 import Progress from "../models/progress.models.js";
 import User from "../models/user.models.js";
 import { ApiError } from "../utils/ApiError.js";

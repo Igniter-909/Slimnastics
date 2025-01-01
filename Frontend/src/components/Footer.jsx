@@ -1,56 +1,74 @@
 import {BsFacebook, BsInstagram, BsTwitter, BsLinkedin} from "react-icons/bs"
 import { Link } from "react-router-dom";
+import { IoLocationOutline } from "react-icons/io5";
+import { FaPhoneAlt } from "react-icons/fa";
+import { CiMail } from "react-icons/ci";
 
 function Footer() {
     return(
-        <>
-            <footer className="footer footer-center bg-base-300 text-base-content rounded p-10">
-                <nav className="grid grid-flow-col gap-4">
-                    <Link to={"/about"} className="link link-hover">About us</Link>
-                    <Link to={"/contact"} className="link link-hover">Contact</Link>
-                </nav>
-                <nav>
-                    <div className="grid grid-flow-col gap-4">
-                    <a>
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        className="fill-current">
-                        <path
-                            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
-                        </svg>
-                    </a>
-                    <a>
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        className="fill-current">
-                        <path
-                            d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
-                        </svg>
-                    </a>
-                    <a>
-                        <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        className="fill-current">
-                        <path
-                            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
-                        </svg>
-                    </a>
+        <div className="w-full h-96 px-24 py-16 flex gap-4">
+            <div className="w-5/12 h-64 flex flex-col gap-2">
+                <div className="w-full h-10 flex flex-col">
+                    <div className="w-full h-6 flex gap-2">
+                        <div className="w-9 h-6 rounded-s bg-[#D90A14]"></div>
+                        <div className="h-6 font-semibold text-lg font-vazirmatn">Slim<span className="text-[#D90A14]">nastics</span></div>
                     </div>
-                </nav>
-                <aside>
-                    <p>Copyright © {new Date().getFullYear()} - All right reserved by Slimnastics Ltd</p>
-                </aside>
-                </footer>
-        </>
+                    <div className="w-full font-vazirmatn h-4 tracking-widest text-[10px]">
+                        Transform Your Body
+                    </div>
+                </div>
+                <div className="w-full h-36 leading-6 font-vazirmatn">
+                Transform your body with Slimnastics Gym! With over <span className="text-[#D90A14]">5 years</span>  of experience, our expert coaches provide top-notch training to help you achieve your fitness goals. <span className="text-[#D90A14]">Join our community</span> and start your journey to a healthier, fitter you today!
+                </div>
+                <div className="w-full h-10 flex gap-3 justify-around">
+                    <div className="w-10 h-10 bg-[#D90A14] rounded-full flex items-center justify-center">
+                        <BsFacebook className="text-white"/>
+                    </div>
+                    <div className="w-10 h-10 bg-[#D90A14] rounded-full flex items-center justify-center">
+                        <BsInstagram className="text-white"/>
+                    </div>
+                    <div className="w-10 h-10 bg-[#D90A14] rounded-full flex items-center justify-center">
+                        <BsTwitter className="text-white"/>
+                    </div>
+                    <div className="w-10 h-10 bg-[#D90A14] rounded-full flex items-center justify-center">
+                        <BsLinkedin className="text-white"/>
+                    </div>
+                </div>
+            </div>
+            <div className="w-3/12 h-64">
+            </div>
+            <div className="w-6/12 h-64 flex gap-2">
+                <div className="w-1/3 flex flex-col justify-center items-center">
+                    <span className="text-[#D90A14] font-vazirmatn font-bold text-lg">Company</span>
+                    <div className="flex flex-col gap-3 mt-3 items-center font-vazirmatn">
+                        <Link to={"/about"}>About Us</Link>
+                        <Link to={"/careers"}>Our Services</Link>
+                        <Link to={"/contact"}>Blog</Link>
+                        <Link to={"/blog"}>Careers</Link>
+                        <Link to={"/faq"}>Contact Us</Link>
+                    </div>
+                </div>
+                <div className="w-1/3 flex flex-col justify-center items-center">
+                    <span className="text-[#D90A14] font-vazirmatn font-bold text-lg">Resources</span>
+                    <div className="flex flex-col gap-3 mt-3 items-center font-vazirmatn">
+                        <Link to={"/about"}>Success Stories</Link>
+                        <Link to={"/careers"}>Gym Plans</Link>
+                        <Link to={"/contact"}>Community</Link>
+                        <Link to={"/blog"}>FAQs</Link>
+                        <Link to={"/faq"}>Workouts</Link>
+                    </div>
+                </div>
+                <div className="w-1/3 flex flex-col ml-5 justify-center items-center">
+                    <span className="text-[#D90A14] font-vazirmatn font-bold text-lg">Contact Us</span>
+                    <div className="flex flex-col gap-3 mt-3 items-start font-vazirmatn">
+                        <p className="flex gap-3"><IoLocationOutline />Ranchi, India</p>
+                        <p className="flex  gap-3"><FaPhoneAlt />+91 81020 xxxxx</p>
+                        <p className="flex gap-3"><CiMail />igniterofficial@gmail.com</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     )
 }
 
