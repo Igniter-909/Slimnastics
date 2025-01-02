@@ -200,7 +200,7 @@ function HomePage2() {
 
                     {/* Answer */}
                     {activeIndex === index && (
-                    <div className="p-4 text-black">
+                    <div className="p-4 text-white/50">
                         <p>{faq.answer}</p>
                     </div>
                     )}

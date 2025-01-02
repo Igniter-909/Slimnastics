@@ -187,17 +187,19 @@ function Navbar() {
         <ul className="flex-col sm:flex rounded-2xl sm:flex-row gap-6 text-sm lg:text-base justify-around bg-base-300 sm:bg-transparent">
           <li className="justify-self-center hover:text-[#D90A14]"><Link to="/">Home</Link></li>
           <li className="justify-self-center hover:text-[#D90A14]"><Link to="/plan">Pricing</Link></li>
-          <li className="justify-self-center hover:text-[#D90A14]"><Link to="/">Workouts</Link></li>
-          <li className="justify-self-center hover:text-[#D90A14]"><Link to="/">Shop</Link></li>
+          <li className="justify-self-center hover:text-[#D90A14]"><Link to="/showblogs">Blogs</Link></li>
+          <li className="justify-self-center hover:text-[#D90A14]"><Link to="/showshop">Shop</Link></li>
           <li className="justify-self-center hover:text-[#D90A14]"><Link to="/about">About</Link></li>
-          <li className="justify-self-center hover:text-[#D90A14]"><Link to="/">Contact</Link></li>
+          <li className="justify-self-center hover:text-[#D90A14]"><Link to="/contactUs">Contact</Link></li>
         </ul>
       </div>
       {isLoggedIn ? 
       <>
       <div className="w-30 lg:w-40 h-12 lg:h-14 flex py-1 lg:py-0 gap-6 mx-2 lg:mx-6">
         <button className="w-fit p-2 lg:w-14 h-5 lg:h-8 border-x-2 border-[#D90A14] rounded-lg flex items-center justify-center text-[#D90A14] text-sm lg:text-base font-extralight hover:bg-[#D90A14] hover:text-white">
+          <Link to="/profile" >
           Profile
+          </Link>
         </button>
         <button className="w-fit p-2 lg:w-14 h-5 lg:h-8 bg-[#D90A14] text-sm lg:text-base text-white rounded-lg flex items-center justify-center font-extralight hover:bg-[#6d1d6a]">
           Logout
