@@ -7,29 +7,32 @@ import {uploadOnCloudinary} from '../utils/cloudinary.js';
 
 // Add a Product
 const addProduct = asyncHandler(async (req, res) => {
-    const { name, price, description, mfgDate, expiryDate, rating, company, category } = req.body;
+    const { name, OriginalPrice, newPrice, description, mfgDate, expiryDate, rating, company, category, size,flavor  } = req.body;
 
     // Upload image to Cloudinary
-    // const imagePath = req.files?.image[0].path;
-    // if (!imagePath) {
-    //     throw new ApiError(400, "No image provided");
-    // }
-    // const image = await uploadOnCloudinary(imagePath);
-    // if(!image){
-    //     throw new ApiError(400, "Invalid image");
-    // }
+    const imagePath = req.files?.image[0].path;
+    if (!imagePath) {
+        throw new ApiError(400, "No image provided");
+    }
+    const image = await uploadOnCloudinary(imagePath);
+    if(!image){
+        throw new ApiError(400, "Invalid image");
+    }
         
 
     const product = await Product.create({
         name,
-        price,
+        OriginalPrice,
         description,
         mfgDate,
         expiryDate,
         rating,
         company,
         category,
-        // image: image.secure_url,
+        size,
+        flavor,
+        newPrice,
+        image: image.secure_url,
     })
     const createdProduct = await Product.findById(product._id);
     if(!createdProduct){
@@ -59,7 +62,7 @@ const getProduct = asyncHandler(async (req, res) => {
         ));
 });
 
-const getAllProducts = asyncHandler( async(req,res) => {
+const getAllProducts = asyncHandler( async(_,res) => {
     try {
         const products = await Product.find({});
         if(!products){

@@ -12,6 +12,10 @@ const membershipSchema = new Schema ({
     description:{
         type: [String]
     },
+    benefits:[{
+        type: String,
+        required: true
+    }],
     duration:{
         type: Number,
         required: true

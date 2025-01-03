@@ -5,7 +5,11 @@ const productSchema = new Schema ({
         type: String,
         required: true
     },
-    price:{
+    originalPrice:{
+        type: Number,
+        required: true
+    },
+    salePrice:{
         type: Number,
         required: true
     },
@@ -13,10 +17,10 @@ const productSchema = new Schema ({
         type: String,
         required: true
     },
-    // image:{
-    //     type: String,
-    //     required: true
-    // },
+    image:{
+        type: String,
+        required: true
+    },
     mfgDate: {
         type: Date,
         required: true
@@ -36,8 +40,13 @@ const productSchema = new Schema ({
     },
     category:{
         type: String
-    }
-
+    },
+    flavor:{
+        type: String
+    },
+    size:{
+        type: String
+    },
 },{timestamps: true});
 
 const Product = mongoose.model('Product', productSchema);

@@ -5,7 +5,6 @@ import { deleteAttendance, getAttendance, markAttendance, updateAttendance } fro
 const router = Router();
 
 router.route('/mark').post(verifyJWT, markAttendance);
-router.route("/update/:attendanceId").put(verifyJWT,updateAttendance)
 router.route("/get-attendance").get(verifyJWT, getAttendance);
 router.route("/delete-attendance/:attendanceId").delete(verifyJWT,deleteAttendance);
 

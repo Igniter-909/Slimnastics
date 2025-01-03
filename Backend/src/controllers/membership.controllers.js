@@ -6,11 +6,9 @@ import  asyncHandler from "../utils/asyncHandler.js";
 
 const addMembershipPlan = asyncHandler( async (req,res ) => {
     try {
-        const user = await User.findById(req.user._id);
+        const {plan, price, description, duration,benefits} = req.body;
 
-        const {plan, price, description, duration } = req.body;
-
-        if(!plan || !price || !description || !duration ){
+        if(!plan || !price || !description || !duration || !benefits) {
             throw new ApiError(400, "All fields are required")
         }
 
@@ -18,7 +16,8 @@ const addMembershipPlan = asyncHandler( async (req,res ) => {
             plan,
             price,
             description,
-            duration
+            duration,
+            benefits
         });
 
         const createdPlan = await Membership.findById(newMembershipPlan._id);
@@ -65,7 +64,7 @@ const getAllMembershipPlans = asyncHandler( async (req,res) => {
 const updateMembershipPlan = asyncHandler( async(req,res) => {
     try {
         // const user = await User.findById(req.user._id);    
-        const { plan, price, description, duration } = req.body;
+        const { plan, price, description, duration, benefits } = req.body;
         const { id }= req.params;
         const membershipPlan = await Membership.findByIdAndUpdate(
             id,
@@ -73,7 +72,8 @@ const updateMembershipPlan = asyncHandler( async(req,res) => {
                 plan,
                 price,
                 description,
-                duration
+                duration,
+                benefits
             },{
                 new: true
             }
@@ -95,9 +95,7 @@ const updateMembershipPlan = asyncHandler( async(req,res) => {
 });
 
 const deleteMembershipPlan = asyncHandler( async (req,res ) => {
-    try {
-        const user = await User.findById(req.user._id);
-        
+    try {        
         const { id } = req.params;
         const membershipPlan = await Membership.findByIdAndDelete(id);
         if(!membershipPlan){

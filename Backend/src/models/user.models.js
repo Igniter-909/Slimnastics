@@ -49,13 +49,20 @@ const userSchema = new Schema({
     refreshToken:{
         type: String
     },
-    expertise:{
-        type: String,
-        default: null
-    },
+    expertise:[
+        {
+            type:String
+        }
+    ],
     experience:{
         type: Number,
         default: null
+    },
+    bio:{
+        type: String
+    },
+    socialMedia:{
+        type: String
     },
     membershipPlan : [{
         planId:{
@@ -63,12 +70,30 @@ const userSchema = new Schema({
             ref: 'Membership'
         },
         startDate:{
-            type:Date
+            type:Date,
+            default: Date.now()
         },
         endDate:{
             type: Date
+        },
+        status:{
+            type: String,
+            enum: ['active', 'inactive'],
+            default: 'active'
         }
-    }]
+    }],
+    cart: [
+        {
+            productId:{
+                type: Schema.Types.ObjectId,
+                ref: 'Product'
+            },
+            quantity:{
+                type: Number,
+                default: 1
+            }
+        }
+    ]
 },{timestamps: true})
 
 

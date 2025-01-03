@@ -24,10 +24,10 @@ const generateAccessAndRefereshTokens = async (userId) => {
 const registerUser = asyncHandler( async (req, res) => {
     // Register user logic here
 
-    const { name, email, password, DOB, gender, role,  joinDate, experience, expertise } = req.body;
+    const { name, email, password, DOB, gender,  joinDate, experience, expertise,bio,socialMedia,role } = req.body;
 
     if ( 
-        [name, email, password, gender, DOB, joinDate].some((field) => field?.trim() == "")
+        [name, email, password, gender, DOB, joinDate,expertise,experience,bio,socialMedia].some((field) => field?.trim() == "")
     ){
         throw new ApiError(400,"All fields must be present!!");
     };
@@ -49,12 +49,7 @@ const registerUser = asyncHandler( async (req, res) => {
          throw new ApiError (500, "Avatar could not be uploaded on cloudinary!!");
     }
 
-    let user;
-    if(role === "Trainer"){
-        if(!experience ||!expertise){
-            throw new ApiError(400,"Experience and expertise fields are required for trainer!!");
-        }
-        user = await User.create({
+    const user = await User.create({
             name,
             email,
             password,
@@ -64,22 +59,12 @@ const registerUser = asyncHandler( async (req, res) => {
             joinDate,
             experience,
             expertise,
-            avatar: avatar.url,
-            membershipPlan: []
-        });
-    }else{
-        user = await User.create({
-            name,
-            email,
-            password,
-            DOB,
-            gender,
-            role,
-            joinDate,
+            bio,
+            socialMedia,
+            cart:[],
             avatar: avatar.url,
             membershipPlan: {}
         });
-    }
 
     const createdUser = await User.findById(user._id).select(
         "-password -refreshToken"
@@ -244,17 +229,13 @@ const getUserProfile = asyncHandler( async (req,res ) => {
 
 const updateAccountDetails = asyncHandler(async (req,res ) => {
     try {
-        const { name, oldPassword, newPassword, gender, expertise, experience } = req.body;
+        const { name, oldPassword, newPassword, gender, expertise, experience, bio, socialMedia  } = req.body;
         if ((oldPassword && !newPassword) || (!oldPassword && newPassword)) {
             throw new ApiError(400, "All required fields must be provided.");
         }
         const user = await User.findById(req.user._id);
         if (!user) {
             throw new ApiError(404, "User not found.");
-        }
-
-        if(user.role === "Admin"){
-            throw new ApiError(403, "Admins cannot update their account details.");
         }
         
         if (oldPassword && newPassword) {
@@ -272,6 +253,8 @@ const updateAccountDetails = asyncHandler(async (req,res ) => {
             {
                 $set: {
                     name,
+                    bio,
+                    socialMedia,
                     gender,
                     expertise,
                     experience,
@@ -391,8 +374,6 @@ const getAllUsers = asyncHandler(async (req,res) =>{
     }
 })
 
-
-
 const viewPlan = asyncHandler( async (req,res) => {
     try {
         const user = await User.findById(req.user._id);
@@ -428,9 +409,6 @@ const viewPlan = asyncHandler( async (req,res) => {
 const addPlan = asyncHandler( async(req,res) => {
     try {
         const uu = await User.findById(req.user._id);
-        if(uu.role === "Admin"){
-            throw new ApiError(403, "Admins cannot add plans.");
-        }
 
         const { planId, startDate } = req.body;
         
@@ -442,12 +420,17 @@ const addPlan = asyncHandler( async(req,res) => {
             throw new ApiError(404, "Plan not found");
         }
 
+        let status;
+        if(startDate > Date.now()) status="upcoming";
+        else status="inactive";
+
         const membershipPlan = {
             planId:(plan._id),
             startDate: new Date(startDate),
             endDate: new Date(
                 new Date(startDate).getTime() + plan.duration * 24 * 60 *60 *1000
-            )
+            ),
+            status: status
         }
 
         const user = await User.findByIdAndUpdate(
@@ -477,6 +460,69 @@ const addPlan = asyncHandler( async(req,res) => {
     }
 })
 
+const addToCart = asyncHandler(async (req,res) => {
+    try {
+        const { productId, quantity } = req.body;
+        const user = await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $push:{
+                    cart: productId,
+                    quantity
+                }
+            },
+            {
+                new: true
+            }
+        )
+        if(!user){
+            throw new ApiError(404, "User not found");
+        }
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    user.cart,
+                    "Product added to cart successfully"
+                ))
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while adding a product to cart")
+    }
+})
+
+const removeFromCart = asyncHandler(async (req,res) => {
+    try {
+        const { productId } = req.body;
+        const user = await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $pull:{
+                    cart: productId
+                }
+            },
+            {
+                new: true
+            }
+        )
+        if(!user){
+            throw new ApiError(404, "User not found");
+        }
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    user.cart,
+                    "Product removed from cart successfully"
+                ))
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while removing a product from cart")
+    }
+})
+
+// add forgot password
+
 
 
 
@@ -492,5 +538,7 @@ export { registerUser,
     deleteAccount,
     addPlan,
     viewPlan,
-    getAllUsers
+    getAllUsers,
+    addToCart,
+    removeFromCart,
  };

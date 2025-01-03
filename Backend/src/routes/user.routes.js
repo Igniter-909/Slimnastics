@@ -8,7 +8,9 @@ import { loginUser,
     updateAvatar, deleteAccount, 
     viewPlan, 
     addPlan,
-    getAllUsers
+    getAllUsers,
+    addToCart,
+    removeFromCart
 } from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.midlewares.js";
 import verifyJWT from "../middlewares/auth.middlewares.js";
@@ -40,5 +42,7 @@ router.route("/update-avatar").post(
 router.route("/delete-profile").post(verifyJWT, deleteAccount);
 router.route("/view-plan").get(verifyJWT, viewPlan)
 router.route("/add-plan").post(verifyJWT,addPlan);
+router.route("/addToCart").post(verifyJWT,addToCart);
+router.route("/removeFromCart").delete(verifyJWT,removeFromCart);
 
 export default router;

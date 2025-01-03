@@ -81,6 +81,15 @@ function SignUp2() {
                             <input type="text" id='Expertise' name='Expertise' placeholder='Enter Your Expertise..' className='w-full px-3 py-2 rounded-lg border-2 border-gray-300 text-gray-200 bg-transparent' />
                         </div>
                         </div>
+                        <div className='w-full mb-4'>
+                            <label htmlFor="social" className='block text-gray-300 mb-2'>Social Media</label>
+                            <input type="text" id='social' name='social' placeholder='Enter social media..' className='w-full px-3 py-2 rounded-lg border-2 border-gray-300 text-gray-200 bg-transparent' />
+                        </div>
+                        <div className="w-full mb-4">
+                        <label htmlFor="bio" className='block text-gray-300/35'>Bio</label>
+                        <textarea name="bio" id="bio" className='w-full min-h-[100px] max-h-[400px] resize-y p-2 border-2 rounded-lg bg-transparent outline-none'></textarea>
+                
+                        </div>
                         <div className='w-full flex justify-center'>
                             <button className='bg-[#D90A14] text-white my-2 px-4 py-2 rounded-lg w-full hover:bg-[#ea4152]' type='submit'>Login</button>
                         </div>
