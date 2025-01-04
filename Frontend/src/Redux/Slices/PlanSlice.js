@@ -111,7 +111,6 @@ const membershipSlice = createSlice({
             console.log("Membership plans fetched successfully", action.payload.data)
         })
         builder.addCase(getAPlan.fulfilled,(state,action) => {
-            console.log(action.payload);
             state.plan = action.payload.data
             console.log("Plan fetched successfully",action.payload.data);
         })

@@ -208,11 +208,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler( async (req,res ) => {
     try {
-        const user = req.user.populate({
-            path:"membershipPlan.planId",
-            model:"Membership"
-        });
-        logger.info(user)
+        const user = await req.user.populate('membershipPlan.planId');
         if(!user){
             throw new ApiError(401, "User not found");
         }
@@ -413,7 +409,6 @@ const viewPlan = asyncHandler( async (req,res) => {
 
 const addPlan = asyncHandler( async(req,res) => {
     try { 
-        const uu = await User.findById(req.user._id);
 
         const { planId, startDate } = req.body;
         
@@ -425,16 +420,22 @@ const addPlan = asyncHandler( async(req,res) => {
             throw new ApiError(404, "Plan not found");
         }
 
+        const endDate =  new Date(
+            new Date(startDate).getTime() + plan.duration * 24 * 60 *60 *1000 * 30
+        );
+
         let status;
-        if(startDate > Date.now()) status="upcoming";
-        else status="inactive";
+        if(startDate < Date.now() && endDate > Date.now()){
+            status="active";
+        }
+        else {
+            status="inactive";
+        }
 
         const membershipPlan = {
             planId:(plan._id),
             startDate: new Date(startDate),
-            endDate: new Date(
-                new Date(startDate).getTime() + plan.duration * 24 * 60 *60 *1000
-            ),
+            endDate:endDate,
             status: status
         }
 
