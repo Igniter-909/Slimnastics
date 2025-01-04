@@ -49,11 +49,9 @@ const userSchema = new Schema({
     refreshToken:{
         type: String
     },
-    expertise:[
-        {
+    expertise:{
             type:String
-        }
-    ],
+        },
     experience:{
         type: Number,
         default: null

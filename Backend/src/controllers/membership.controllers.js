@@ -12,12 +12,14 @@ const addMembershipPlan = asyncHandler( async (req,res ) => {
             throw new ApiError(400, "All fields are required")
         }
 
+        const listBenefits = benefits.split(",");
+
         const newMembershipPlan = await Membership.create({
             plan,
             price,
             description,
             duration,
-            benefits
+            benefits:listBenefits,
         });
 
         const createdPlan = await Membership.findById(newMembershipPlan._id);
@@ -64,8 +66,8 @@ const getAllMembershipPlans = asyncHandler( async (req,res) => {
 const updateMembershipPlan = asyncHandler( async(req,res) => {
     try {
         // const user = await User.findById(req.user._id);    
-        const { plan, price, description, duration, benefits } = req.body;
-        const { id }= req.params;
+        const { id, plan, price, description, duration, benefits } = req.body;
+        const listBenefits = benefits.split(",");
         const membershipPlan = await Membership.findByIdAndUpdate(
             id,
             {
@@ -73,7 +75,7 @@ const updateMembershipPlan = asyncHandler( async(req,res) => {
                 price,
                 description,
                 duration,
-                benefits
+                benefits:listBenefits
             },{
                 new: true
             }
@@ -117,6 +119,7 @@ const getaPlan = asyncHandler( async (req,res ) =>{
     try {
         const { id } = req.params;
         const membershipPlan = await Membership.findById(id);
+        membershipPlan.benefits = membershipPlan.benefits.join(", ");
         if(!membershipPlan){
             throw new ApiError(404, "Membership plan not found")
         }

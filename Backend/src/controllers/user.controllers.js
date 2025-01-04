@@ -208,7 +208,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const getUserProfile = asyncHandler( async (req,res ) => {
     try {
-        const user = req.user;
+        const user = req.user.populate({
+            path:"membershipPlan.planId",
+            model:"Membership"
+        });
         logger.info(user)
         if(!user){
             throw new ApiError(401, "User not found");
@@ -326,10 +329,12 @@ const updateAvatar = asyncHandler( async( req,res) => {
 const deleteAccount = asyncHandler ( async (req,res) => {
     try {
         const {password} = req.body;
+        logger.info(password)
         if(!password){
             throw new ApiError(400, "Password is required!!");
         }
         const user = await User.findById(req.user._id);
+        logger.info("User",user)
         if(!user){
             throw new ApiError(404, "User not found");
         } 
@@ -343,14 +348,14 @@ const deleteAccount = asyncHandler ( async (req,res) => {
             throw new ApiError(403, "Admins cannot delete their account.");
         }
 
-        await user.deleteOne();
+        const deleteResult = await user.deleteOne();
 
         return res
        .status(200)
        .json(
         new ApiResponse(
             200,
-            {},
+            deleteResult,
             "Account deleted successfully!"
         )
        )
@@ -407,7 +412,7 @@ const viewPlan = asyncHandler( async (req,res) => {
 })
 
 const addPlan = asyncHandler( async(req,res) => {
-    try {
+    try { 
         const uu = await User.findById(req.user._id);
 
         const { planId, startDate } = req.body;

@@ -17,7 +17,8 @@ export default {
     fontFamily:{
       vazirmatn : ['Vazirmatn'],
       aclonica: ["Aclonica"],
-      rubik: ["Rubik Vinyl"]
+      rubik: ["Rubik Vinyl"],
+      nunito: ["Nunito Sans"]
     },
     boxShadow: {
       'custom-shadow': '0px 4px 10px rgba(0, 0, 0, 0.25), 0px 10px 30px rgba(0, 0, 0, 0.1)',

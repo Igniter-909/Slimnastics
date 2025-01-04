@@ -48,10 +48,10 @@ export const getAPlan = createAsyncThunk(
 )
 
 export const updatePlan = createAsyncThunk(
-    "/plans/:id/update",
-    async([id, data]) => {
+    "/plans/update",
+    async(data) => {
         try {
-            const res = axiosInstance.put(`/membership/update-membership-plan/${id}`,data);
+            const res = axiosInstance.put(`/membership/update-membership-plan`,data);
             toast.promise(res,{
                 loading: "Wait! Updating plan...",
                 success: "Plan updated successfully",
@@ -111,6 +111,7 @@ const membershipSlice = createSlice({
             console.log("Membership plans fetched successfully", action.payload.data)
         })
         builder.addCase(getAPlan.fulfilled,(state,action) => {
+            console.log(action.payload);
             state.plan = action.payload.data
             console.log("Plan fetched successfully",action.payload.data);
         })

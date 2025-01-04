@@ -13,7 +13,7 @@ const router = Router();
 
 router.route('/add-plan').post(verifyJWT,verifyAdmin,addMembershipPlan);
 router.route('/all-plans').get(getAllMembershipPlans);
-router.route("/update-membership-plan/:id").put(verifyJWT,verifyAdmin, updateMembershipPlan);
+router.route("/update-membership-plan").put(verifyJWT,verifyAdmin, updateMembershipPlan);
 router.route("/delete-membership-plan/:id").delete(verifyJWT,verifyAdmin, deleteMembershipPlan);
 router.route("/get-plan/:id").get(getaPlan);
 router.route("/get-participants/:id").get(verifyJWT,verifyAdmin, getAllParticipants);

@@ -9,23 +9,13 @@ function Navbar() {
   const navigate = useNavigate();
 
   const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn)
-  const role = useSelector((state) => state?.auth?.role) || "";
-  let avatar;
-  if((useSelector((state) => state?.auth?.data)).length > 0){
-    avatar = useSelector((state) => state.auth.data.data.avatar)
-  } else{
-    avatar = ""
-  }
   
   const handleLogout = async (e) => {
     e.preventDefault();
     const res = await dispatch(logout());
-    if (res?.payload?.success){
-      navigate("/")
-    }
+    navigate("/");
   };
 
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
 //     <nav className="bg-blue-500 text-white">
@@ -201,17 +191,17 @@ function Navbar() {
           Profile
           </Link>
         </button>
-        <button className="w-fit p-2 lg:w-14 h-5 lg:h-8 bg-[#D90A14] text-sm lg:text-base text-white rounded-lg flex items-center justify-center font-extralight hover:bg-[#6d1d6a]">
+        <button className="w-fit p-2 lg:w-14 h-5 lg:h-8 bg-[#D90A14] text-sm lg:text-base text-white rounded-lg flex items-center justify-center font-extralight hover:bg-[#6d1d6a]" onClick={handleLogout}>
           Logout
         </button>
       </div>
       </> : <>
       <div className="w-30 lg:w-40 h-12 lg:h-14 flex py-1 lg:py-0 gap-6 mx-2 lg:mx-6">
         <button className="w-fit p-2 lg:w-14 h-5 lg:h-8 border-x-2 border-[#D90A14] rounded-lg flex items-center justify-center text-[#D90A14] text-sm lg:text-base font-extralight hover:bg-[#D90A14] hover:text-white">
-          Login
+          <Link to="/login">Login</Link>
         </button>
         <button className="w-fit p-2 lg:w-14 h-5 lg:h-8 bg-[#D90A14] text-sm lg:text-base text-white rounded-lg flex items-center justify-center font-extralight hover:bg-[#6d1d6a] ">
-          Signup
+          <Link to="/signup">SignUp</Link>
         </button>
       </div>
       </>  

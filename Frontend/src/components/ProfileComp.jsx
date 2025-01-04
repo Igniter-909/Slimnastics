@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import { Line } from 'react-chartjs-2';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
-import cover2 from "../assets/shop/cover2.jpg"; // Replace with your actual image path
+import { getUser } from '../Redux/Slices/AuthSlice';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const ProfileComp = () => {
-  const expertise = ["Strength Training", "Cardio", "Nutrition"]; // Example expertise data
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchData = async() => {
+      await dispatch(getUser());
+    };
+    fetchData();
+  },[dispatch]);
+  
+  const user = useSelector(state => state.auth.data.data || {});
+  console.log(user)
+
   const data = {
     labels: ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01'],
     datasets: [
@@ -53,23 +66,21 @@ const ProfileComp = () => {
       <p className='w-full h-fit text-3xl font-vazirmatn'>Profile</p>
       <div className='w-full h-fit flex gap-6 p-6 '>
         <div className='w-1/4 h-full rounded-3xl overflow-hidden '>
-          <img src={cover2} alt="avatar" className='rounded-full overflow-hidden h-64' />
+          <img src={user.avatar} alt="avatar" className='rounded-full overflow-hidden h-64' />
         </div>
         <div className='w-3/4 h-fit flex flex-col gap-6 '>
           <div className='w-full h-fit flex flex-col gap-2 border-2 border-white/20 rounded-lg p-2'>
-            <p className='font-aclonica text-3xl font-bold'>Roshan Kumar Sahu <span className='text-base text-white/30'>(5+ years)</span></p>
-            <p className='font-vazirmatn text-sm text-gray-600'>@ igniterofficial@gmail.com</p>
+            <p className='font-aclonica text-3xl font-bold'>{user.name} <span className='text-base text-white/30'>({user.experience}+ years)</span></p>
+            <p className='font-vazirmatn text-sm text-gray-600'>@ {user.socialMedia}</p>
             <div className='flex gap-8 text-[#7738e3]'>
-              <p className='font-vazirmatn font-light'>Male</p>
-              <p className='font-vazirmatn font-light'>31 Jan 2004</p>
+              <p className='font-vazirmatn font-light'>{user.gender}</p>
+              <p className='font-vazirmatn font-light'>{new Date(user.joinDate).toLocaleDateString('en-US',{year:'numeric',month:'long'})}</p>
             </div>
             <div className='w-full h-1/3 flex gap-5'>
-              {expertise.map((item, index) => (
-                <p key={index} className='border-2 px-2 py-1 rounded-xl text-[#f1fb39] border-[#f1fb39]'>{item}</p>
-              ))}
+                <p className='border-2 px-2 py-1 rounded-xl text-[#f1fb39] border-[#f1fb39]'>{user.expertise}</p>
             </div>
             <p className='text-sm font-vazirmatn text-gray-300 overflow-hidden'>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Pariatur, temporibus nulla impedit velit beatae ex adipisci iusto doloribus provident, aliquam inventore nam ipsam obcaecati ad minus. Voluptatem odio, consectetur, quidem nisi nemo tempora similique commodi quisquam eius blanditiis unde eum.
+              {user.bio}
             </p>
           </div>
           <div className='w-full h-fit flex flex-col gap-2 border-2 border-white/20 rounded-lg p-2'>

@@ -50,8 +50,7 @@ export const signupUser = createAsyncThunk(
     "auth/signup",
     async(data) => {
         try {
-            if(isLoggedIn){
-                const res = axiosInstance.post("users/register",data);
+            const res = axiosInstance.post("users/register",data);
             toast.promise(res,{
                 loading:"Wait! registration in progress...",
                 success:(data) => {
@@ -59,10 +58,7 @@ export const signupUser = createAsyncThunk(
                 },
                 error: "Failed to signup"
             })
-            return (await res).data
-            }else{
-                toast.error("Not authorized")
-            }
+            return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
         }
@@ -126,7 +122,7 @@ export const logout = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
     "auth/getUser",
-    async(id) => {
+    async() => {
         try {
             const res = axiosInstance.get("users/current-user");
             toast.promise(res,{
@@ -139,6 +135,25 @@ export const getUser = createAsyncThunk(
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
+        }
+    }
+)
+
+export const deleteProfile = createAsyncThunk(
+    "auth/deleteUser",
+    async(data,{rejectWithValue}) => {
+        try {
+            console.log("Receiving data",data);
+            const res = axiosInstance.post("/users/delete-profile",data);
+            toast.promise(res,{
+                loading:"Wait! deleting profile in progress...",
+                success:"Profile deleted successfully",
+                error: "Failed to delete profile"
+            }) 
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+            return rejectWithValue(error.response.data);
         }
     }
 )
@@ -170,7 +185,12 @@ const authSlice = createSlice({
             localStorage.setItem("data", JSON.stringify(action.payload));
             state.isLoggedIn = true;
             state.data = action.payload;
-
+        })
+        .addCase(deleteProfile.fulfilled,(state) => {
+            localStorage.clear();
+            state.isLoggedIn = false;
+            state.role = "";
+            state.data = {};
         })
     }
 });
