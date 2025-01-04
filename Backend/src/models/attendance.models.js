@@ -13,7 +13,8 @@ const attendanceSchema = new Schema({
     status:{
         type:String,
         enum: ['Present','Absent','On Leave'],
-        required: true
+        required: true,
+        default: 'Absent'
     }
 },{timestamps:true});
 

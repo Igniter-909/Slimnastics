@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addPlan, deletePlan, getAllPlans, getAPlan, updatePlan } from '../../Redux/Slices/PlanSlice';
+import AdminShop from '../shop/AdminShop';
 
 function AdminPlans() {
 
@@ -252,7 +253,7 @@ function AdminPlans() {
                     )}
                 </>
             ) : (
-                ""
+                <AdminShop />
             )
             }
         </div>  

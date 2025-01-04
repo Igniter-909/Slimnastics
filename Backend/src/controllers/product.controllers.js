@@ -18,14 +18,17 @@ const addProduct = asyncHandler(async (req, res) => {
     if(!image){
         throw new ApiError(400, "Invalid image");
     }
+
+    const formattedMFG = new Date(mfgDate);
+    const formattedEXP = new Date(expiryDate);
         
 
     const product = await Product.create({
         name,
         OriginalPrice,
         description,
-        mfgDate,
-        expiryDate,
+        mfgDate: formattedMFG,
+        expiryDate: formattedEXP,
         rating,
         company,
         category,

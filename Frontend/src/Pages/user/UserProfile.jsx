@@ -7,6 +7,8 @@ import { deleteProfile, logout } from '../../Redux/Slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import AdminPlans from '../plans/AdminPlans';
 import MyPlan from '../../components/MyPlan';
+import Attendance from '../Attendance/Attendance';
+import Progress from '../Progress/Progress';
 
 function UserProfile() {
   const [display,setDisplay] = useState("profile");
@@ -54,6 +56,14 @@ function UserProfile() {
   const settingsDisplay = () => {
     setDisplay("settings");
   }
+
+  const trackDisplay = () => {
+    setDisplay("track");
+  }
+
+  const trackProgress = () => {
+    setDisplay("track_progress");
+  }
   const handleLogout = async() => {
     await dispatch(logout());
     navigate("/login")
@@ -68,6 +78,8 @@ function UserProfile() {
                 <button onClick={EditDisplay} className={`w-full py-2 px-4 mb-2  rounded-lg shadow-sm ${display === "edit_profile" ? "bg-[#D90A14]" : "bg-transparent" }`}>Edit Profile</button>
                 <button onClick={myPlanDisplay} className={`w-full py-2 px-4 mb-2  rounded-lg shadow-sm ${display === "myPlan" ? "bg-[#D90A14]" : "bg-transparent" }`}>My Plans</button>
                 <button onClick={deleteAccount} className={`w-full py-2 px-4 mb-2  rounded-lg shadow-sm`}>Delete Account</button>
+                <button onClick={trackProgress} className={`w-full py-2 px-4 mb-2  rounded-lg shadow-sm ${display === "track_progress" ? "bg-[#D90A14]" : "bg-transparent"}`}>Track Progress</button>
+                <button onClick={trackDisplay} className={`w-full py-2 px-4 mb-2  rounded-lg shadow-sm ${display === "track" ? "bg-[#D90A14]" : "bg-transparent"}`}>Track Attendance</button>
                 <button onClick={settingsDisplay} className={`w-full py-2 px-4 mb-2  rounded-lg shadow-sm ${display === "settings" ? "bg-[#D90A14]" : "bg-transparent"}`}>Settings</button>
                 <button onClick={handleLogout} className={`w-full py-2 px-4 mb-2  rounded-lg shadow-sm`}>Logout</button>
             </div>
@@ -108,6 +120,8 @@ function UserProfile() {
           {display === "edit_profile" ? <EditPage /> : ""}
           {display === "myPlan" ? <MyPlan /> : ""}
           {display === "settings" ? <AdminPlans /> : "" }
+          {display === "track_progress" ? <Progress /> : ""}
+          {display === "track" ? <Attendance /> : ""}
         </div>
     </HomeLayout>
   );
