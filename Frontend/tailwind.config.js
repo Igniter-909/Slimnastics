@@ -19,7 +19,8 @@ export default {
       aclonica: ["Aclonica"],
       rubik: ["Rubik Vinyl"],
       nunito: ["Nunito Sans"],
-      creepster:["Creepster"]
+      creepster:["Creepster"],
+      sourceSansPro: ["Source Sans Pro", "Source Sans Pro 3"]
     },
     boxShadow: {
       'custom-shadow': '0px 4px 10px rgba(0, 0, 0, 0.25), 0px 10px 30px rgba(0, 0, 0, 0.1)',

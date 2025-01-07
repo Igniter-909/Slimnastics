@@ -67,7 +67,7 @@ const updateMembershipPlan = asyncHandler( async(req,res) => {
     try {
         // const user = await User.findById(req.user._id);    
         const { id, plan, price, description, duration, benefits } = req.body;
-        const listBenefits = benefits.split(",");
+        const listBenefits = Array.isArray(benefits) ? benefits : benefits.split(",");
         const membershipPlan = await Membership.findByIdAndUpdate(
             id,
             {
@@ -119,7 +119,7 @@ const getaPlan = asyncHandler( async (req,res ) =>{
     try {
         const { id } = req.params;
         const membershipPlan = await Membership.findById(id);
-        membershipPlan.benefits = membershipPlan.benefits.join(", ");
+        membershipPlan.benefits = membershipPlan.benefits.join(",");
         if(!membershipPlan){
             throw new ApiError(404, "Membership plan not found")
         }

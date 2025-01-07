@@ -9,7 +9,7 @@ const productSchema = new Schema ({
         type: Number,
         required: true
     },
-    salePrice:{
+    newPrice:{
         type: Number,
         required: true
     },

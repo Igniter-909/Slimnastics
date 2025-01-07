@@ -209,6 +209,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler( async (req,res ) => {
     try {
         const user = await req.user.populate('membershipPlan.planId');
+        const user2 = await req.user.populate('cart.productId');
         if(!user){
             throw new ApiError(401, "User not found");
         }
@@ -466,66 +467,65 @@ const addPlan = asyncHandler( async(req,res) => {
     }
 })
 
-const addToCart = asyncHandler(async (req,res) => {
+const addToCart = asyncHandler(async (req, res) => {
     try {
         const { productId, quantity } = req.body;
-        const user = await User.findByIdAndUpdate(
-            req.user._id,
-            {
-                $push:{
-                    cart: productId,
-                    quantity
-                }
-            },
-            {
-                new: true
-            }
-        )
-        if(!user){
-            throw new ApiError(404, "User not found");
-        }
-        return res
-            .status(200)
-            .json(
-                new ApiResponse(
-                    200,
-                    user.cart,
-                    "Product added to cart successfully"
-                ))
-    } catch (error) {
-        throw new ApiError(500, error?.message || "Something went wrong while adding a product to cart")
-    }
-})
+        const user = await User.findById(req.user._id);
 
-const removeFromCart = asyncHandler(async (req,res) => {
-    try {
-        const { productId } = req.body;
-        const user = await User.findByIdAndUpdate(
-            req.user._id,
-            {
-                $pull:{
-                    cart: productId
-                }
-            },
-            {
-                new: true
-            }
-        )
-        if(!user){
+        if (!user) {
             throw new ApiError(404, "User not found");
         }
-        return res
-            .status(200)
-            .json(
-                new ApiResponse(
-                    200,
-                    user.cart,
-                    "Product removed from cart successfully"
-                ))
+
+        const productIndex = user.cart.findIndex(item => item.productId?.toString() === productId.toString());
+
+        if (productIndex > -1) {
+            // If product already exists in cart, update the quantity
+            user.cart[productIndex].quantity += quantity;
+        } else {
+            // If product does not exist in cart, add it
+            user.cart.push({ productId, quantity });
+        }
+
+        await user.save();
+
+        return res.status(200).json(
+            new ApiResponse(
+                200,
+                user.cart,
+                "Product added to cart successfully"
+            )
+        );
     } catch (error) {
-        throw new ApiError(500, error?.message || "Something went wrong while removing a product from cart")
+        throw new ApiError(500, error?.message || "Something went wrong while adding a product to cart");
     }
-})
+});
+
+const removeFromCart = asyncHandler(async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            throw new ApiError(404, "User not found");
+        }
+
+        // Remove the product from the cart
+        console.log(id )
+        user.cart = user.cart.filter(item => item.productId.toString() !== id.toString());
+
+        await user.save();
+
+        return res.status(200).json(
+            new ApiResponse(
+                200,
+                user.cart,
+                "Product removed from cart successfully"
+            )
+        );
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Something went wrong while removing a product from cart");
+    }
+});
 
 // add forgot password
 

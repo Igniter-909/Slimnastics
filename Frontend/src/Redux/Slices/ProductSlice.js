@@ -11,6 +11,7 @@ export const addProduct = createAsyncThunk(
     "/products/addProduct",
     async(data) => {
         try {
+            console.log(data);
             const res = axiosInstance.post("/product/add-product",data);
             toast.promise(res,{
                 loading: "Adding Product...",
@@ -66,9 +67,10 @@ export const getAllProducts = createAsyncThunk(
 
 export const updateProduct = createAsyncThunk(
     "/products/update/:id",
-    async(data) => {
+    async([id,data]) => {
         try {
-            const res = axiosInstance.put(`/product/update-product/${data.id}`,data);
+            console.log("received",data);
+            const res = axiosInstance.put(`/product/update-product/${id}`,data);
             toast.promise(res,{
                 loading: "Updating Product...",
                 success: (res) => {

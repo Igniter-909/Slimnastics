@@ -7,7 +7,7 @@ import {uploadOnCloudinary} from '../utils/cloudinary.js';
 
 // Add a Product
 const addProduct = asyncHandler(async (req, res) => {
-    const { name, OriginalPrice, newPrice, description, mfgDate, expiryDate, rating, company, category, size,flavor  } = req.body;
+    const { name, originalPrice, newPrice, description, mfgDate, expiryDate, rating, company, category, size,flavor  } = req.body;
 
     // Upload image to Cloudinary
     const imagePath = req.files?.image[0].path;
@@ -25,7 +25,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
     const product = await Product.create({
         name,
-        OriginalPrice,
+        originalPrice,
         description,
         mfgDate: formattedMFG,
         expiryDate: formattedEXP,
@@ -85,7 +85,23 @@ const getAllProducts = asyncHandler( async(_,res) => {
 const updateProduct = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+    const {name,originalPrice,newPrice,rating,mfgDate,expiryDate,company,size,category,flavor,description} = req.body;
+    const formattedMFG = new Date(mfgDate);
+    const formattedEXP = new Date(expiryDate);
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, {
+        name,
+        originalPrice,
+        newPrice,
+        rating,
+        mfgDate: formattedMFG,
+        expiryDate: formattedEXP,
+        company,
+        size,
+        category,
+        flavor,
+        description,
+    }, { new: true, runValidators: true });
     if (!updatedProduct) throw new ApiError(400,'Product not found');
 
     res.status(200).json(new ApiResponse(

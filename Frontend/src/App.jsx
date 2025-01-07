@@ -6,12 +6,16 @@ import AboutUs from "./Pages/AboutUs"
 import NotFound from "./Pages/NotFound"
 import ShowPlan2 from "./Pages/plans/ShowPlans2"
 import PlanPage from "./components/PlanPage"
-import AddPlan from "./Pages/plans/AddPlan"
 import AllTrainer from "./Pages/trainers/AllTrainer"
 import ContactUs from "./Pages/ContactUs"
 import ShowBlogs from "./Pages/Blogs/ShowBlogs"
 import ShowShop from "./Pages/shop/ShowShop"
 import UserProfile from "./Pages/user/UserProfile"
+import Cart from "./Pages/user/Cart"
+import OverviewPage from "./Pages/Admin/OverviewPage"
+import Users from "./Pages/Admin/Users"
+import Products from "./Pages/Admin/Products"
+import Plan from "./Pages/Admin/Plan"
 
 function App() {
 
@@ -24,6 +28,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/contactUs" element={<ContactUs />} />
+        <Route path="/myCart" element={<Cart />} />
 
         <Route path="/showblogs" element={<ShowBlogs />} />
         <Route path="/showshop" element={<ShowShop />} />
@@ -31,8 +36,15 @@ function App() {
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/plan" element={<ShowPlan2 />} />
         <Route path="/plan/:_id" element={<PlanPage />} />
-        <Route path="/plan/add" element={<AddPlan />} />
         <Route path="/trainers" element={<AllTrainer />} />
+
+        
+        <Route path="/overview" element={<OverviewPage  />} />
+        <Route path="/adminUsers" element={<Users />} />
+        <Route path="/adminProducts" element={<Products />} />
+        <Route path="/adminPlan" element={<Plan />} />
+
+
         <Route path="*" element={<NotFound />} /> 
       </Routes>  
     </>

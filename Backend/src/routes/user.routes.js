@@ -43,6 +43,6 @@ router.route("/delete-profile").post(verifyJWT, deleteAccount);
 router.route("/view-plan").get(verifyJWT, viewPlan)
 router.route("/add-plan").post(verifyJWT,addPlan);
 router.route("/addToCart").post(verifyJWT,addToCart);
-router.route("/removeFromCart").delete(verifyJWT,removeFromCart);
+router.route("/removeFromCart/:id").delete(verifyJWT,removeFromCart);
 
 export default router;

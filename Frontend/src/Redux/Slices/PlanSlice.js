@@ -68,6 +68,7 @@ export const addPlan = createAsyncThunk(
     '/plans/add',
     async(data) => {
         try {
+            console.log("receivedd",data)
             const res = axiosInstance.post(`/membership/add-plan`,data);
             toast.promise(res,{
                 loading: "Wait! Adding plan...",

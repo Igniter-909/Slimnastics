@@ -12,12 +12,6 @@ export const Services = [
         callToAction: "Click to join our Losing Weight plan!"
     },
     {
-        title: "Cardio Training",
-        description: "Boost your cardiovascular health with our intensive cardio training sessions.",
-        image: Cardio,
-        callToAction: "Click to join our Cardio Training plan!"
-    },
-    {
         title: "Strength Training",
         description: "Build muscle and increase your strength with our personalized strength training programs.",
         image: Strength,

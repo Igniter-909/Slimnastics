@@ -5,8 +5,11 @@ import {toast} from "react-hot-toast"
 const initialState = {
     isLoggedIn: localStorage.getItem("isLoggedIn") || false,
     role: localStorage.getItem("role") || "",
-    data: localStorage.getItem('data') != undefined ? JSON.parse(localStorage.getItem('data')) : {}
+    data: localStorage.getItem('data') != undefined ? JSON.parse(localStorage.getItem('data')) : {},
+    currentCart: {},
+    darkmode: false
 }
+
 
 export const loginUser = createAsyncThunk(
     "/auth/login",
@@ -158,12 +161,51 @@ export const deleteProfile = createAsyncThunk(
     }
 )
 
+export const addToCart = createAsyncThunk(
+    "/products/add-to-cart",
+    async(data) => {
+        try {
+            console.log(data)
+            const res = axiosInstance.post("/users/addToCart",data);
+            toast.promise(res,{
+                loading:"Wait! adding to cart...",
+                success:"Product added to cart successfully",
+                error: "Failed to add product to cart"
+            })
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        }
+    }
+)
+
+export const removeFromCart = createAsyncThunk(
+    "/products/remove/:id",
+    async(id) => {
+        try {
+            const res = axiosInstance.delete(`/users/removeFromCart/${id}`,)
+            toast.promise(res,{
+                loading:"Wait! removing from cart...",
+                success:"Product removed from cart successfully",
+                error: "Failed to remove product from cart"
+            })
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        }
+    }
+);
+
 
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers:{},
+    reducers:{
+        darkMode: (state) => {
+            state.darkmode =!state.darkmode;
+        }
+    },
     extraReducers: (builder) => {
         builder
         .addCase(loginUser.fulfilled, (state,action) => {
@@ -192,8 +234,11 @@ const authSlice = createSlice({
             state.role = "";
             state.data = {};
         })
+        .addCase(addToCart.fulfilled,(state,action) => {
+            state.currentCart = action.payload.data;
+        })
     }
 });
 
-// export const {logout} = authSlice.actions;
+export const {darkMode} = authSlice.actions;
 export default authSlice.reducer;
