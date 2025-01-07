@@ -31,17 +31,17 @@ function Footer() {
                 <div className="w-full lg:w-7/12 flex flex-wrap gap-8 sm:gap-4">
                     <FooterLinkSection title="Company" links={[
                         { to: "/about", text: "About Us" },
-                        { to: "/careers", text: "Our Services" },
-                        { to: "/contact", text: "Blog" },
-                        { to: "/blog", text: "Careers" },
+                        { to: "/showshop", text: "Shop" },
+                        { to: "/showblogs", text: "Blog" },
+                        { to: "/policy", text: "Policy" },
                         { to: "/faq", text: "Contact Us" },
                     ]} />
                     <FooterLinkSection title="Resources" links={[
                         { to: "/about", text: "Success Stories" },
-                        { to: "/careers", text: "Gym Plans" },
-                        { to: "/contact", text: "Community" },
-                        { to: "/blog", text: "FAQs" },
-                        { to: "/faq", text: "Workouts" },
+                        { to: "/plan", text: "Gym Plans" },
+                        { to: "/contactUs", text: "Community" },
+                        { to: "/faqs", text: "FAQs" },
+                        { to: "/trainers", text: "Workouts" },
                     ]} />
                     
                 </div>

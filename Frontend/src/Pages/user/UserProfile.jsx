@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import MyPlan from '../../components/MyPlan';
 import Attendance from '../Attendance/Attendance';
 import Progress from '../Progress/Progress';
+import Cart from './Cart';
 
 function UserProfile() {
   const [display, setDisplay] = useState("profile");
@@ -59,12 +60,12 @@ function UserProfile() {
         <div className='md:hidden'>
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className='w-full py-2 px-4 bg-[#2a2929] text-white text-left'
+            className='w-full py-2 px-4 bg-transparent text-left'
           >
             Menu
           </button>
           {sidebarOpen && (
-            <div className='w-full bg-[#2a2929] p-4'>
+            <div className='w-full bg-transparent p-4'>
               <SidebarButton onClick={() => setDisplayAndCloseSidebar("profile")} active={display === "profile"}>Profile</SidebarButton>
               <SidebarButton onClick={() => setDisplayAndCloseSidebar("edit_profile")} active={display === "edit_profile"}>Edit Profile</SidebarButton>
               <SidebarButton onClick={() => setDisplayAndCloseSidebar("myPlan")} active={display === "myPlan"}>My Plans</SidebarButton>
@@ -78,13 +79,13 @@ function UserProfile() {
         </div>
 
         {/* Sidebar for desktop */}
-        <div className='hidden md:flex md:w-2/12 h-full flex-col justify-start p-4 rounded-lg shadow-md bg-[#2a2929]'>
+        <div className='hidden md:flex md:w-2/12 h-full flex-col justify-start p-4 rounded-lg shadow-md'>
           <SidebarButton onClick={() => setDisplay("profile")} active={display === "profile"}>Profile</SidebarButton>
           <SidebarButton onClick={() => setDisplay("edit_profile")} active={display === "edit_profile"}>Edit Profile</SidebarButton>
           <SidebarButton onClick={() => setDisplay("myPlan")} active={display === "myPlan"}>My Plans</SidebarButton>
           <SidebarButton onClick={() => setDisplay("track_progress")} active={display === "track_progress"}>Progress</SidebarButton>
           <SidebarButton onClick={() => setDisplay("track")} active={display === "track"}>Attendance</SidebarButton>
-          <SidebarButton onClick={() => { setDisplay("cart"); navigate("/myCart"); }}>My Cart</SidebarButton>
+          <SidebarButton onClick={() => setDisplay("cart")} active={display === "cart"}>My Cart</SidebarButton>
           <SidebarButton onClick={() => setDialog(true)}>Delete Account</SidebarButton>
           <SidebarButton onClick={handleLogout}>Logout</SidebarButton>
         </div>
@@ -95,6 +96,7 @@ function UserProfile() {
           {display === "myPlan" && <MyPlan />}
           {display === "track_progress" && <Progress />}
           {display === "track" && <Attendance />}
+          {display === "cart" && <Cart />}
         </div>
 
         {dialog && (
@@ -139,7 +141,7 @@ function SidebarButton({ children, onClick, active }) {
     <button
       onClick={onClick}
       className={`w-full py-2 px-4 mb-2 text-left rounded-lg shadow-sm transition-colors duration-300 ${
-        active ? "bg-[#D90A14] text-white" : "bg-transparent text-white hover:bg-[#D90A14]/50"
+        active ? "bg-[#D90A14] text-white" : ""
       }`}
     >
       {children}

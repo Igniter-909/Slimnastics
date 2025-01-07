@@ -48,7 +48,7 @@ function ContactUs() {
               </div>
               
               <div className='mb-4'>
-                <label htmlFor="message" className='block text-gray-300/35 mb-2'>Message</label>
+                <label htmlFor="message" className='block text-red-500 mb-2'>Message</label>
                 <textarea 
                   name="message" 
                   id="message" 
@@ -80,12 +80,12 @@ function SocialIcon({ Icon }) {
 function InputField({ label, name, type }) {
   return (
     <div className='mb-4'>
-      <label htmlFor={name} className='block text-gray-300/35 mb-2'>{label}</label>
+      <label htmlFor={name} className='block text-red-400 mb-2'>{label}</label>
       <input 
         type={type} 
         id={name} 
         name={name} 
-        className='w-full py-2 border-b-2 border-gray-300 text-gray-200 bg-transparent outline-none' 
+        className='w-full py-2 border-b-2 border-gray-300 bg-transparent outline-none' 
       />
     </div>
   );

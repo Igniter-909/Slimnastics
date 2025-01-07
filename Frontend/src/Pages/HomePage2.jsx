@@ -9,10 +9,13 @@ import {FAQs} from '../constants/Faqs.js';
 import { useState as useState2, useEffect as useEffect2 } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {Feedback} from "../constants/Feedback.js";
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function HomePage2() {
     const [activeIndex, setActiveIndex] = useState(null);
     const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+    const {isLoggedIn} = useSelector(state => state.auth)
 
     const toggleFAQ = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -51,10 +54,10 @@ function HomePage2() {
                         </p>
                         <div className='w-full flex flex-col sm:flex-row gap-4 justify-center items-center'>
                             <button className='w-full sm:w-auto px-6 py-3 bg-[#D20C13] text-white font-vazirmatn rounded-full hover:bg-[#fc5258f2] transition-colors duration-300'>
-                                Start Your Journey
+                            {isLoggedIn ? <Link to={"/profile"}> Visit Profile </Link> : <Link to={"/login"}>Start Your Journey</Link>}
                             </button>
                             <button className='w-full sm:w-auto px-6 py-3 text-[#CC4E17] font-vazirmatn rounded-full border-2 border-[#CC4E17] hover:bg-[#fa5d29f2] hover:text-white transition-colors duration-300'>
-                                Explore Our Programs
+                                <Link to={"/plan"}>Explore Our Programs</Link>
                             </button>
                         </div>
                     </div>
@@ -103,7 +106,7 @@ function HomePage2() {
                     </div>
                     <div className='flex justify-center mt-8'>
                         <button className='px-4 py-2 border-2 border-[#D90A14] rounded-full text-[#D90A14] font-thin flex items-center gap-1 hover:bg-[#D90A14] hover:text-white transition-colors duration-300'>
-                            View More <IoIosArrowDropright />
+                            <Link to={"/trainers"} className='flex items-center gap-2'>View More <IoIosArrowDropright /></Link>
                         </button>
                     </div>
                 </div>
@@ -143,7 +146,7 @@ function HomePage2() {
                     </div>
                     <div className='mt-8 flex justify-center'>
                         <button className='px-4 py-2 border-2 border-[#D90A14] rounded-full text-[#D90A14] hover:bg-[#d90a14c6] hover:text-white font-extralight transition-colors duration-300'>
-                            View More
+                            <Link to={"/faqs"} className='flex items-center gap-2'>View More <IoIosArrowDropright /></Link>
                         </button>
                     </div>
                 </div>
@@ -154,7 +157,7 @@ function HomePage2() {
 
 function InfoBadge({ text, position }) {
     return (
-        <div className={`w-fit h-fit flex flex-col justify-center items-center gap-1 bg-[#1D1D1D] px-4 py-2 text-white font-aclonica rounded-3xl absolute ${position} border-2 border-[#CC4E17] shadow-lg shadow-[#CC4E17]`}>
+        <div className={`w-fit h-fit flex flex-col justify-center items-center gap-1 bg-transparent px-4 py-2 font-aclonica rounded-3xl absolute ${position} border-2 border-[#CC4E17] shadow-lg shadow-[#CC4E17]`}>
             <p>{text[0]}</p>
             <p>{text[1]}</p>
         </div>

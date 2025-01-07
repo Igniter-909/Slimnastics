@@ -16,6 +16,7 @@ import OverviewPage from "./Pages/Admin/OverviewPage"
 import Users from "./Pages/Admin/Users"
 import Products from "./Pages/Admin/Products"
 import Plan from "./Pages/Admin/Plan"
+import FAQ from "./Pages/FAQ"
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/myCart" element={<Cart />} />
+        <Route path="/faqs" element={<FAQ />} />
 
         <Route path="/showblogs" element={<ShowBlogs />} />
         <Route path="/showshop" element={<ShowShop />} />

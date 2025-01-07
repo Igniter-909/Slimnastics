@@ -79,7 +79,7 @@ function EditPage() {
   }
 
   return (
-    <div className='w-full h-full p-4 flex flex-col border-2 rounded-lg border-white/60'>
+    <div className='w-full h-full p-4 flex flex-col border-2 rounded-lg border-red-500/40'>
       <h1 className='w-full text-2xl md:text-3xl font-vazirmatn mb-4'>Edit Profile</h1>
       <div className='w-full flex flex-col md:flex-row gap-6'>
         <form onSubmit={handleavatar} className='w-full md:w-1/4 flex flex-col items-center'>

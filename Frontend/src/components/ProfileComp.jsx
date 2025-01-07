@@ -61,14 +61,14 @@ const ProfileComp = () => {
   };
 
   return (
-    <div className='w-full h-full p-4 flex flex-col border-2 rounded-lg border-white/60'>
+    <div className='w-full h-full p-4 flex flex-col border-2 rounded-lg border-red-500/40'>
       <h1 className='w-full text-2xl md:text-3xl font-vazirmatn mb-4'>Profile</h1>
       <div className='w-full flex flex-col md:flex-row gap-6'>
         <div className='w-full md:w-1/4 flex justify-center'>
-          <img src={user.avatar} alt="avatar" className='rounded-full w-40 h-40 md:w-56 md:h-56 object-cover' />
+          <img src={user.avatar} alt="avatar" className='rounded-full w-40 h-40 md:w-56 md:h-56 object-cover ' />
         </div>
         <div className='w-full md:w-3/4 flex flex-col gap-6'>
-          <div className='w-full flex flex-col gap-2 border-2 border-white/20 rounded-lg p-4'>
+          <div className='w-full flex flex-col gap-2 border-2 border-red-500/40 rounded-lg p-4'>
             <h2 className='font-aclonica text-2xl md:text-3xl font-bold'>{user.name} <span className='text-base text-white/30'>({user.experience}+ years)</span></h2>
             <p className='font-vazirmatn text-sm text-gray-600'>@ {user.socialMedia}</p>
             <div className='flex flex-wrap gap-4 text-[#7738e3]'>
@@ -82,7 +82,7 @@ const ProfileComp = () => {
               {user.bio}
             </p>
           </div>
-          <div className='w-full flex flex-col gap-4 border-2 border-white/20 rounded-lg p-4'>
+          <div className='w-full flex flex-col gap-4 border-2 border-red-500/40 rounded-lg p-4'>
             <div className='flex flex-col md:flex-row gap-4'>
               <div className='w-full md:w-1/2 h-64'>
                 <Line data={data} options={options} />

@@ -13,6 +13,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
+  const role = useSelector(state => state.auth.role);
   const isDarkMode = useSelector((state) => state?.auth?.darkmode);
 
   
@@ -58,18 +59,26 @@ function Navbar() {
                   onClick={handleDarkMode}
                   className="ml-3 px-3 py-2 rounded-md hover:scale-125 text-sm font-medium transition-all duration-500 ease-in-out transform"
                 >
-                  {isDarkMode ? <MoonIcon /> : <SunIcon />}
+                  {isDarkMode ? <SunIcon /> : <MoonIcon />}
             </button>
 
           <div className="hidden sm:ml-6 md:flex sm:items-center">
             {isLoggedIn ? (
               <>
-                <Link
+                {role === "Admin" ? 
+                 <Link 
+                 to={"/overview"}
+                 className="px-3 py-2 rounded-md text-sm font-medium text-[#D90A14] hover:bg-[#D90A14] hover:text-white"
+               >
+                 Dashboard
+               </Link> :
+                  <Link
                   to="/profile"
                   className="px-3 py-2 rounded-md text-sm font-medium text-[#D90A14] hover:bg-[#D90A14] hover:text-white"
                 >
                   Profile
-                </Link>
+                </Link>  
+              }
                 <button
                   onClick={handleLogout}
                   className="ml-3 px-3 py-2 rounded-md text-sm font-medium bg-[#D90A14] text-white hover:bg-[#6d1d6a]"
