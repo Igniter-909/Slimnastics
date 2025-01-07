@@ -10,7 +10,9 @@ import { loginUser,
     addPlan,
     getAllUsers,
     addToCart,
-    removeFromCart
+    removeFromCart,
+    attendanceData,
+    getProgressStats
 } from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.midlewares.js";
 import verifyJWT from "../middlewares/auth.middlewares.js";
@@ -44,5 +46,7 @@ router.route("/view-plan").get(verifyJWT, viewPlan)
 router.route("/add-plan").post(verifyJWT,addPlan);
 router.route("/addToCart").post(verifyJWT,addToCart);
 router.route("/removeFromCart/:id").delete(verifyJWT,removeFromCart);
+router.route("/attendanceData").get(verifyJWT,attendanceData);
+router.route("/progressStat").get(verifyJWT,getProgressStats);
 
 export default router;

@@ -6,6 +6,9 @@ import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from "jsonwebtoken";
 import logger from '../../logger.js';
 import Membership from '../models/membership.models.js';
+import Attendance from '../models/attendance.models.js';
+import moment from 'moment/moment.js';
+import Progress from '../models/progress.models.js';
 
 const generateAccessAndRefereshTokens = async (userId) => {
     try {
@@ -527,6 +530,99 @@ const removeFromCart = asyncHandler(async (req, res) => {
     }
 });
 
+const attendanceData = asyncHandler(async(req,res) => {
+    try {
+        const id = req.user._id;
+
+        if(!id) {
+            throw new ApiError(401,"User not found");
+        }
+        const user = await User.findById(id);
+        if(!user){
+            throw new ApiError(404, "User not found");
+        }
+        const userId = user._id;
+        const today = moment().startOf('day');
+        const oneYearAgo = moment().subtract(1,'year').startOf('day');
+
+        const allDates = [];
+        let currentDate = oneYearAgo.clone();
+        while(currentDate.isBefore(today)){
+            allDates.push(currentDate.format('YYYY-MM-DD'));
+            currentDate.add(1,'day');
+        }
+
+
+        const attendanceRecords = await Attendance.find({
+            user: userId,
+            date: {$gte: oneYearAgo.toDate(), $lte:today.toDate()}
+        }).select('date status -_id');
+
+        const presentCount = attendanceRecords.filter(record => record.status === 'Present').length;
+        const leaveCount = attendanceRecords.filter(record => record.status === "On Leave").length
+
+        const STATUS_VALUES = {
+            "Present": 10,
+            "Absent": 0,
+            "On Leave": 20
+        }
+        const attendanceLookup = {};
+        attendanceRecords.forEach(record => {
+            const formattedDate = moment(record.date).format("YYYY-MM-DD");
+            attendanceLookup[formattedDate] = STATUS_VALUES[record.status] || 0
+        })
+
+        const attendanceData = allDates.map(date => ({
+            date,
+            value: attendanceLookup[date] || 0
+        }));
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {
+                    data:attendanceData,
+                    presentCount,
+                    leaveCount,
+                    absentCount:(attendanceData.length - (presentCount + leaveCount)),
+                    startDate: oneYearAgo,
+                    endDate: today
+                },
+                "Attendance data fetched successfully"
+            )
+        )
+
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Something went wrong while fetching attendance data");
+    }
+})
+
+const getProgressStats = asyncHandler(async(req,res) => {
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+        if(!user){
+            throw new ApiError(404, "User not found");
+        }
+        const today = moment().startOf('day');
+        const sixMonthAgo = moment().subtract(6,'month').startOf('day');
+
+        const progressData = await Progress.find({
+            userId: user._id,
+            date:{$gte:sixMonthAgo, $lte:today}
+        }).select('date weight fatPercent')
+
+        return res.status(200).json(new ApiResponse(200,progressData,"Succefully fetched progress data"))
+
+
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Something went wrong while fetching progress");
+    }
+})
+
+
 // add forgot password
 
 
@@ -547,4 +643,6 @@ export { registerUser,
     getAllUsers,
     addToCart,
     removeFromCart,
+    attendanceData,
+    getProgressStats,
  };

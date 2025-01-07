@@ -1,31 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Line } from 'react-chartjs-2';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { getUser } from '../Redux/Slices/AuthSlice';
+import { getAttendanceSummaryy } from '../Redux/Slices/AdminSlice';
+import { getAttendanceData, getProgress } from "../Redux/Slices/UserSlice.js"
+import moment from "moment";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const ProfileComp = () => {
   const dispatch = useDispatch();
+  const weightChartRef = useRef(null);
+  const fatPercentChartRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async() => {
       await dispatch(getUser());
+      await dispatch(getAttendanceData());
+      await dispatch(getProgress());
     };
     fetchData();
   }, [dispatch]);
-  
-  const user = useSelector(state => state.auth.data.data || {});
 
-  const data = {
-    labels: ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01'],
+  const attendanceRecords = useSelector(state => state.user.attendanceRecords)
+  const user = useSelector(state => state.auth.data.data || {});
+  const progressStat = useSelector(state => state.user.progressStat)
+
+  const currentUserAttendanceRecords = attendanceRecords?.data?.map(record => ({
+    date: record.date,
+    count: record.value
+  })) || [];
+
+  const labels = progressStat.map(record => new Date(record.date).toISOString().split("T")[0]);
+  const weights = progressStat.map(record => record.weight);
+  const fatPercents = progressStat.map(record => record.fatPercent);
+
+  const weightData = {
+    labels: labels,
     datasets: [
       {
         label: 'Weight (kg)',
-        data: [70, 68, 67, 66, 65, 64],
+        data: weights,
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         fill: true,
@@ -33,14 +51,14 @@ const ProfileComp = () => {
     ],
   };
 
-  const calories = {
-    labels: ['2023-01-01', '2023-02-01', '2023-03-01', '2023-04-01', '2023-05-01', '2023-06-01'],
+  const fatPercentData = {
+    labels: labels,
     datasets: [
       {
-        label: 'Calories Burned [cal] ',
-        data: [2500, 4500, 2623, 6600, 6005, 6400],
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        label: 'Fat Percentage',
+        data: fatPercents,
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
         fill: true,
       },
     ],
@@ -85,35 +103,34 @@ const ProfileComp = () => {
           <div className='w-full flex flex-col gap-4 border-2 border-red-500/40 rounded-lg p-4'>
             <div className='flex flex-col md:flex-row gap-4'>
               <div className='w-full md:w-1/2 h-64'>
-                <Line data={data} options={options} />
+                <Line ref={weightChartRef} data={weightData} options={options} />
               </div>
               <div className='w-full md:w-1/2 h-64'>
-                <Line data={calories} options={options} />
+                <Line ref={fatPercentChartRef} data={fatPercentData} options={options} />
               </div>
             </div>
             <div className='w-full pt-4'>
               <div className='flex flex-col md:flex-row justify-between items-center mb-2'>
                 <h3 className='font-aclonica text-gray-400'>Attendance</h3>
-                <p className='font-vazirmatn text-sm text-gray-600'>Active : 40 days</p>
+                <p className='font-vazirmatn text-sm text-gray-600'>Active : {attendanceRecords?.presentCount || 0} days</p>
               </div>
               <CalendarHeatmap
-                startDate={new Date("2024-01-02")}
-                endDate={new Date("2025-01-02")}
-                values={[
-                  {date: new Date("2024-01-02"), count: 10},
-                  {date: new Date("2024-02-05"), count: 15},
-                  {date: new Date("2024-03-15"), count: 20},
-                  {date: new Date("2024-04-10"), count: 5},
-                  {date: new Date("2024-05-20"), count: 12},
-                  {date: new Date("2024-06-01"), count: 7},
-                  {date: new Date("2024-07-15"), count: 25},
-                  {date: new Date("2024-08-20"), count: 18},
-                ]}
+                endDate={new Date(attendanceRecords?.endDate)}
+                startDate={new Date(attendanceRecords?.startDate)}
+                values={currentUserAttendanceRecords}
                 classForValue={(value) => {
-                  if (!value) {
+                  if (!value || value.count === 0) {
                     return 'color-empty';
                   }
-                  return `color-scale-${Math.min(4, Math.ceil(value.count / 5))}`;
+                  return `color-scale-${value.count}`;
+                }}
+                titleForValue={(value) => {
+                  if (!value) {
+                    return 'No data';
+                  }
+                  return `Date: ${value.date}, Status: ${
+                    value.count === 0 ? 'Absent' : value.count === 10 ? 'Present' : 'On Leave'
+                  }`;
                 }}
               />
             </div>
@@ -125,3 +142,4 @@ const ProfileComp = () => {
 };
 
 export default ProfileComp;
+

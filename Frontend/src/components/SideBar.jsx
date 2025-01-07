@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import {  BarChart2, DollarSign, Home, Menu, Settings, ShoppingBag,Users} from "lucide-react"
-import {motion,AnimatePresence} from "framer-motion";
+import {  BarChart2, DollarSign, Home, Menu, Settings, ShoppingBag,UserCheck,Users} from "lucide-react"
+import {motion,AnimatePresence, color} from "framer-motion";
 import {Link} from "react-router-dom"
 
 const SIDEBAR_ITEMS = [
-	{name: "Overview",icon: BarChart2,color: "#6366f1",href: "/overview",
-	},
-	{ name: "Products", icon: ShoppingBag, color: "#8B5CF6", href: "/adminProducts" },
-	{ name: "Users", icon: Users, color: "#EC4899", href: "/adminUsers" },
-	{ name: "Plans", icon: DollarSign, color: "#10B981", href: "/adminPlan" },
+	{name: "Overview",icon: BarChart2,color: "#6366f1",href: "/overview"},
+	{ name: "Manage Products", icon: ShoppingBag, color: "#8B5CF6", href: "/adminProducts" },
+	{ name: "Manage Users", icon: Users, color: "#EC4899", href: "/adminUsers" },
+	{ name: "Manage Plans", icon: DollarSign, color: "#10B981", href: "/adminPlan" },
+    { name: "Manage Trainers", icon: UserCheck, color: "#D90A14", href: "/adminTainers" },
 	{ name: "Home", icon: Home, color: "#6EE7B7", href: "/" },
 ];
 

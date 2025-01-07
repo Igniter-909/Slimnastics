@@ -17,6 +17,7 @@ import Users from "./Pages/Admin/Users"
 import Products from "./Pages/Admin/Products"
 import Plan from "./Pages/Admin/Plan"
 import FAQ from "./Pages/FAQ"
+import Trainers from "./Pages/Admin/Trainers"
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/adminUsers" element={<Users />} />
         <Route path="/adminProducts" element={<Products />} />
         <Route path="/adminPlan" element={<Plan />} />
+        <Route path="/adminTainers" element={<Trainers />} />
 
 
         <Route path="*" element={<NotFound />} /> 

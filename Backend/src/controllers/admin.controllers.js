@@ -7,6 +7,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import moment from 'moment';
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const getAllUsers = asyncHandler( async(req,res) => {
     try {
@@ -313,6 +314,7 @@ const userGrowthData = asyncHandler(async(req,res) => {
         throw new ApiError(500,error?.message || "Could not fetch user growth data");
     }
 })
+
 
 export {
     getAllUsers,

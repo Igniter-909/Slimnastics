@@ -68,7 +68,7 @@ function SignUp() {
                 socialMedia: '',
                 bio: "",
                 avatar: '',
-                role: 'user'
+                role: 'User'
             });
             navigate("/");
         };

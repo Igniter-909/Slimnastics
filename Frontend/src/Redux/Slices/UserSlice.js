@@ -5,7 +5,9 @@ import toast from "react-hot-toast"
 const initialState = {
     isLoggedIn: false,
     role: "",
-    users:[]
+    users:[],
+    attendanceRecords : [],
+    progressStat:[]
 };
 
 export const getAllUsers = createAsyncThunk(
@@ -27,6 +29,42 @@ export const getAllUsers = createAsyncThunk(
     }
 )
 
+export const getAttendanceData = createAsyncThunk(
+    "/users/attendanceData",
+    async() => {
+        try {
+            const res = axiosInstance.get("/users/attendanceData");
+            toast.promise(res,{
+                loading: "Fetching Attendance Data...",
+                success: (data) => {
+                    return data?.data?.attendanceRecords;
+                },
+                error: "Failed to Fetch Attendance Data"
+            });
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+    }
+)
+
+export const getProgress = createAsyncThunk(
+    "/users/progressStat",
+    async() => {
+        try {
+            const res = axiosInstance.get("/users/progressStat");
+            toast.promise(res,{
+                loading: "Fetching Progress Statistics...",
+                success: "Successfully fetched progress...",
+                error: "Failed to Fetch Progress Statistics"
+            });
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        }
+    }
+)
+
 const UserSlice = createSlice({
     name: "user",
     initialState,
@@ -34,6 +72,14 @@ const UserSlice = createSlice({
     extraReducers:(builder) => {
         builder.addCase(getAllUsers.fulfilled,(state,action) => {
             state.users = action.payload.data
+        })
+        builder.addCase(getAttendanceData.fulfilled,(state,action) => {
+            state.attendanceRecords = action.payload.data;
+            console.log("Attendance data fetched successfully", action.payload);
+        })
+        builder.addCase(getProgress.fulfilled,(state,action) => {
+            state.progressStat = action.payload.data;
+            console.log("Progress statistics fetched successfully", action.payload);
         })
     }
 })
