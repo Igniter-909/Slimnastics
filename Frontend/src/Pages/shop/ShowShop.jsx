@@ -53,7 +53,7 @@ function ShowShop() {
                 style={{ backgroundImage: `url(${cover2})` }}>
                 <div className="absolute inset-0 bg-black bg-opacity-50"></div>
                 <div className="relative z-10 flex flex-col gap-5 items-center justify-center h-full text-white px-4">
-                    <h1 className='font-aclonica text-3xl sm:text-4xl md:text-5xl text-white'>SLIM<span className='text-[#D90A14]'>NASTICS</span></h1>
+                    <h1 className='font-aclonica text-3xl sm:text-4xl md:text-5xl text-white'>Oxygen<span className='text-[#D90A14]'>Gym</span></h1>
                     <p className='text-sm sm:text-base font-vazirmatn text-center text-white'>
                         Wide Range Of Trusted And Tested Products
                     </p>

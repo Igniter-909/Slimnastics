@@ -41,7 +41,7 @@ function Navbar() {
               <div className="w-28 h-6 flex items-center">
                 <div className="w-7 lg:w-10 h-6 bg-[#D90A14] rounded-s"></div>
                 <div className="px-1 w-16 h-6 font-semibold text-sm lg:text-lg">
-                  Slim<span className="text-[#D90A14]">nastics</span>
+                  Oxygen<span className="text-[#D90A14]">Gym</span>
                 </div>
               </div>
             </div>

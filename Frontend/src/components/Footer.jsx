@@ -14,14 +14,14 @@ function Footer() {
                     <div className="flex flex-col">
                         <div className="flex items-center gap-2">
                             <div className="w-9 h-6 rounded-s bg-[#D90A14]"></div>
-                            <div className="h-6 font-semibold text-lg font-vazirmatn">Slim<span className="text-[#D90A14]">nastics</span></div>
+                            <div className="h-6 font-semibold text-lg font-vazirmatn">Oxygen<span className="text-[#D90A14]">Gym</span></div>
                         </div>
                         <div className="font-vazirmatn tracking-widest text-[10px]">
                             Transform Your Body
                         </div>
                     </div>
                     <div className="font-vazirmatn text-sm sm:text-base leading-6">
-                        Transform your body with Slimnastics Gym! With over <span className="text-[#D90A14]">5 years</span> of experience, our expert coaches provide top-notch training to help you achieve your fitness goals. <span className="text-[#D90A14]">Join our community</span> and start your journey to a healthier, fitter you today!
+                        Transform your body with Oxygen Gym Gym! With over <span className="text-[#D90A14]">5 years</span> of experience, our expert coaches provide top-notch training to help you achieve your fitness goals. <span className="text-[#D90A14]">Join our community</span> and start your journey to a healthier, fitter you today!
                     </div>
                     <div className="flex gap-3 justify-start sm:justify-around">
                         <SocialIcon Icon={BsFacebook} />

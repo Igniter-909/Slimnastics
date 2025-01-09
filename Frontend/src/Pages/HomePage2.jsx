@@ -67,10 +67,10 @@ function HomePage2() {
                 <div className='max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-20 justify-center items-center'>
                     <div className='w-full lg:w-1/2 flex flex-col gap-5 justify-center items-center text-center lg:text-left'>
                         <h1 className='font-vazirmatn font-bold text-2xl sm:text-3xl lg:text-4xl'>
-                            Achieve Your <span className='font-aclonica text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-gradient-to-r from-[#D20C13] to-[#CC4E17] bg-clip-text text-transparent'>FITNESS GOALS</span> with Slimnastics
+                            Achieve Your <span className='font-aclonica text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-gradient-to-r from-[#D20C13] to-[#CC4E17] bg-clip-text text-transparent'>FITNESS GOALS</span> with Oxygen Gym
                         </h1>
                         <p className='font-vazirmatn text-sm sm:text-base'>
-                            Slimnastics offers a comprehensive fitness program that includes workouts, nutrition, and recovery sessions. Our team of certified trainers will guide you through each step to achieve your fitness goals.
+                            Oxygen Gym offers a comprehensive fitness program that includes workouts, nutrition, and recovery sessions. Our team of certified trainers will guide you through each step to achieve your fitness goals.
                         </p>
                         <div className='w-full flex flex-col sm:flex-row gap-4 justify-center items-center'>
                             <button className='w-full sm:w-auto px-6 py-3 bg-[#D20C13] text-white font-vazirmatn rounded-full hover:bg-[#fc5258f2] transition-colors duration-300'>

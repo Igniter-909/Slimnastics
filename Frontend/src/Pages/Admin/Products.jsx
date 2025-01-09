@@ -45,7 +45,7 @@ function Products() {
 
                     <StatCard name='Total Products' icon={Package} value={allProducts.length} color='#6366F1' />
 					<StatCard name='Trusted Brand' icon={TrendingUp} value={"MyProtein"} color='#10B981' />
-					<StatCard name='Our Brand' icon={AlertTriangle} value={"Slimnastics"} color='#F59E0B' />
+					<StatCard name='Our Brand' icon={AlertTriangle} value={"Oxygen Gym"} color='#F59E0B' />
 					<StatCard name='Our Ratings' icon={DollarSign} value={"4.5"} color='#EF4444' />
 				
 

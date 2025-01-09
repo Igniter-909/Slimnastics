@@ -124,7 +124,7 @@ const PlanPage = () => {
                     src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
                     className="max-w-sm rounded-lg shadow-2xl" />
                     <div>
-                    <h1 className="text-5xl font-bold">Slimnastics <span className="text-orange-700">{plan.plan}</span></h1>
+                    <h1 className="text-5xl font-bold">Oxygen Gym <span className="text-orange-700">{plan.plan}</span></h1>
                     <p className="py-6">
                         {plan.description}
                         <br />

@@ -12,14 +12,14 @@ function AboutUs() {
                     </div>
                     <div className="w-full lg:w-1/2 flex flex-col">
                         <h1 className="text-2xl md:text-3xl font-aclonica font-extrabold text-center lg:text-left">
-                            We Are SLIM<span className="text-[#D90A14]">Nastics</span>
+                            We Are Oxygen<span className="text-[#D90A14]">Gym</span>
                         </h1>
                         <p className="text-sm md:text-base py-6 lg:pr-10">
-                            Welcome to Slimnastics Gym, where your fitness journey begins! At Slimnastics, we believe that fitness is not just about working out; it's about creating a healthier, happier lifestyle. Our state-of-the-art facility is designed to cater to all your fitness needs, whether you're a beginner or a seasoned athlete.
+                            Welcome to Oxygen Gym Gym, where your fitness journey begins! At Oxygen Gym, we believe that fitness is not just about working out; it's about creating a healthier, happier lifestyle. Our state-of-the-art facility is designed to cater to all your fitness needs, whether you're a beginner or a seasoned athlete.
 
                             Our mission is to provide a supportive and motivating environment where you can achieve your fitness goals. We offer a wide range of services, including personalized workout plans, group classes, and nutrition guidance, all tailored to help you succeed. Our team of certified trainers is dedicated to providing expert guidance and support every step of the way.
 
-                            At Slimnastics, we pride ourselves on our community-focused approach. We believe that fitness is more enjoyable and effective when done together. That's why we offer a variety of group classes, from yoga and pilates to high-intensity interval training and strength conditioning. Our classes are designed to challenge and inspire you, no matter your fitness level.
+                            At Oxygen Gym, we pride ourselves on our community-focused approach. We believe that fitness is more enjoyable and effective when done together. That's why we offer a variety of group classes, from yoga and pilates to high-intensity interval training and strength conditioning. Our classes are designed to challenge and inspire you, no matter your fitness level.
 
                             In addition to our fitness services, we provide top-notch amenities to enhance your experience. Enjoy our fully equipped locker rooms, sauna and steam rooms, and a relaxing lounge area where you can unwind after a workout. We also offer complimentary fitness gear and priority booking for our premium members.
                         </p>
