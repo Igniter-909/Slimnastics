@@ -12,10 +12,13 @@ import { loginUser,
     addToCart,
     removeFromCart,
     attendanceData,
-    getProgressStats
+    getProgressStats,
+    getTrainersData
 } from "../controllers/user.controllers.js";
 import { upload } from "../middlewares/multer.midlewares.js";
 import verifyJWT from "../middlewares/auth.middlewares.js";
+import verifyAdmin from "../middlewares/admin.middleware.js";
+import { addBlog,deleteBlog,getAllBlogs } from "../controllers/blog.controller.js";
 
 const router = Router();
 
@@ -48,5 +51,14 @@ router.route("/addToCart").post(verifyJWT,addToCart);
 router.route("/removeFromCart/:id").delete(verifyJWT,removeFromCart);
 router.route("/attendanceData").get(verifyJWT,attendanceData);
 router.route("/progressStat").get(verifyJWT,getProgressStats);
+router.route("/addBlog").post(verifyJWT,
+    upload.fields([{
+        name:"thumbnail",
+        maxcount:1
+    }]),
+    addBlog);
+router.route("/getAllBlogs").get(getAllBlogs)
+router.route("/deleteBlog/:id").delete(verifyJWT,verifyAdmin,deleteBlog);
+router.route("/getTrainers").get(getTrainersData);
 
 export default router;

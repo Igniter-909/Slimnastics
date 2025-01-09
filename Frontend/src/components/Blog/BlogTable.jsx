@@ -1,57 +1,56 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Search } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers, removeUser } from "../../Redux/Slices/AdminSlice";
+import { getAllBlogs, deleteBlog } from "../../Redux/Slices/BlogSlice.js";
 
-const TrainerTable = () => {
+const BlogTable = () => {
     const dispatch = useDispatch();
-    const { allusers } = useSelector(state => state.admin);
+    const allBlogs = useSelector(state => state.blog.allBlogs);
+    const [selectedBlog, setSelectedBlog] = useState("");
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [dialog, setDialog] = useState(false);
-    const [selectedUser, setSelectedUser] = useState("");
-    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [filteredBlogs, setFilteredBlogs] = useState([]);
     
     useEffect(() => {
-        const fetchAllUsers = async() => {
-            await dispatch(getAllUsers());
-        }
-        fetchAllUsers();
+        dispatch(getAllBlogs());
     }, [dispatch]);
 
+
     useEffect(() => {
-        const userData = allusers.filter(user => user.role === "Trainer");
-        setFilteredUsers(userData);
-    }, [allusers]);
+            setFilteredBlogs(allBlogs);
+    }, [allBlogs]);
+
 
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
-        const filtered = allusers.filter(
-            (user) => user.role === "Trainer" && (
-                user.name.toLowerCase().includes(term) || 
-                user.email.toLowerCase().includes(term) || 
-                user.expertise.toLowerCase().includes(term)
-            )
-        );
-        setFilteredUsers(filtered);
+        if (Array.isArray(allBlogs)) {
+            const filtered = allBlogs.filter(
+                (blog) => 
+                    blog.title.toLowerCase().includes(term) || 
+                    blog.description.toLowerCase().includes(term) || 
+                    blog.penName.toLowerCase().includes(term)
+            );
+            setFilteredBlogs(filtered);
+        }
     };
 
-    const deleteAccount = async(_id) => {
-        setSelectedUser(_id);
-        setDialog(true);
-    }
+    const handleDeleteClick = (_id) => {
+        setSelectedBlog(_id);
+        setIsDialogOpen(true);
+    };
 
-    const handleConfirm = async() => {
-        await dispatch(removeUser(selectedUser));
-        setFilteredUsers(filteredUsers.filter(user => user._id !== selectedUser));
-        setDialog(false);
-    }
+    const handleConfirm = async () => {
+        await dispatch(deleteBlog(selectedBlog));
+        setFilteredBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== selectedBlog));
+        setIsDialogOpen(false);
+    };
 
     const handleCancel = () => {
-        setDialog(false);
-        setSelectedUser("");
-    }
+        setIsDialogOpen(false);
+        setSelectedBlog("");
+    };
 
     return (
         <motion.div
@@ -61,11 +60,11 @@ const TrainerTable = () => {
             transition={{ delay: 0.2 }}
         >
             <div className='flex justify-between items-center mb-6'>
-                <h2 className='text-xl font-semibold text-gray-100'>Trainers</h2>
+                <h2 className='text-xl font-semibold text-gray-100'>Blogs</h2>
                 <div className='relative'>
                     <input
                         type='text'
-                        placeholder='Search trainers...'
+                        placeholder='Search blogs...'
                         className='bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
                         value={searchTerm}
                         onChange={handleSearch}
@@ -79,16 +78,16 @@ const TrainerTable = () => {
                     <thead>
                         <tr>
                             <th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-                                Name
+                                Blog Title
                             </th>
                             <th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-                                Email
+                                Pen Name
                             </th>
                             <th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-                                Expertise
+                                Tags
                             </th>
                             <th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
-                                Gender
+                                Description
                             </th>
                             <th className='px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider'>
                                 Actions
@@ -97,60 +96,48 @@ const TrainerTable = () => {
                     </thead>
 
                     <tbody className='divide-y divide-gray-700'>
-                        {filteredUsers.map((user) => (
+                        {filteredBlogs.map((blog) => (
                             <motion.tr
-                                key={user._id}
+                                key={blog._id}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.3 }}
                             >
                                 <td className='px-6 py-4 whitespace-nowrap'>
                                     <div className='flex items-center'>
-                                        <div className='flex-shrink-0 h-10 w-10'>
-                                            <div className='h-10 w-10 rounded-full flex items-center justify-center'>
-                                                <img src={user.avatar} alt="profile" className="h-10 w-10 overflow-hidden rounded-full" />
-                                            </div>
-                                        </div>
                                         <div className='ml-4'>
-                                            <div className='text-sm font-medium text-gray-100'>{user.name}</div>
+                                            <div className='text-sm font-medium text-gray-100'>{blog.title}</div>
                                         </div>
                                     </div>
                                 </td>
 
                                 <td className='px-6 py-4 whitespace-nowrap'>
-                                    <div className='text-sm text-gray-300'>{user.email}</div>
+                                    <div className='text-sm text-gray-300'>{blog.penName}</div>
                                 </td>
                                 <td className='px-6 py-4 whitespace-nowrap'>
                                     <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-800 text-blue-100'>
-                                        {user.expertise}
+                                        {blog.tags[0]}
                                     </span>
                                 </td>
 
                                 <td className='px-6 py-4 whitespace-nowrap'>
-                                    <span
-                                        className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                            user.gender === "Male"
-                                                ? "bg-green-800 text-red-100"
-                                                : (user.gender === "Female" ? "bg-pink-600 text-pink-100" : "bg-green-800 text-green-100")
-                                        }`}
-                                    >
-                                        {user.gender}
+                                    <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-600 text-pink-100'>
+                                        {blog.description.slice(0,8)}...
                                     </span>
                                 </td>
-
                                 <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
-                                    <button className='text-red-400 hover:text-red-300' onClick={() => deleteAccount(user._id)}>Delete</button>
+                                    <button className='text-red-400 hover:text-red-300' onClick={() => handleDeleteClick(blog._id)}>Delete</button>
                                 </td>
                             </motion.tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            {dialog && (
+            {isDialogOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-[#1D1D1D] bg-opacity-90">
                     <div className="bg-black rounded-lg shadow-xl p-6 w-fit">
                         <h2 className="text-lg font-semibold font-vazirmatn text-center text-[#D90A14]">
-                            Are you sure to delete this account?
+                            Are you sure you want to delete this blog?
                         </h2>
                         <div className="mt-4 flex justify-between">
                             <button
@@ -168,10 +155,10 @@ const TrainerTable = () => {
                         </div>
                     </div>
                 </div>
-            )}    
+            )} 
         </motion.div>
     );
 };
 
-export default TrainerTable;
+export default BlogTable;
 

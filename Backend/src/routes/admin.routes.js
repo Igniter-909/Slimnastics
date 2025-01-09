@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getActiveUserCount, getAllClass, getAllProgress, getAllUsers, getAttendanceSummary, getLastDayPresntUserCount, getMembershipPlanCount, getNewUsersCount, getProductSalesSummary, getTrainerAttendance, getUpcomingExpirations, getUserAttendance, getUserCountByGender, removeUser, userGrowthData } from "../controllers/admin.controllers.js";
+import { getActiveUserCount, getAllClass, getAllContacts, getAllProgress, getAllUsers, getAttendanceSummary, getLastDayPresntUserCount, getMembershipPlanCount, getNewUsersCount, getProductSalesSummary, getTrainerAttendance, getUpcomingExpirations, getUserAttendance, getUserCountByGender, removeUser, userGrowthData } from "../controllers/admin.controllers.js";
 import verifyJWT from "../middlewares/auth.middlewares.js";
 import verifyAdmin from "../middlewares/admin.middleware.js"
 
@@ -20,5 +20,6 @@ router.route("/lastDayPresentUserCount").get(verifyJWT,verifyAdmin,getLastDayPre
 router.route("/upcomingExpirations").get(verifyJWT,verifyAdmin,getUpcomingExpirations);
 router.route("/removeUser/:id").delete(verifyJWT,verifyAdmin,removeUser);
 router.route("/getUserGrowthData").get(verifyJWT,verifyAdmin,userGrowthData);
+router.route("/getAllContact").get(verifyJWT,verifyAdmin,getAllContacts);
 
 export default router;

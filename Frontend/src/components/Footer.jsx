@@ -41,7 +41,7 @@ function Footer() {
                         { to: "/plan", text: "Gym Plans" },
                         { to: "/contactUs", text: "Community" },
                         { to: "/faqs", text: "FAQs" },
-                        { to: "/trainers", text: "Workouts" },
+                        { to: "/addBlog", text: "Add Blog" },
                     ]} />
                     
                 </div>

@@ -622,6 +622,16 @@ const getProgressStats = asyncHandler(async(req,res) => {
     }
 })
 
+const getTrainersData = asyncHandler(async(req,res) => {
+    try {
+        const users = await User.find({});
+        const trainers = users.filter(user => user.role === "Trainer");
+        return res.status(200).json(new ApiResponse(200,trainers,"Succefully fetched trainers data"))
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Something went wrong while fetching trainers data");
+    }
+})
+
 
 // add forgot password
 
@@ -645,4 +655,5 @@ export { registerUser,
     removeFromCart,
     attendanceData,
     getProgressStats,
+    getTrainersData,
  };

@@ -196,6 +196,22 @@ export const removeFromCart = createAsyncThunk(
     }
 );
 
+export const sendFeedback = createAsyncThunk(
+    "/contactUs",
+    async(data) => {
+        try {
+            const res = axiosInstance.post("/contact/addContact",data);
+            toast.promise(res,{
+                loading:"Wait! sending feedback...",
+                success:"Feedback sent successfully",
+                error: "Failed to send feedback"
+            })
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        }
+    }
+)
 
 
 const authSlice = createSlice({

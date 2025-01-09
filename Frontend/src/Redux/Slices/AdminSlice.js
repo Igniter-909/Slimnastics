@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import toast from "react-hot-toast"
 import axiosInstance from "../../Helpers/axiosInstance"
+import { signupUser } from "./AuthSlice"
 
 const initialState = {
     activeUser:0,
@@ -12,7 +13,8 @@ const initialState = {
     productRatings:null,
     allusers: [],
     userGrowth: [],
-    productSummary:[]
+    productSummary:[],
+    allContacts:[]
 }
 
 export const getAllUsers = createAsyncThunk(
@@ -205,6 +207,25 @@ export const getUserGrowthData = createAsyncThunk(
     }
 )
 
+export const getAllContacts = createAsyncThunk(
+    "/admin/contacts",
+    async () => {
+        try {
+            const res = axiosInstance.get("/admin/getAllContact");
+            toast.promise(res,{
+                loading: "Wait! fetching all contacts...",
+                success: (data) => {
+                    return data?.data?.contacts;
+                },
+                error: "Failed to fetch all contacts"
+            });
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+    }
+)
+
 
 
 const AdminSlice = createSlice({
@@ -254,6 +275,14 @@ const AdminSlice = createSlice({
         builder.addCase(getUserGrowthData.fulfilled,(state,action) => {
             state.userGrowth = action.payload.data;
             console.log("User growth data fetched successfully", action.payload.data);
+        })
+        builder.addCase(getAllContacts.fulfilled,(state,action) => {
+            state.allContacts = action.payload.data;
+            console.log("All contacts fetched successfully", action.payload.data);
+        })
+        builder.addCase(signupUser.fulfilled,(state,action) => {
+            state.allusers.push(action.payload.data);
+            console.log("User signed up successfully", action.payload.data);
         })
         
     }

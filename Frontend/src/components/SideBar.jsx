@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {  BarChart2, DollarSign, Home, Menu, Settings, ShoppingBag,UserCheck,Users} from "lucide-react"
+import {  BarChart2, Bell, DollarSign, Home, Menu, MessageCircleCode, Settings, ShoppingBag,UserCheck,Users, VideotapeIcon} from "lucide-react"
 import {motion,AnimatePresence, color} from "framer-motion";
 import {Link} from "react-router-dom"
 
@@ -9,6 +9,9 @@ const SIDEBAR_ITEMS = [
 	{ name: "Manage Users", icon: Users, color: "#EC4899", href: "/adminUsers" },
 	{ name: "Manage Plans", icon: DollarSign, color: "#10B981", href: "/adminPlan" },
     { name: "Manage Trainers", icon: UserCheck, color: "#D90A14", href: "/adminTainers" },
+    {name: "Blogs",icon: VideotapeIcon, color: "#8B5CF6", href: "/adminBlogs"},
+    {name: "Notifications",icon: Bell, color: "#FFEB00", href: "/adminNotifications"},
+
 	{ name: "Home", icon: Home, color: "#6EE7B7", href: "/" },
 ];
 

@@ -2,17 +2,37 @@ import React, { useState, useEffect } from 'react'
 import HomeLayout from '../layout/HomeLayout'
 import homeimg from '../assets/homeimg.png'
 import { Services } from '../constants/Services.js';
-import { Trainers } from '../constants/trainers.js';
 import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import Strength from "../assets/services/Strength.png"
 import {FAQs} from '../constants/Faqs.js';
 import { useState as useState2, useEffect as useEffect2 } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {Feedback} from "../constants/Feedback.js";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { allTrainers } from '../Redux/Slices/UserSlice.js';
+import gym1 from "../assets/home/gym1.jpg";
+import gym2 from "../assets/home/gym2.jpg";
+import gym3 from "../assets/home/gym3.jpg";
+import gym4 from "../assets/home/gym4.jpg";
+import gym5 from "../assets/home/gym5.jpg";
+import Carousel from '../components/Carousel.jsx';
 
 function HomePage2() {
+
+    const dispatch = useDispatch();
+
+    useEffect2(() => {
+        const fetchAllTrainers = async() => {
+            await dispatch(allTrainers())
+        }
+        fetchAllTrainers();
+    },[dispatch])
+
+    const images = [gym1,gym2,gym3,gym4,gym5];
+
+    const Trainers = useSelector(state => state.user.allTrainersData).slice(0,4);
+
     const [activeIndex, setActiveIndex] = useState(null);
     const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
     const {isLoggedIn} = useSelector(state => state.auth)
@@ -69,6 +89,14 @@ function HomePage2() {
                             <img src={homeimg} alt="Fitness" className="w-full h-full object-cover" />
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* Carousal ELement  */}
+            <section className='w-full px-4 pb-10'>
+                <div className='max-w-7xl mx-auto flex flex-col items-center'>
+                <h2 className='font-vazirmatn font-extrabold text-3xl text-center mb-4'>Our <span className='text-[#D90A14]'>Gallery</span></h2>
+                    <Carousel images={images} />
                 </div>
             </section>
 
@@ -175,7 +203,7 @@ function StatItem({ title, subtitle, description }) {
 
 function ServiceCard({ service }) {
     return (
-        <div className='relative p-4 w-full h-full flex bg-cover rounded-3xl shadow-lg shadow-[#CC4E17]' style={{ backgroundImage: `url(${service.image})` }}>
+        <div className='relative p-4 w-full h-full flex bg-cover rounded-3xl shadow-lg shadow-[#CC4E17] transition-all hover:scale-110 duration-100 transform' style={{ backgroundImage: `url(${service.image})` }}>
             <div className='absolute inset-0 bg-gradient-to-t from-[#D20C13]/60 via-[#CC4E17]/40 to-transparent rounded-3xl'></div>
             <div className='relative z-10 w-full h-full flex flex-col gap-3 justify-start items-start'>
                 <p className='text-xl font-bold font-aclonica text-[#D90A14]'>{service.title}</p>
@@ -188,13 +216,15 @@ function ServiceCard({ service }) {
 
 function TrainerCard({ trainer }) {
     return (
-        <div className='h-fit flex flex-col gap-5 justify-center items-center bg-[#1D1D1D]/80 rounded-2xl shadow-lg p-6'>
-            <div className='w-full h-48 bg-gradient-radial from-[#D20C13]/20 via-[#CC4E17]/10 to-transparent flex justify-center items-center'>
-                <img src={homeimg} alt="Fitness" className='h-full object-cover' />
+        <div className='h-fit flex flex-col gap-5 justify-center items-center bg-gradient-to-tr from-[#D20C13] via-[#CC4E17] to-transparent rounded-2xl shadow-custom-shadow border-2 border-[#D90A14] transition-all hover:scale-105 duration-100 transform'>
+            <div className='w-full h-48  flex justify-center items-center'>
+                <img src={trainer.avatar} alt="Fitness" className='h-full object-cover' />
             </div>
-            <div className='w-full h-fit flex flex-col gap-2'>
+            <div className='w-full h-fit flex flex-col gap-2 p-2'>
                 <p className='font-vazirmatn font-extrabold text-xl text-white'>{trainer.name}</p>
+                <p className='text-sm text-white'>{trainer.experience}+years</p>
                 <p className='text-sm text-white/50'>{trainer.expertise}</p>
+
             </div>
         </div>
     );

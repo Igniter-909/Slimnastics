@@ -5,6 +5,7 @@ import userReducer from "./Slices/UserSlice.js"
 import AttendanceReducer from "./Slices/AttendanceSlice.js"
 import ProductReducer from "./Slices/ProductSlice.js"
 import AdminReducer from "./Slices/AdminSlice.js"
+import BlogReducer from "./Slices/BlogSlice.js"
 
 const store = configureStore({
     reducer : {
@@ -13,7 +14,8 @@ const store = configureStore({
         user: userReducer,
         attendance: AttendanceReducer,
         product: ProductReducer,
-        admin: AdminReducer
+        admin: AdminReducer,
+        blog: BlogReducer
     },
     devTools : true
 })

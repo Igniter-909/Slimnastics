@@ -18,8 +18,22 @@ import Products from "./Pages/Admin/Products"
 import Plan from "./Pages/Admin/Plan"
 import FAQ from "./Pages/FAQ"
 import Trainers from "./Pages/Admin/Trainers"
+import AddBlog from "./Pages/Blogs/AddBlog"
+import Blogs from "./Pages/Admin/Blogs"
+import { useDispatch, useSelector } from "react-redux"
+import DisplayBlog from "./Pages/Blogs/DisplayBlog"
+import { getAllBlogs } from "./Redux/Slices/BlogSlice"
+import { useEffect } from "react"
+import Notifications from "./Pages/Admin/Notifications"
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllBlogs())
+  },[dispatch]);
+
+  const allBlogs = useSelector(state => state.blog.allBlogs);
 
   return (
    
@@ -41,12 +55,17 @@ function App() {
         <Route path="/plan/:_id" element={<PlanPage />} />
         <Route path="/trainers" element={<AllTrainer />} />
 
+        <Route path="/addBlog" element={<AddBlog />} />
         
         <Route path="/overview" element={<OverviewPage  />} />
         <Route path="/adminUsers" element={<Users />} />
         <Route path="/adminProducts" element={<Products />} />
         <Route path="/adminPlan" element={<Plan />} />
         <Route path="/adminTainers" element={<Trainers />} />
+        <Route path="/adminBlogs" element={<Blogs />} />
+        <Route path="/adminNotifications" element={<Notifications />} />
+
+        <Route path="/blog/:id" element={<DisplayBlog blogs={allBlogs} />} />
 
 
         <Route path="*" element={<NotFound />} /> 

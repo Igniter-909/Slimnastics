@@ -7,7 +7,8 @@ const initialState = {
     role: "",
     users:[],
     attendanceRecords : [],
-    progressStat:[]
+    progressStat:[],
+    allTrainersData:[]
 };
 
 export const getAllUsers = createAsyncThunk(
@@ -65,6 +66,23 @@ export const getProgress = createAsyncThunk(
     }
 )
 
+export const allTrainers = createAsyncThunk(
+    "/allTrainersData",
+    async() => {
+        try {
+            const res = axiosInstance.get("/users/getTrainers");
+            toast.promise(res,{
+                loading: "Fetching all trainers...",
+                success: "Successfully fetched trainers...",
+                error: "Failed to fetch trainers"
+            });
+            return (await res).data;
+        } catch (error) {
+            toast.error(error?.response?.data?.message);
+        }
+    }
+)
+
 const UserSlice = createSlice({
     name: "user",
     initialState,
@@ -80,6 +98,10 @@ const UserSlice = createSlice({
         builder.addCase(getProgress.fulfilled,(state,action) => {
             state.progressStat = action.payload.data;
             console.log("Progress statistics fetched successfully", action.payload);
+        })
+        builder.addCase(allTrainers.fulfilled,(state,action) => {
+            state.allTrainersData = action.payload.data
+            console.log("All trainers fetched successfully", action.payload.data);
         })
     }
 })

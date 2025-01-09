@@ -8,6 +8,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import moment from 'moment';
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import Contact from "../models/contact.models.js";
 
 const getAllUsers = asyncHandler( async(req,res) => {
     try {
@@ -315,6 +316,25 @@ const userGrowthData = asyncHandler(async(req,res) => {
     }
 })
 
+const getAllContacts = asyncHandler(async(req,res) => {
+    try {
+        const allContacts = await Contact.find({}).sort({createdAt: -1});
+        if(allContacts.length <= 0){
+            throw new ApiError(404, "No contacts found");
+        }
+        return res 
+        .status(200)
+        .json(new ApiResponse(
+                200,
+                allContacts,
+                "All contacts fetched successfully"
+            )) 
+
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Could not fetch all contacts");
+    }
+})
+
 
 export {
     getAllUsers,
@@ -331,5 +351,6 @@ export {
     getNewUsersCount,
     getLastDayPresntUserCount,
     getUpcomingExpirations,
-    userGrowthData
+    userGrowthData,
+    getAllContacts,
  };
