@@ -1,3 +1,5 @@
+import React from "react"
+
 import { BsFacebook, BsInstagram, BsTwitter, BsLinkedin } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { IoLocationOutline } from "react-icons/io5";
