@@ -7,7 +7,7 @@ import Header from '../../components/Common/Header';
 import StatCard from '../../components/Common/StatCard';
 import { UserCheck, UserPlus, UsersIcon, UserX } from 'lucide-react';
 import UsersTable from '../../components/User/UsersTable';
-import UsersExpiryTable from '../../components/User/usersexpiryTable';
+import UsersExpiryTable from '../../components/User/UsersexpiryTable';
 import UserGrowthChart from '../../components/User/UserGrowthChart';
 
 function Users() {
