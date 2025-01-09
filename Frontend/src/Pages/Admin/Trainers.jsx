@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { signupUser } from '../../Redux/Slices/AuthSlice';
 import { CgProfile } from 'react-icons/cg';
 import {motion} from "framer-motion";
-import TrainerTable from '../../components/Trainer/trainerTable';
+import TrainerTable from '../../components/Trainer/TrainerTable';
 
 function Trainers() {
 
