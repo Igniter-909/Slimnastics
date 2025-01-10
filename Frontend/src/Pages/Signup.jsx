@@ -50,30 +50,50 @@ function SignUp() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const Data = new FormData();
-        Object.entries(formData).forEach(([key, value]) => {
-            Data.append(key, value);
-        });
-        const res = await dispatch(signupUser(Data));
-        if (res?.payload?.success) {
-            setFormData({
-                name: "",
-                email: '',
-                password: '',
-                DOB: "",
-                gender: '',
-                joinDate: "",
-                experience: "",
-                expertise: "",
-                socialMedia: '',
-                bio: "",
-                avatar: '',
-                role: 'User'
+        try {
+            const formData = new FormData();
+            Object.entries(formData).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    formData.append(key, value);
+                }
             });
-            navigate("/");
+    
+            // Dispatch the action and wait for the result
+            const resultAction = await dispatch(signupUser(formData));
+            
+            if (signupUser.fulfilled.match(resultAction)) {
+                // Success case
+                setFormData({
+                    name: "",
+                    email: '',
+                    password: '',
+                    DOB: "",
+                    gender: '',
+                    joinDate: "",
+                    experience: "",
+                    expertise: "",
+                    socialMedia: '',
+                    bio: "",
+                    avatar: '',
+                    role: 'User'
+                });
+                setPreviewImage("");
+                navigate("/");
+            } else if (signupUser.rejected.match(resultAction)) {
+                // Error case - error handling is done in the slice
+                console.error('Signup failed:', resultAction.payload);
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            toast.error('An unexpected error occurred. Please try again.');
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            dispatch(clearError());
         };
-        setPreviewImage("");
-    }
+    }, [dispatch]);
 
     return (
         <HomeLayout>

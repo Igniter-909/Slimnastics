@@ -40,6 +40,7 @@ import workoutRoutes from "./routes/workout.routes.js";
 import progressRoutes from "./routes/progress.routes.js";
 import productRoutes from "./routes/products.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
+import errorHandler from './utils/errorHandler.js';
 
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/membership',membershipplanRoutes);
@@ -49,4 +50,6 @@ app.use("/api/v1/workout",workoutRoutes);
 app.use("/api/v1/progress",progressRoutes);
 app.use("/api/v1/product",productRoutes);
 app.use("/api/v1/contact",contactRoutes);
+
+app.use(errorHandler)
 export default app;

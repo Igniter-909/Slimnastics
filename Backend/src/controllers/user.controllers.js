@@ -27,61 +27,65 @@ const generateAccessAndRefereshTokens = async (userId) => {
 const registerUser = asyncHandler( async (req, res) => {
     // Register user logic here
 
-    const { name, email, password, DOB, gender,  joinDate, experience, expertise,bio,socialMedia,role } = req.body;
-
-    if ( 
-        [name, email, password, gender, DOB, joinDate,expertise,experience,bio,socialMedia].some((field) => field?.trim() == "")
-    ){
-        throw new ApiError(400,"All fields must be present!!");
-    };
-
-    const existedUser = await User.findOne( {email} );
-
-    if(existedUser) {
-        throw new ApiError(400,"User is already registered!!");
+    try {
+        const { name, email, password, DOB, gender,  joinDate, experience, expertise,bio,socialMedia,role } = req.body;
+    
+        if ( 
+            [name, email, password, gender, DOB, joinDate,expertise,experience,bio,socialMedia].some((field) => field?.trim() == "")
+        ){
+            throw new ApiError(400,"All fields must be present!!");
+        };
+    
+        const existedUser = await User.findOne( {email} );
+    
+        if(existedUser) {
+            throw new ApiError(400,"User is already registered!!");
+        }
+    
+        const avatarFilePath = req.files?.avatar[0]?.path;
+        if(!avatarFilePath) {
+            throw new ApiError(400,"Avatar file is required !!");
+        }
+    
+        const avatar = await uploadOnCloudinary(avatarFilePath);
+    
+        if(!avatar) {
+             throw new ApiError (500, "Avatar could not be uploaded on cloudinary!!");
+        }
+    
+        const user = await User.create({
+                name,
+                email,
+                password,
+                DOB,
+                gender,
+                role,
+                joinDate,
+                experience,
+                expertise,
+                bio,
+                socialMedia,
+                cart:[],
+                avatar: avatar.url,
+                membershipPlan: {}
+            });
+    
+        const createdUser = await User.findById(user._id).select(
+            "-password -refreshToken"
+        );
+    
+        if(!createdUser){
+            throw new ApiError(500,"Something went wrong while registering the user!!")
+        };
+    
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(200,createdUser,"User registered successsfully !! ")
+            )
+    } catch (error) {
+        throw new ApiError(500,error?.message || "Something went wrong while registering the user")
     }
-
-    const avatarFilePath = req.files?.avatar[0]?.path;
-    if(!avatarFilePath) {
-        throw new ApiError(400,"Avatar file is required !!");
-    }
-
-    const avatar = await uploadOnCloudinary(avatarFilePath);
-
-    if(!avatar) {
-         throw new ApiError (500, "Avatar could not be uploaded on cloudinary!!");
-    }
-
-    const user = await User.create({
-            name,
-            email,
-            password,
-            DOB,
-            gender,
-            role,
-            joinDate,
-            experience,
-            expertise,
-            bio,
-            socialMedia,
-            cart:[],
-            avatar: avatar.url,
-            membershipPlan: {}
-        });
-
-    const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
-    );
-
-    if(!createdUser){
-        throw new ApiError(500,"Something went wrong while registering the user!!")
-    };
-
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(200,createdUser,"User registered successsfully !! ")
-        )
 
 });
 

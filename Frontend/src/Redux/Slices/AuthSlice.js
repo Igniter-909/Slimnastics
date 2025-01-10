@@ -3,12 +3,19 @@ import axiosInstance  from "../../Helpers/axiosInstance.js"
 import {toast} from "react-hot-toast"
 
 const initialState = {
-    isLoggedIn: localStorage.getItem("isLoggedIn") || false,
+    isLoggedIn: localStorage.getItem("isLoggedIn") === "true" || false,
     role: localStorage.getItem("role") || "",
-    data: localStorage.getItem('data') != undefined ? JSON.parse(localStorage.getItem('data')) : {},
-    currentCart: {},
-    darkmode: false
-}
+    data: (() => {
+        try {
+            const data = localStorage.getItem('data');
+            return data ? JSON.parse(data) : {};
+        } catch {
+            return {};
+        }
+    })(),
+    loading: false,
+    error: null
+};
 
 
 export const loginUser = createAsyncThunk(
@@ -51,20 +58,23 @@ export const enrollIntoPlan =createAsyncThunk(
 
 export const signupUser = createAsyncThunk(
     "auth/signup",
-    async(data) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const res = axiosInstance.post("users/register",data);
-            toast.promise(res,{
-                loading:"Wait! registration in progress...",
-                success:"Successfully registered",
-                error: "Failed to signup"
-            })
-            return (await res).data;
+            const response = await axiosInstance.post("/users/register", data);
+            return response.data;
         } catch (error) {
-            toast.error(error?.response?.data?.message)
+            // Log the full error for debugging
+            console.error('Signup error:', error);
+            
+            // Return a structured error object
+            return rejectWithValue({
+                message: error.response?.data?.message || 'Registration failed',
+                status: error.response?.status,
+                details: error.response?.data
+            });
         }
     }
-)
+);
 
 export const editProfile = createAsyncThunk(
     "auth/editProfile",
@@ -219,10 +229,37 @@ const authSlice = createSlice({
     reducers:{
         darkMode: (state) => {
             state.darkmode =!state.darkmode;
+        },
+        clearError: (state) => {
+            state.error = null;
         }
     },
     extraReducers: (builder) => {
         builder
+            .addCase(signupUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(signupUser.fulfilled, (state, action) => {
+                state.loading = false;
+                state.isLoggedIn = true;
+                state.role = action.payload.data?.user?.role || "";
+                state.data = action.payload;
+                
+                // Update localStorage
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("role", action.payload.data?.user?.role || "");
+                localStorage.setItem("data", JSON.stringify(action.payload));
+            })
+            .addCase(signupUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || { message: 'An unknown error occurred' };
+                
+                // Clear any partial data
+                state.isLoggedIn = false;
+                state.role = "";
+                state.data = {};
+            })
         .addCase(loginUser.fulfilled, (state,action) => {
             localStorage.setItem("isLoggedIn", true);
             localStorage.setItem("role", action.payload.data.user.role);
@@ -256,4 +293,5 @@ const authSlice = createSlice({
 });
 
 export const {darkMode} = authSlice.actions;
+export const { clearError } = authSlice.actions;
 export default authSlice.reducer;
