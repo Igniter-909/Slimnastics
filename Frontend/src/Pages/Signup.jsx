@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import HomeLayout from '../layout/HomeLayout'
 import { Features } from '../constants/features.js'
 import { CgProfile } from "react-icons/cg";
