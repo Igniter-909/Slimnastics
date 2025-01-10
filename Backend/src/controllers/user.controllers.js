@@ -42,16 +42,35 @@ const registerUser = asyncHandler( async (req, res) => {
             throw new ApiError(400,"User is already registered!!");
         }
     
-        const avatarFilePath = req.files?.avatar[0]?.path;
-        if(!avatarFilePath) {
-            throw new ApiError(400,"Avatar file is required !!");
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: "Avatar file is required"
+            });
         }
-    
-        const avatar = await uploadOnCloudinary(avatarFilePath);
-    
-        if(!avatar) {
-             throw new ApiError (500, "Avatar could not be uploaded on cloudinary!!");
+
+        // Upload file to cloudinary
+        const cloudinaryResponse = await uploadOnCloudinary(
+            req.file.buffer,
+            req.file.originalname
+        );
+
+        if (!cloudinaryResponse) {
+            return res.status(400).json({
+                success: false,
+                message: "Error uploading avatar"
+            });
         }
+        // const avatarFilePath = req.files?.avatar[0]?.path;
+        // if(!avatarFilePath) {
+        //     throw new ApiError(400,"Avatar file is required !!");
+        // }
+    
+        // const avatar = await uploadOnCloudinary(avatarFilePath);
+    
+        // if(!avatar) {
+        //      throw new ApiError (500, "Avatar could not be uploaded on cloudinary!!");
+        // }
     
         const user = await User.create({
                 name,
@@ -66,7 +85,7 @@ const registerUser = asyncHandler( async (req, res) => {
                 bio,
                 socialMedia,
                 cart:[],
-                avatar: avatar.url,
+                avatar: cloudinaryResponse.url,
                 membershipPlan: {}
             });
     

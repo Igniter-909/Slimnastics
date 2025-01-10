@@ -1,5 +1,4 @@
 import {v2 as cloudinary} from "cloudinary";
-import fs from "fs";
 import logger from "../../logger.js";
 
 cloudinary.config({
@@ -8,21 +7,25 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (fileBuffer, originalname) => {
     try {
-        const response = await cloudinary.uploader.upload(
-            localFilePath,
-            {
-            'resource_type': 'auto'
-            }
-        )
-        logger.info(" File uploaded on cloudinary. File src: " + response.url);
-        fs.unlinkSync(localFilePath)
+        if (!fileBuffer) return null;
+
+        // Convert buffer to base64
+        const fileStr = `data:image/jpeg;base64,${fileBuffer.toString('base64')}`;
+
+        const response = await cloudinary.uploader.upload(fileStr, {
+            resource_type: 'auto',
+            public_id: `${Date.now()}-${originalname}`,
+        });
+
+        logger.info("File uploaded on cloudinary. File src: " + response.url);
         return response;
     } catch (error) {
-        fs.unlinkSync(localFilePath)
-        return null
+        logger.error("Error uploading to cloudinary: ", error);
+        return null;
     }
 };
 
 export { uploadOnCloudinary };
+
