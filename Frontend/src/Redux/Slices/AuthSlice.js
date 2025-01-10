@@ -53,6 +53,10 @@ export const signupUser = createAsyncThunk(
     "auth/signup",
     async(data) => {
         try {
+            console.log("Received Data Auth: ",data);
+            for(let pair of data.entries){
+                console.log(pair[0] + " = " + pair[1]);
+            }
             const res = axiosInstance.post("users/register",data);
             toast.promise(res,{
                 loading:"Wait! registration in progress...",

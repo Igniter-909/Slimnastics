@@ -11,8 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getActiveUserCount,getAttendanceSummaryy,getLastDayPresntUserC,getProductRatings,getUserCountByGender, NewUserCount, upcomingExpiryData } from '../../Redux/Slices/AdminSlice.js'
 
 function OverviewPage() {
-
- 
+    const dispatch = useDispatch();
 
     const getActiveUsers = async() => {
         await dispatch(getActiveUserCount());
@@ -46,7 +45,6 @@ function OverviewPage() {
         fetchProductRatings();
     }, [dispatch])
 
-    const dispatch = useDispatch();
     const activeUser  = useSelector((state) => state.admin.data);
     const userCountGender = useSelector(state => state.admin.userCountByGender)
     const newUserCount = useSelector(state => state.admin.newUserCount);

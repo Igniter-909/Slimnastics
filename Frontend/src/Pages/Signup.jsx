@@ -54,6 +54,12 @@ function SignUp() {
         Object.entries(formData).forEach(([key, value]) => {
             Data.append(key, value);
         });
+        
+        // console.log(send data)
+        for(let pair of Data.entries()) {
+            console.log(`${pair[0]}: ${pair[1]}`);
+        }
+
         const res = await dispatch(signupUser(Data));
         if (res?.payload?.success) {
             setFormData({

@@ -31,6 +31,10 @@ app.use(express.urlencoded({extended: true, limit:"16kb"}))
 app.use(express.static('public'))
 app.use(cookieParser());
 
+app.use("/",(req,res) => {
+    res.send("hello world")
+})
+
 //import routes
 import userRoutes from "./routes/user.routes.js"
 import membershipplanRoutes from "./routes/membership.routes.js"
