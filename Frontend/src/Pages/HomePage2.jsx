@@ -31,7 +31,8 @@ function HomePage2() {
 
     const images = [gym1,gym2,gym3,gym4,gym5];
 
-    const Trainers = useSelector(state => state.user.allTrainersData).slice(0,4);
+    const trainers = useSelector(state => state.user.allTrainersData)
+    const Trainers = trainers?.slice(0,4) || [];
 
     const [activeIndex, setActiveIndex] = useState(null);
     const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
