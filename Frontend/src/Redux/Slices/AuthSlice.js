@@ -56,9 +56,7 @@ export const signupUser = createAsyncThunk(
             const res = axiosInstance.post("users/register",data);
             toast.promise(res,{
                 loading:"Wait! registration in progress...",
-                success:(data) => {
-                    return data?.data?.message;
-                },
+                success:"Successfully registered",
                 error: "Failed to signup"
             })
             return (await res).data;
@@ -117,6 +115,7 @@ export const logout = createAsyncThunk(
                 success:"Logged out successfully",
                 error: "Failed to logout"
             })
+            return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
         }

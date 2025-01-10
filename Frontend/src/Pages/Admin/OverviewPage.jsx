@@ -12,14 +12,7 @@ import { getActiveUserCount,getAttendanceSummaryy,getLastDayPresntUserC,getProdu
 
 function OverviewPage() {
 
-    const dispatch = useDispatch();
-    const activeUser  = useSelector((state) => state.admin.data);
-    const userCountGender = useSelector(state => state.admin.userCountByGender)
-    const newUserCount = useSelector(state => state.admin.newUserCount);
-    const attendanceSummary = useSelector(state => state.admin.attendanceSummary)
-    const lastDayPresent = useSelector(state => state.admin.lastDayPresentUser)
-    const upcomingExpiry = useSelector(state => state.admin.upcomingExpiry)
-    const productratings = useSelector(state => state.admin.productRatings)
+ 
 
     const getActiveUsers = async() => {
         await dispatch(getActiveUserCount());
@@ -53,6 +46,14 @@ function OverviewPage() {
         fetchProductRatings();
     }, [dispatch])
 
+    const dispatch = useDispatch();
+    const activeUser  = useSelector((state) => state.admin.data);
+    const userCountGender = useSelector(state => state.admin.userCountByGender)
+    const newUserCount = useSelector(state => state.admin.newUserCount);
+    const attendanceSummary = useSelector(state => state.admin.attendanceSummary)
+    const lastDayPresent = useSelector(state => state.admin.lastDayPresentUser)
+    const upcomingExpiry = useSelector(state => state.admin.upcomingExpiry)
+    const productratings = useSelector(state => state.admin.productRatings)
 
   return (
     <ProfileLayout>
