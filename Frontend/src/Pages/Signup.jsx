@@ -8,8 +8,8 @@ import { signupUser } from '../Redux/Slices/AuthSlice.js';
 
 function SignUp() {
     const features = Features.slice(0, 4);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         name: "",
@@ -22,82 +22,68 @@ function SignUp() {
         expertise: "",
         socialMedia: '',
         bio: "",
-        avatar: '',
         role: 'User'
     })
 
-    const [previewImage, setPreviewImage] = useState("");
+    const [avatar, setAvatar] = useState(null)
+    const [previewImage, setPreviewImage] = useState("")
 
     const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    function getImage(e) {
-        e.preventDefault();
-        const uploadedImage = e.target.files[0];
-        if (uploadedImage) {
-            setFormData({
-                ...formData,
-                avatar: uploadedImage
-            })
-        };
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(uploadedImage);
-        fileReader.addEventListener("load", function () {
-            setPreviewImage(this.result)
-        })
+        const { name, value } = e.target
+        setFormData(prevData => ({
+            ...prevData,
+            [name]: value
+        }))
     }
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        try {
-            const formData = new FormData();
-            Object.entries(formData).forEach(([key, value]) => {
-                if (value !== undefined && value !== null) {
-                    formData.append(key, value);
-                }
-            });
-            console.log('FormData contents:');
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
+    const getImage = (e) => {
+        const file = e.target.files[0]
+        if (file) {
+            setAvatar(file)
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setPreviewImage(reader.result)
             }
-    
-            // Dispatch the action and wait for the result
-            const resultAction = await dispatch(signupUser(formData));
-            
-            if (signupUser.fulfilled.match(resultAction)) {
-                // Success case
-                setFormData({
-                    name: "",
-                    email: '',
-                    password: '',
-                    DOB: "",
-                    gender: '',
-                    joinDate: "",
-                    experience: "",
-                    expertise: "",
-                    socialMedia: '',
-                    bio: "",
-                    avatar: '',
-                    role: 'User'
-                });
-                setPreviewImage("");
-                navigate("/");
-            } else if (signupUser.rejected.match(resultAction)) {
-                // Error case - error handling is done in the slice
-                console.error('Signup failed:', resultAction.payload);
+            reader.readAsDataURL(file)
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        
+        const submitFormData = new FormData()
+
+        // Append text fields
+        Object.keys(formData).forEach(key => {
+            if (formData[key]) {
+                submitFormData.append(key, formData[key])
+            }
+        })
+
+        // Append file
+        if (avatar) {
+            submitFormData.append('avatar', avatar)
+        }
+
+        // Log FormData contents
+        console.log('FormData contents:')
+        for (let [key, value] of submitFormData.entries()) {
+            console.log(key, ':', value)
+        }
+
+        try {
+            const res = await dispatch(signupUser(submitFormData))
+            if (res?.payload?.success) {
+                toast.success('Registration successful!')
+                navigate('/')
+            } else {
+                toast.error('Registration failed. Please try again.')
             }
         } catch (error) {
-            console.error('Submission error:', error);
-            toast.error('An unexpected error occurred. Please try again.');
+            console.error('Signup error:', error)
+            toast.error('An unexpected error occurred. Please try again.')
         }
-    };
-
-    useEffect(() => {
-        return () => {
-            dispatch(clearError());
-        };
-    }, [dispatch]);
+    }
 
     return (
         <HomeLayout>
@@ -116,7 +102,7 @@ function SignUp() {
                         <div className='flex mb-6 justify-center'>
                             <h2 className='text-xl sm:text-2xl font-semibold text-white/80 underline'>Sign Up</h2>
                         </div>
-                        <form onSubmit={handleSubmit} className='space-y-4'>
+                        <form onSubmit={handleSubmit} encType="multipart/form-data" className='space-y-4'>
                             <div className='w-full flex justify-center mb-4'>
                                 <label htmlFor="image_upload" className='cursor-pointer'>
                                     {previewImage ? (

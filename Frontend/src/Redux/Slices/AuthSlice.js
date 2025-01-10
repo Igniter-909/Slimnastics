@@ -60,21 +60,31 @@ export const signupUser = createAsyncThunk(
     "auth/signup",
     async (data, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.post("/users/register", data);
-            return response.data;
+            console.log('Sending registration request...')
+            console.log('FormData contents in AuthSlice:')
+            for (let [key, value] of data.entries()) {
+                console.log(key, ':', value)
+            }
+
+            const res = await axiosInstance.post("users/register", data, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            if (!res?.data) {
+                throw new Error('Invalid response format')
+            }
+
+            toast.success(res.data.message || 'Registration successful')
+            return res.data
         } catch (error) {
-            // Log the full error for debugging
-            console.error('Signup error:', error);
-            
-            // Return a structured error object
-            return rejectWithValue({
-                message: error.response?.data?.message || 'Registration failed',
-                status: error.response?.status,
-                details: error.response?.data
-            });
+            console.error('Registration error:', error.response || error)
+            toast.error(error?.response?.data?.message || 'Registration failed')
+            return rejectWithValue(error.response?.data || { message: 'Registration failed' })
         }
     }
-);
+)
 
 export const editProfile = createAsyncThunk(
     "auth/editProfile",
