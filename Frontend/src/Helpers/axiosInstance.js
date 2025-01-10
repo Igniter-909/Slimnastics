@@ -1,42 +1,10 @@
-import axios from 'axios'
+import axios from "axios";
 
-const axiosInstance = axios.create({
-    baseURL: 'https://slimnastics-backend.vercel.app/api/v1',
-    withCredentials: true
-})
+const BASE_URL = "https://slimnastics-backend.vercel.app/api/v1";
 
-axiosInstance.interceptors.request.use(
-    (config) => {
-        if (config.data instanceof FormData) {
-            config.headers['Content-Type'] = 'multipart/form-data'
-        }
-        
-        console.log('Request:', {
-            url: config.url,
-            method: config.method,
-            headers: config.headers,
-            data: config.data instanceof FormData ? '[FormData]' : config.data
-        })
-        
-        return config
-    },
-    (error) => {
-        console.error('Request error:', error)
-        return Promise.reject(error)
-    }
-)
+const axiosInstance = axios.create();
 
-axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        console.error('Response error:', {
-            status: error.response?.status,
-            data: error.response?.data,
-            message: error.message
-        })
-        return Promise.reject(error)
-    }
-)
+axiosInstance.defaults.baseURL = BASE_URL
+axiosInstance.defaults.withCredentials = true;
 
-export default axiosInstance
-
+export default axiosInstance;
