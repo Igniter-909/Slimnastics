@@ -57,6 +57,10 @@ function SignUp() {
                     formData.append(key, value);
                 }
             });
+            console.log('FormData contents:');
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
     
             // Dispatch the action and wait for the result
             const resultAction = await dispatch(signupUser(formData));
