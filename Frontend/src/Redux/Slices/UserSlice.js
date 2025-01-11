@@ -18,9 +18,7 @@ export const getAllUsers = createAsyncThunk(
             const res = axiosInstance.get("/users/allUsers");
             toast.promise(res,{
                 loading:"Wait! fetching all users...",
-                success:(data) => {
-                    return data?.data?.users;
-                },
+                success:"Fetched all users successfully",
                 error: "Failed to fetch users"
             })
             return (await res).data;
@@ -37,9 +35,7 @@ export const getAttendanceData = createAsyncThunk(
             const res = axiosInstance.get("/users/attendanceData");
             toast.promise(res,{
                 loading: "Fetching Attendance Data...",
-                success: (data) => {
-                    return data?.data?.attendanceRecords;
-                },
+                success: "Fetched attendance data successfully",
                 error: "Failed to Fetch Attendance Data"
             });
             return (await res).data;
@@ -89,19 +85,19 @@ const UserSlice = createSlice({
     reducers: {},
     extraReducers:(builder) => {
         builder.addCase(getAllUsers.fulfilled,(state,action) => {
-            state.users = action.payload.data
+            state.users = action.payload?.data
         })
         builder.addCase(getAttendanceData.fulfilled,(state,action) => {
-            state.attendanceRecords = action.payload.data;
+            state.attendanceRecords = action.payload?.data;
             console.log("Attendance data fetched successfully", action.payload);
         })
         builder.addCase(getProgress.fulfilled,(state,action) => {
-            state.progressStat = action.payload.data;
+            state.progressStat = action.payload?.data;
             console.log("Progress statistics fetched successfully", action.payload);
         })
         builder.addCase(allTrainers.fulfilled,(state,action) => {
-            state.allTrainersData = action.payload.data
-            console.log("All trainers fetched successfully", action.payload.data);
+            state.allTrainersData = action.payload?.data
+            console.log("All trainers fetched successfully", action.payload?.data);
         })
     }
 })

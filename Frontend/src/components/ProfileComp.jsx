@@ -25,18 +25,18 @@ const ProfileComp = () => {
     fetchData();
   }, [dispatch]);
 
-  const attendanceRecords = useSelector(state => state.user.attendanceRecords)
-  const user = useSelector(state => state.auth.data.data || {});
-  const progressStat = useSelector(state => state.user.progressStat)
+  const attendanceRecords = useSelector(state => state.user?.attendanceRecords)
+  const user = useSelector(state => state.auth?.data?.data || {});
+  const progressStat = useSelector(state => state.user?.progressStat)
 
   const currentUserAttendanceRecords = attendanceRecords?.data?.map(record => ({
-    date: record.date,
-    count: record.value
+    date: record?.date,
+    count: record?.value
   })) || [];
 
-  const labels = progressStat.map(record => new Date(record.date).toISOString().split("T")[0]);
-  const weights = progressStat.map(record => record.weight);
-  const fatPercents = progressStat.map(record => record.fatPercent);
+  const labels = progressStat.map(record => new Date(record?.date).toISOString().split("T")[0]);
+  const weights = progressStat.map(record => record?.weight);
+  const fatPercents = progressStat.map(record => record?.fatPercent);
 
   const weightData = {
     labels: labels,

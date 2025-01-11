@@ -7,7 +7,7 @@ import { allTrainers} from '../../Redux/Slices/UserSlice.js';
 
 const TrainerCard = ({ trainer }) => {
 
-  const isDarkMode = useSelector(state => state.auth.darkmode);
+  const isDarkMode = useSelector(state => state.auth?.darkmode);
   return (
     <motion.div 
       className={`rounded-xl shadow-custom-shadow shadow-[#4d3132] overflow-hidden border-2 border-black/50 bg-gradient-to-br ${isDarkMode ? "from-gray-900 to-gray-800 text-white" : "from-white via-[#b1a4b9] to-transparent text-black"} transform transition-all duration-300 hover:scale-110`}
@@ -18,8 +18,8 @@ const TrainerCard = ({ trainer }) => {
     >
       <div className="relative">
         <img 
-          src={trainer.avatar || 'https://via.placeholder.com/300x200'} 
-          alt={trainer.name} 
+          src={trainer?.avatar || 'https://via.placeholder.com/300x200'} 
+          alt={trainer?.name} 
           className="w-full h-72 object-contain object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>

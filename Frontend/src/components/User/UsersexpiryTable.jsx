@@ -39,9 +39,9 @@ const UsersExpiryTable = () => {
 					</thead>
 
 					<tbody className='divide-y divide-gray-700'>
-						{upcomingExpiry.data?.length > 0 && upcomingExpiry.data.map((user) => (
+						{upcomingExpiry?.data?.length > 0 && upcomingExpiry?.data.map((user) => (
 							<motion.tr
-								key={user._id}
+								key={user?._id}
 								initial={{ opacity: 0 }}
 								animate={{ opacity: 1 }}
 								transition={{ duration: 0.3 }}
@@ -80,7 +80,7 @@ const UsersExpiryTable = () => {
 									</span>
 								</td>
 								<td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
-                                <div className='text-sm text-gray-300 text-center'>{new Date(user.membershipPlan.endDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
+                                <div className='text-sm text-gray-300 text-center'>{new Date(user.membershipPlan?.endDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
 									
                                 </td>
 							</motion.tr>

@@ -20,7 +20,7 @@ const PlanPage = () => {
         dispatch(getAllUsers());
     },[dispatch])
 
-    const role = useSelector(state => state.auth.role)
+    const role = useSelector(state => state.auth?.role)
     const {plan} = useSelector(state => state.membership);
     console.log("Plan",plan)
 
@@ -28,9 +28,9 @@ const PlanPage = () => {
     
     const {users} = useSelector(state => state.user)
 
-    const trainers = users.filter(user => user.role==="Trainer");
-    const members = users.filter(user => user.role==="User");
-    const members2 = members.filter(member => member.membershipPlan.find(m=> m.planId === plan._id))
+    const trainers = users.filter(user => user?.role==="Trainer");
+    const members = users.filter(user => user?.role==="User");
+    const members2 = members.filter(member => member.membershipPlan.find(m=> m?.planId === plan._id))
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const handleDeleteClick = () => {

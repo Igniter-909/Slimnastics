@@ -6,7 +6,7 @@ import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 import Strength from "../assets/services/Strength.png"
 import {FAQs} from '../constants/Faqs.js';
 import { useState as useState2, useEffect as useEffect2 } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import {Feedback} from "../constants/Feedback.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';

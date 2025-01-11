@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 
 function ShowShop() {
     const dispatch = useDispatch();
-    const allProducts = useSelector(state => state.product.allProducts);
+    const allProducts = useSelector(state => state.product?.allProducts);
     const [pages, setPages] = useState(1);
     const productsPerPage = 8;
     const final_length = pages * productsPerPage;

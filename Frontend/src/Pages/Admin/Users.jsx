@@ -41,10 +41,10 @@ function Users() {
     },[dispatch])
 
     useEffect(() => {
-        setAllUsers(allusers.filter(user => user.role === "User"));
+        setAllUsers(allusers.filter(user => user?.role === "User"));
     }, [allusers]);
 
-    const totalUsers = allUsers.length || 0;
+    const totalUsers = allUsers?.length || 0;
     const activeUser = data?.data || 0;
     const churnRate = totalUsers > 0 ? ((totalUsers - activeUser) / totalUsers).toFixed(2) : 0;
 

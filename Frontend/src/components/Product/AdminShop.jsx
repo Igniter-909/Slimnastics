@@ -8,8 +8,8 @@ function AdminShop() {
     const dispatch = useDispatch();
     const [whatToDisplay, setToDisplay] = useState("add");
     const [currentProductId, setCurrentProductId] = useState("");
-    const AllProducts = useSelector(state => state.product.allProducts);
-    const currentProduct = useSelector(state => state.product.current);
+    const AllProducts = useSelector(state => state.product?.allProducts);
+    const currentProduct = useSelector(state => state.product?.current);
 
     useEffect(() => {
         const fetchAllProducts = async() => {

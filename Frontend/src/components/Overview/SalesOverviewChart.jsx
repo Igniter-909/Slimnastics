@@ -8,9 +8,9 @@ function SalesOverviewChart({ Data }) {
     lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
 
     // Filter and format the data
-    const salesData = Data.filter(data => data?._id.status === selectedStatus && new Date(data?._id.date) >= lastMonthDate)
+    const salesData = Data.filter(data => data?._id?.status === selectedStatus && new Date(data?._id?.date) >= lastMonthDate)
         .map(data => ({
-            date: new Date(data?._id.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+            date: new Date(data?._id?.date).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
             count: data.count
         }));
 

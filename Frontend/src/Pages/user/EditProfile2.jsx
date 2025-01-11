@@ -7,9 +7,9 @@ function EditPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const data = useSelector(state => state.auth.data)
-  const Data = data.data || {};
-  const avatar = data.data.avatar || "";
+  const data = useSelector(state => state.auth?.data)
+  const Data = data?.data || {};
+  const avatar = data?.data?.avatar || "";
 
   const [image, setImage] = useState({
     previewImage: avatar,

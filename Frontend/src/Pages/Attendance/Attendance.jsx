@@ -59,7 +59,7 @@ function Attendance() {
     getAttendanceAll();
   }, [dispatch])
 
-  const allData = useSelector(state => state.attendance.allAttendance);
+  const allData = useSelector(state => state.attendance?.allAttendance);
   console.log("Attendance", allData);
 
   return (

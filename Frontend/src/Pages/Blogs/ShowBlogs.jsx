@@ -18,13 +18,13 @@ function ShowBlogs() {
     fetchAllBlogs();
   }, [dispatch]);
 
-  const allBlogs = useSelector(state => state.blog.allBlogs);
+  const allBlogs = useSelector(state => state.blog?.allBlogs);
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 6;
 
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = allBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const currentBlogs = allBlogs?.slice(indexOfFirstBlog, indexOfLastBlog);
 
   const nextPage = () => {
     if (currentPage < Math.ceil(allBlogs.length / blogsPerPage)) {

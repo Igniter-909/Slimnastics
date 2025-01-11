@@ -24,9 +24,7 @@ export const getAllUsers = createAsyncThunk(
             const res = axiosInstance.get("/admin/get-all-users");
             toast.promise(res,{
                 loading: "Wait! fetching all users...",
-                success: (data) => {
-                    return data?.data?.users;
-                },
+                success: "Got all users",
                 error: "Failed to fetch all users"
             });
             return (await res).data;
@@ -61,9 +59,7 @@ export const getActiveUserCount = createAsyncThunk(
             const res = axiosInstance.get("/admin/getActiveUserCount");
             toast.promise(res,{
                 loading: "Wait! fetching active user count...",
-                success: (data) => {
-                    return data?.data?.count;
-                },
+                success: "Active user count successfully",
                 error: "Failed to fetch active user count"
             });
             return (await res).data;
@@ -80,9 +76,7 @@ export const getUserCountByGender = createAsyncThunk(
             const res = axiosInstance.get("/admin/getUserbyGender");
             toast.promise(res,{
                 loading: "Wait! fetching user count by gender...",
-                success: (data) => {
-                    return data?.data?.counts;
-                },
+                success: "received user count by gender",
                 error: "Failed to fetch user count by gender"
             });
             return (await res).data;
@@ -100,9 +94,7 @@ export const NewUserCount = createAsyncThunk(
             const res = axiosInstance.get("/admin/newusersCount");
             toast.promise(res,{
                 loading: "Wait! fetching new user count...",
-                success: (data) => {
-                    return data?.data?.count;
-                },
+                success: "received new user count",
                 error: "Failed to fetch new user count"
             });
             return (await res).data;
@@ -119,9 +111,7 @@ export const getAttendanceSummaryy = createAsyncThunk(
             const res =axiosInstance.get("/admin/getAttendanceSummary");
             toast.promise(res,{
                 loading: "Wait! fetching attendance summary...",
-                success: (data) => {
-                    return data?.data?.summary;
-                },
+                success: "fetched attendance summary",
                 error: "Failed to fetch attendance summary"
             });
             return (await res).data;
@@ -138,9 +128,7 @@ export const getLastDayPresntUserC = createAsyncThunk(
             const res = axiosInstance.get("/admin/lastDayPresentUserCount");
             toast.promise(res,{
                 loading: "Wait! fetching last day present user count...",
-                success: (data) => {
-                    return data?.data?.count;
-                },
+                success: "fetched last day present user count",
                 error: "Failed to fetch last day present user count"
             });
             return (await res).data;
@@ -157,9 +145,7 @@ export const upcomingExpiryData = createAsyncThunk(
             const res = axiosInstance.get('/admin/upcomingExpirations')
             toast.promise(res,{
                 loading: "Wait! fetching upcoming expiry data...",
-                success: (data) => {
-                    return data?.data?.expirations;
-                },
+                success: "fetched upcoming expiry data",
                 error: "Failed to fetch upcoming expiry data"
             });
             return (await res).data;
@@ -176,9 +162,7 @@ export const getProductRatings = createAsyncThunk(
             const res = axiosInstance.get('/admin/getProductSalesSummary');
             toast.promise(res,{
                 loading: "Wait! fetching product ratings...",
-                success: (data) => {
-                    return data?.data?.ratings;
-                },
+                success: "fetched product ratings",
                 error: "Failed to fetch product ratings"
             });
             return (await res).data;
@@ -195,9 +179,7 @@ export const getUserGrowthData = createAsyncThunk(
             const res = axiosInstance.get("/admin/getUserGrowthData");
             toast.promise(res,{
                 loading: "Wait! fetching user growth data...",
-                success: (data) => {
-                    return data?.data?.growth;
-                },
+                success: "success user growth data",
                 error: "Failed to fetch user growth data"
             });
             return (await res).data;
@@ -214,9 +196,7 @@ export const getAllContacts = createAsyncThunk(
             const res = axiosInstance.get("/admin/getAllContact");
             toast.promise(res,{
                 loading: "Wait! fetching all contacts...",
-                success: (data) => {
-                    return data?.data?.contacts;
-                },
+                success: "success all contacts",
                 error: "Failed to fetch all contacts"
             });
             return (await res).data;
@@ -262,27 +242,27 @@ const AdminSlice = createSlice({
             console.log("Product ratings fetched successfully", action.payload);
         })
         builder.addCase(getAllUsers.fulfilled,(state,action) => {
-            state.allusers = action.payload.data;
+            state.allusers = action.payload?.data;
             console.log("All users fetched successfully", action.payload);
         })
         builder.addCase(removeUser.fulfilled,(state,action) => {
-            const index = state.allusers.findIndex(user => user.id === action.payload.id);
+            const index = state.allusers.findIndex(user => user.id === action.payload?.id);
             if(index!== -1) {
                 state.allusers.splice(index, 1);
             }
             console.log("User removed successfully", action.payload);
         })
         builder.addCase(getUserGrowthData.fulfilled,(state,action) => {
-            state.userGrowth = action.payload.data;
-            console.log("User growth data fetched successfully", action.payload.data);
+            state.userGrowth = action.payload?.data;
+            console.log("User growth data fetched successfully", action.payload?.data);
         })
         builder.addCase(getAllContacts.fulfilled,(state,action) => {
-            state.allContacts = action.payload.data;
-            console.log("All contacts fetched successfully", action.payload.data);
+            state.allContacts = action.payload?.data;
+            console.log("All contacts fetched successfully", action.payload?.data);
         })
         builder.addCase(signupUser.fulfilled,(state,action) => {
-            state.allusers.push(action.payload.data);
-            console.log("User signed up successfully", action.payload.data);
+            state.allusers.push(action.payload?.data);
+            console.log("User signed up successfully", action.payload?.data);
         })
         
     }

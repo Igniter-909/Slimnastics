@@ -15,9 +15,7 @@ export const addProduct = createAsyncThunk(
             const res = axiosInstance.post("/product/add-product",data);
             toast.promise(res,{
                 loading: "Adding Product...",
-                success: (res) => {
-                    return res.data.message;
-                },
+                success: "Product added successfully",
                 failed: "Failed to add the product"
             })
             return (await res).data;
@@ -34,9 +32,7 @@ export const getAProduct = createAsyncThunk(
             const res = axiosInstance.get(`/product/get-product/${id}`);
                 toast.promise(res,{
                     loading: "Fetching Product...",
-                    success: (res) => {
-                        return res.data.product;
-                    },
+                    success: "fetched the product",
                     failed: "Failed to fetch the product"
                 })
                 return (await res).data;
@@ -53,9 +49,7 @@ export const getAllProducts = createAsyncThunk(
             const res = axiosInstance.get("/product/get-all-products");
             toast.promise(res,{
                 loading: "Fetching all products...",
-                success: (res) => {
-                    return res.data.products;
-                },
+                success: "fetched all products...",
                 failed: "Failed to fetch all products"
             })
             return (await res).data;
@@ -73,9 +67,7 @@ export const updateProduct = createAsyncThunk(
             const res = axiosInstance.put(`/product/update-product/${id}`,data);
             toast.promise(res,{
                 loading: "Updating Product...",
-                success: (res) => {
-                    return res.data.message;
-                },
+                success: "update successful",
                 failed: "Failed to update the product"
             })
             return (await res).data;
@@ -92,9 +84,7 @@ export const deleteProduct = createAsyncThunk(
             const res = axiosInstance.delete(`/product/delete-product/${id}`);
             toast.promise(res,{
                 loading: "Deleting Product...",
-                success: (res) => {
-                    return res.data.message;
-                },
+                success:"Product deleted",
                 failed: "Failed to delete the product"
             })
             return (await res).data;
@@ -110,17 +100,17 @@ const AllProductSlice = createSlice({
     reducers:{},
     extraReducers: (builder) => {
         builder.addCase(getAllProducts.fulfilled,(state,action) => {
-            state.allProducts = action.payload.data;
+            state.allProducts = action.payload?.data;
         })
         builder.addCase(getAProduct.fulfilled,(state,action) => {
-            state.current = action.payload.data;
+            state.current = action.payload?.data;
         })
         builder.addCase(addProduct.fulfilled,(state,action) => {
-            state.allProducts.push(action.payload.data);
+            state.allProducts.push(action.payload?.data);
         })
         builder.addCase(updateProduct.fulfilled,(state,action) => {
-            const index = state.allProducts.findIndex(product => product._id === action.payload._id);
-            state.allProducts[index] = action.payload.data;
+            const index = state.allProducts.findIndex(product => product._id === action.payload?._id);
+            state.allProducts[index] = action.payload?.data;
         })
     }
 })

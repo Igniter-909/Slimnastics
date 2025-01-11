@@ -12,7 +12,7 @@ import { getAllPlans } from '../../Redux/Slices/PlanSlice';
 function Plan() {
 
     const dispatch = useDispatch();
-    const activeUsers = useSelector(state => state.admin.data);
+    const activeUsers = useSelector(state => state.admin?.data);
     const {upcomingExpiry} = useSelector(state => state.admin);
     const {plans} = useSelector(state => state.membership);
 

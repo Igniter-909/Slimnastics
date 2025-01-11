@@ -18,9 +18,7 @@ export const loginUser = createAsyncThunk(
             const res = axiosInstance.post("users/login",data);
             toast.promise(res,{
                 loading:"Wait! authentication in progress...",
-                success:(data) => {
-                    return data?.data?.message;
-                },
+                success:"Login Successfully",
                 error: "Failed to login"
             })
             return (await res).data;
@@ -37,9 +35,7 @@ export const enrollIntoPlan =createAsyncThunk(
             const res = axiosInstance.post(`/users/add-plan`,data);
             toast.promise(res,{
                 loading:"Wait! enrolling in plan progress...",
-                success:(data) => {
-                    return data?.data?.message;
-                },
+                success:"enrollment in plan successfully",
                 error: "Failed to enroll into plan"
             });
             return (await res).data;
@@ -73,9 +69,7 @@ export const editProfile = createAsyncThunk(
             const res = axiosInstance.post("users/update-profile",data);
             toast.promise(res,{
                 loading:"Wait! updating profile in progress...",
-                success:(data) => {
-                    return data?.data?.message;
-                },
+                success:"Update Successful",
                 error: "Failed to update profile"
             })
             return (await res).data;
@@ -93,9 +87,7 @@ export const editAvatar = createAsyncThunk(
             const res = axiosInstance.post("users/update-avatar",data);
             toast.promise(res,{
                 loading:"Wait! updating avatar in progress...",
-                success:(data) => {
-                    return data?.data?.message;
-                },
+                success:"Avatar Updated Successfully...",
                 error: "Failed to update avatar"
             })
             return (await res).data;
@@ -128,9 +120,7 @@ export const getUser = createAsyncThunk(
             const res = axiosInstance.get("users/current-user");
             toast.promise(res,{
                 loading:"Wait! fetching user data...",
-                success:(data) => {
-                    return data?.data?.user;
-                },
+                success:"Got user data",
                 error: "Failed to fetch user"
             })
             return (await res).data;
@@ -224,10 +214,10 @@ const authSlice = createSlice({
         builder
         .addCase(loginUser.fulfilled, (state,action) => {
             localStorage.setItem("isLoggedIn", true);
-            localStorage.setItem("role", action.payload.data.user.role);
+            localStorage.setItem("role", action.payload?.data?.user?.role);
             localStorage.setItem("data", JSON.stringify(action.payload));
             state.isLoggedIn = true;
-            state.role = action.payload.data.user.role;
+            state.role = action.payload?.data?.user?.role;
             state.data = action.payload;
         })
         .addCase(logout.fulfilled,(state) =>{
@@ -237,7 +227,7 @@ const authSlice = createSlice({
             state.data = {};
         })
         .addCase(getUser.fulfilled,(state,action) => {
-            if(!action?.payload?.data) return;
+            if(!action.payload?.data) return;
             localStorage.setItem("data", JSON.stringify(action.payload));
             state.isLoggedIn = true;
             state.data = action.payload;
@@ -249,7 +239,7 @@ const authSlice = createSlice({
             state.data = {};
         })
         .addCase(addToCart.fulfilled,(state,action) => {
-            state.currentCart = action.payload.data;
+            state.currentCart = action.payload?.data;
         })
     }
 });

@@ -35,9 +35,7 @@ export const getAPlan = createAsyncThunk(
             const res = axiosInstance.get(`/membership/get-plan/${id}`);
             toast.promise(res,{
                 loading: "Wait! fetching plan...",
-                success: (data) => {
-                    return data?.data?.plan;
-                },
+                success: "Plan fetched successfully",
                 error: "Failed to fetch plan"
             })
             return (await res).data;
@@ -93,7 +91,6 @@ export const deletePlan = createAsyncThunk(
                 success: "Plan deleted successfully",
                 error: "Failed to delete plan"
             });
-            console.log("delete pressed")
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -107,24 +104,24 @@ const membershipSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(getAllPlans.fulfilled,(state,action) => {
-            state.plans = action.payload.data,
+            state.plans = action.payload?.data,
             state.loading = false,
-            console.log("Membership plans fetched successfully", action.payload.data)
+            console.log("Membership plans fetched successfully", action.payload?.data)
         })
         builder.addCase(getAPlan.fulfilled,(state,action) => {
-            state.plan = action.payload.data
-            console.log("Plan fetched successfully",action.payload.data);
+            state.plan = action.payload?.data
+            console.log("Plan fetched successfully",action.payload?.data);
         })
         builder.addCase(updatePlan.fulfilled,(state,action) => {
-            state.plan = action.payload.data,
-            console.log("Plan updated successfully", action.payload.data)
+            state.plan = action.payload?.data,
+            console.log("Plan updated successfully", action.payload?.data)
         })
         builder.addCase(deletePlan.fulfilled,(state,action) => {
-            console.log("Plan deleted successfully", action.payload.data)
+            console.log("Plan deleted successfully", action.payload?.data)
         })
         builder.addCase(addPlan.fulfilled,(state,action) => {
-            state.plans.push(action.payload.data);
-            console.log("Plan added successfully", action.payload.data)
+            state.plans.push(action.payload?.data);
+            console.log("Plan added successfully", action.payload?.data)
         })
 
     }

@@ -4,8 +4,8 @@ import { getUser } from '../Redux/Slices/AuthSlice';
 
 function MyPlan() {
   const dispatch = useDispatch();
-  const userData = useSelector(state => state.auth.data.data);
-  const plans = userData.membershipPlan;
+  const userData = useSelector(state => state.auth?.data?.data);
+  const plans = userData?.membershipPlan;
 
   useEffect(() => {
     const fetchData = async() => {

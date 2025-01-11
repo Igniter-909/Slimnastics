@@ -24,7 +24,7 @@ const UsersTable = () => {
     },[dispatch])
 
     useEffect(() => {
-        const userData = allusers.filter(user => user.role === "User");
+        const userData = allusers.filter(user => user?.role === "User");
         setFilteredUsers(userData);
     }, [allusers]);
 
@@ -32,7 +32,7 @@ const UsersTable = () => {
 		const term = e.target.value.toLowerCase();
 		setSearchTerm(term);
 		const filtered = userData.filter(
-			(user) => user.role=== "User" && (user.name.toLowerCase().includes(term) || user.email.toLowerCase().includes(term) || user.expertise.toLowerCase().includes(term))
+			(user) => user?.role=== "User" && (user?.name?.toLowerCase().includes(term) || user?.email?.toLowerCase().includes(term) || user?.expertise?.toLowerCase().includes(term))
 		);
 		setFilteredUsers(filtered);
 	};
@@ -43,7 +43,7 @@ const UsersTable = () => {
     }
     const handleConfirm = async() => {
         await dispatch(removeUser(selectedUser));
-        setFilteredUsers(filteredUsers.filter(user => user._id !== selectedUser));
+        setFilteredUsers(filteredUsers?.filter(user => user?._id !== selectedUser));
         setDialog(false);
     }
 

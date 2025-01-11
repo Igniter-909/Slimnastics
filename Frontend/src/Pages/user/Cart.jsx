@@ -58,7 +58,7 @@ function Cart() {
                                 <p className='font-vazirmatn text-white text-sm'>Quantity: {product.quantity || "0"}</p>
                                 <p className='font-vazirmatn text-white text-sm'>Rs.{product.productId?.newPrice || "0"}</p>
                                 <div className='w-full px-6'>
-                                    <button className='w-full h-10 rounded-full bg-[#D90A14] text-white font-vazirmatn hover:bg-[#ee4851]' onClick={() => handleRemoveCart(product.productId._id)}>Remove</button>
+                                    <button className='w-full h-10 rounded-full bg-[#D90A14] text-white font-vazirmatn hover:bg-[#ee4851]' onClick={() => handleRemoveCart(product.productId?._id)}>Remove</button>
                                 </div>
                             </div>
                         </div>
