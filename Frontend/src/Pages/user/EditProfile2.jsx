@@ -7,7 +7,7 @@ function EditPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const data = useSelector(state => state.auth?.data)
+  const data = useSelector(state => state.auth.data)
   const Data = data?.data || {};
   const avatar = data?.data?.avatar || "";
 

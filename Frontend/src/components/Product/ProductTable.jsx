@@ -8,7 +8,7 @@ const ProductTable = () => {
 
     const dispatch = useDispatch();
 
-    const allProducts  = useSelector(state => state.product?.allProducts)
+    const allProducts  = useSelector(state => state.product.allProducts)
     const [searchTerm, setSearchTerm] = useState("");
 	const [filteredProducts, setFilteredProducts] = useState([]);
     
@@ -28,7 +28,7 @@ const ProductTable = () => {
 		const term = e.target.value.toLowerCase();
 		setSearchTerm(term);
 		const filtered = allProducts?.filter(
-			(product) => (product?.name?.toLowerCase().includes(term) || product?.description?.toLowerCase().includes(term) || user?.company?.toLowerCase().includes(term) || product?.category?.toLowercase().includes(term))
+			(product) => (product.name?.toLowerCase().includes(term) || product.description?.toLowerCase().includes(term) || product.company?.toLowerCase().includes(term) || product.category.toLowercase().includes(term))
 		);
 		setFilteredProducts(filtered);
 	};

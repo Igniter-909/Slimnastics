@@ -14,7 +14,7 @@ function Navbar() {
 
   const isLoggedIn = useSelector((state) => state?.auth?.isLoggedIn);
   const role = useSelector(state => state.auth?.role);
-  const isDarkMode = useSelector((state) => state?.auth?.darkmode);
+  const isDarkMode = useSelector((state) => state.auth?.darkmode);
 
   
   const handleLogout = async (e) => {

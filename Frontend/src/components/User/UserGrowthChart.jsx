@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 function UserGrowthChart() {
     const dispatch = useDispatch();
 
-    const userGrowthData = useSelector(state => state.admin?.userGrowth);
+    const userGrowthData = useSelector(state => state.admin.userGrowth);
 
     useEffect(() => {
         const fetchUSerGrowth = async() => {

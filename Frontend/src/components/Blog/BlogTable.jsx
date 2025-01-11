@@ -6,7 +6,7 @@ import { getAllBlogs, deleteBlog } from "../../Redux/Slices/BlogSlice.js";
 
 const BlogTable = () => {
     const dispatch = useDispatch();
-    const allBlogs = useSelector(state => state.blog?.allBlogs);
+    const allBlogs = useSelector(state => state.blog.allBlogs);
     const [selectedBlog, setSelectedBlog] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -28,9 +28,9 @@ const BlogTable = () => {
         if (Array.isArray(allBlogs)) {
             const filtered = allBlogs.filter(
                 (blog) => 
-                    blog?.title?.toLowerCase().includes(term) || 
-                    blog?.description?.toLowerCase().includes(term) || 
-                    blog?.penName?.toLowerCase().includes(term)
+                    blog.title.toLowerCase().includes(term) || 
+                    blog.description.toLowerCase().includes(term) || 
+                    blog.penName.toLowerCase().includes(term)
             );
             setFilteredBlogs(filtered);
         }
@@ -43,7 +43,7 @@ const BlogTable = () => {
 
     const handleConfirm = async () => {
         await dispatch(deleteBlog(selectedBlog));
-        setFilteredBlogs(prevBlogs => prevBlogs.filter(blog => blog?._id !== selectedBlog));
+        setFilteredBlogs(prevBlogs => prevBlogs.filter(blog => blog._id !== selectedBlog));
         setIsDialogOpen(false);
     };
 

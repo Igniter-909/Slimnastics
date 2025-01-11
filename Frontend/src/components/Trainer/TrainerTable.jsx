@@ -20,18 +20,18 @@ const TrainerTable = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        const userData = allusers.filter(user => user?.role === "Trainer");
+        const userData = allusers.filter(user => user.role === "Trainer");
         setFilteredUsers(userData);
     }, [allusers]);
 
     const handleSearch = (e) => {
         const term = e.target.value.toLowerCase();
         setSearchTerm(term);
-        const filtered = allusers?.filter(
+        const filtered = allusers.filter(
             (user) => user?.role === "Trainer" && (
-                user?.name?.toLowerCase().includes(term) || 
-                user?.email?.toLowerCase().includes(term) || 
-                user?.expertise?.toLowerCase().includes(term)
+                user.name?.toLowerCase().includes(term) || 
+                user.email?.toLowerCase().includes(term) || 
+                user.expertise?.toLowerCase().includes(term)
             )
         );
         setFilteredUsers(filtered);
@@ -44,7 +44,7 @@ const TrainerTable = () => {
 
     const handleConfirm = async() => {
         await dispatch(removeUser(selectedUser));
-        setFilteredUsers(filteredUsers?.filter(user => user?._id !== selectedUser));
+        setFilteredUsers(filteredUsers.filter(user => user._id !== selectedUser));
         setDialog(false);
     }
 

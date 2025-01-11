@@ -12,10 +12,10 @@ function AdminPlans() {
     const [currentPlanId,setCurrentPlanId] = useState(''); //for storing the current plan id
 
     //fetching current or selected plan
-    const plan = useSelector(state => state.membership?.plan);
+    const plan = useSelector(state => state.membership.plan);
 
     // fetching all plans
-    const plans = useSelector(state => state.membership?.plans);
+    const plans = useSelector(state => state.membership.plans);
 
     const [formData,setFormData] = useState({
         plan: "",
