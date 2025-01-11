@@ -214,10 +214,10 @@ const authSlice = createSlice({
         builder
         .addCase(loginUser.fulfilled, (state,action) => {
             localStorage.setItem("isLoggedIn", true);
-            localStorage.setItem("role", action.payload?.data?.user?.role);
+            localStorage.setItem("role", action.payload.data?.user?.role);
             localStorage.setItem("data", JSON.stringify(action.payload));
             state.isLoggedIn = true;
-            state.role = action.payload?.data?.user?.role;
+            state.role = action.payload.data?.user?.role;
             state.data = action.payload;
         })
         .addCase(logout.fulfilled,(state) =>{
@@ -227,7 +227,7 @@ const authSlice = createSlice({
             state.data = {};
         })
         .addCase(getUser.fulfilled,(state,action) => {
-            if(!action.payload?.data) return;
+            if(!action.payload.data) return;
             localStorage.setItem("data", JSON.stringify(action.payload));
             state.isLoggedIn = true;
             state.data = action.payload;
@@ -239,7 +239,7 @@ const authSlice = createSlice({
             state.data = {};
         })
         .addCase(addToCart.fulfilled,(state,action) => {
-            state.currentCart = action.payload?.data;
+            state.currentCart = action.payload.data;
         })
     }
 });

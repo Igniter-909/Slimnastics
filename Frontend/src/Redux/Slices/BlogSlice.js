@@ -65,13 +65,13 @@ const blogSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder.addCase(addBlog.fulfilled,(state,action) => {
-            state.allBlogs.push(action.payload?.data);
+            state.allBlogs.push(action.payload.data);
         })
         builder.addCase(getAllBlogs.fulfilled,(state,action) => {
-            state.allBlogs = action.payload?.data;
+            state.allBlogs = action.payload.data;
         })
         builder.addCase(deleteBlog.fulfilled,(state,action) => {
-            state.allBlogs = state.allBlogs.filter(blog => blog._id!== action.payload?._id);
+            state.allBlogs = state.allBlogs.filter(blog => blog._id!== action.payload._id);
         })  // Add reducers for other actions related to blogs
     } 
            // Add reducers for other actions related to blogs

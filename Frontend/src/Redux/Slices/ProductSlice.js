@@ -84,7 +84,7 @@ export const deleteProduct = createAsyncThunk(
             const res = axiosInstance.delete(`/product/delete-product/${id}`);
             toast.promise(res,{
                 loading: "Deleting Product...",
-                success:"Product deleted",
+                success:"Delete success",
                 failed: "Failed to delete the product"
             })
             return (await res).data;
@@ -100,17 +100,17 @@ const AllProductSlice = createSlice({
     reducers:{},
     extraReducers: (builder) => {
         builder.addCase(getAllProducts.fulfilled,(state,action) => {
-            state.allProducts = action.payload?.data;
+            state.allProducts = action.payload.data;
         })
         builder.addCase(getAProduct.fulfilled,(state,action) => {
-            state.current = action.payload?.data;
+            state.current = action.payload.data;
         })
         builder.addCase(addProduct.fulfilled,(state,action) => {
-            state.allProducts.push(action.payload?.data);
+            state.allProducts.push(action.payload.data);
         })
         builder.addCase(updateProduct.fulfilled,(state,action) => {
-            const index = state.allProducts.findIndex(product => product._id === action.payload?._id);
-            state.allProducts[index] = action.payload?.data;
+            const index = state.allProducts.findIndex(product => product._id === action.payload._id);
+            state.allProducts[index] = action.payload.data;
         })
     }
 })

@@ -196,7 +196,7 @@ export const getAllContacts = createAsyncThunk(
             const res = axiosInstance.get("/admin/getAllContact");
             toast.promise(res,{
                 loading: "Wait! fetching all contacts...",
-                success: "success all contacts",
+                success: "succes",
                 error: "Failed to fetch all contacts"
             });
             return (await res).data;
@@ -242,27 +242,27 @@ const AdminSlice = createSlice({
             console.log("Product ratings fetched successfully", action.payload);
         })
         builder.addCase(getAllUsers.fulfilled,(state,action) => {
-            state.allusers = action.payload?.data;
+            state.allusers = action.payload.data;
             console.log("All users fetched successfully", action.payload);
         })
         builder.addCase(removeUser.fulfilled,(state,action) => {
-            const index = state.allusers.findIndex(user => user.id === action.payload?.id);
+            const index = state.allusers.findIndex(user => user.id === action.payload.id);
             if(index!== -1) {
                 state.allusers.splice(index, 1);
             }
             console.log("User removed successfully", action.payload);
         })
         builder.addCase(getUserGrowthData.fulfilled,(state,action) => {
-            state.userGrowth = action.payload?.data;
-            console.log("User growth data fetched successfully", action.payload?.data);
+            state.userGrowth = action.payload.data;
+            console.log("User growth data fetched successfully", action.payload.data);
         })
         builder.addCase(getAllContacts.fulfilled,(state,action) => {
-            state.allContacts = action.payload?.data;
-            console.log("All contacts fetched successfully", action.payload?.data);
+            state.allContacts = action.payload.data;
+            console.log("All contacts fetched successfully", action.payload.data);
         })
         builder.addCase(signupUser.fulfilled,(state,action) => {
-            state.allusers.push(action.payload?.data);
-            console.log("User signed up successfully", action.payload?.data);
+            state.allusers.push(action.payload.data);
+            console.log("User signed up successfully", action.payload.data);
         })
         
     }
