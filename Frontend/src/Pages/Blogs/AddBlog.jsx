@@ -49,6 +49,7 @@ function AddBlog() {
                 formDatatToSend.append(key,value)
             }
         });
+        console.log("Data send",formData);
         formDatatToSend.append('content',content);
         const res = await dispatch(addBlog(formDatatToSend));
         setIsSubmitting(false);

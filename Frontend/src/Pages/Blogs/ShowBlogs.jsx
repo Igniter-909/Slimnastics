@@ -16,7 +16,7 @@ function ShowBlogs() {
       await dispatch(getAllBlogs());
     };
     fetchAllBlogs();
-  }, [dispatch]);
+  }, []);
 
   const allBlogs = useSelector(state => state.blog.allBlogs);
   const [currentPage, setCurrentPage] = useState(1);

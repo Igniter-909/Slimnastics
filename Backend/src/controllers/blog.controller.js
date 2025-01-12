@@ -12,7 +12,7 @@ const addBlog = asyncHandler(async(req,res) => {
         }
         const thumbnailFilePath = req.files?.thumbnail[0]?.path;
         if(!thumbnailFilePath) {
-            throw new ApiError(400,"Thumbnail file is required")
+            throw new ApiError(401,"Thumbnail file is required")
         }
         const thumbnail = await uploadOnCloudinary(thumbnailFilePath)
         const newBlog = await Blog.create({

@@ -38,6 +38,7 @@ function HomePage2() {
     const [activeIndex, setActiveIndex] = useState(null);
     const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
     const {isLoggedIn} = useSelector(state => state.auth)
+    const isDarkMode = useSelector(state => state.auth.darkmode);
 
     const toggleFAQ = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -288,7 +289,7 @@ function FAQItem({ faq, index, activeIndex, toggleFAQ }) {
                 </span>
             </div>
             {activeIndex === index && (
-                <div className="p-4 text-white/50">
+                <div className={`p-4 ${isDarkMode ?  "text-white/50" :"text-black"}  `}>
                     <p>{faq.answer}</p>
                 </div>
             )}
