@@ -21,18 +21,19 @@ import Carousel from '../components/Carousel.jsx';
 function HomePage2() {
 
     const dispatch = useDispatch();
+    const trainers = useSelector(state => state.user.allTrainersData)
 
     useEffect2(() => {
         const fetchAllTrainers = async() => {
             await dispatch(allTrainers())
         }
         fetchAllTrainers();
-    },[dispatch])
+    },[])
 
     const images = [gym1,gym2,gym3,gym4,gym5];
 
-    const trainers = useSelector(state => state.user.allTrainersData)
-    const Trainers = trainers.slice(0,4);
+    
+    const Trainers = trainers?.slice(0,4) || [];
 
     const [activeIndex, setActiveIndex] = useState(null);
     const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
@@ -129,9 +130,10 @@ function HomePage2() {
                     <h2 className='text-2xl font-bold font-vazirmatn mb-4'>Meet Our <span className='text-[#D90A14]'>Trainers</span></h2>
                     <p className='text-lg text-center font-vazirmatn font-medium mb-8'>"Transform your fitness journey with our expert trainers who are dedicated to helping you achieve your goals."</p>
                     <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6'>
-                        {Trainers.map((Trainer, index) => (
+                        {Trainers && Trainers.map((Trainer, index) => (
                             <TrainerCard key={index} trainer={Trainer} />
                         ))}
+                        {(!Trainers || Trainers.length === 0) && <span className='text-lg text-center font-vazirmatn'>No trainers found...</span> }
                     </div>
                     <div className='flex justify-center mt-8'>
                         <button className='px-4 py-2 border-2 border-[#D90A14] rounded-full text-[#D90A14] font-thin flex items-center gap-1 hover:bg-[#D90A14] hover:text-white transition-colors duration-300'>
