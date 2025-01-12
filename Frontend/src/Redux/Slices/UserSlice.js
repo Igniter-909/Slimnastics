@@ -97,7 +97,7 @@ const UserSlice = createSlice({
         })
         builder.addCase(allTrainers.fulfilled,(state,action) => {
             state.allTrainersData = action.payload.data
-            console.log("All trainers fetched successfully", action.payload.data);
+            console.log("All trainers fetched successfully", action.payload);
         })
     }
 })
