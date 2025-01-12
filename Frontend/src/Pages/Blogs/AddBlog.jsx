@@ -43,15 +43,22 @@ function AddBlog() {
     const handleSubmit = async(e) => {
         e.preventDefault()
         setIsSubmitting(true);
-        const formDatatToSend = new FormData();
-        Object.entries(formData).forEach(([key,value]) => {
-            if(value!==null){
-                formDatatToSend.append(key,value)
-            }
-        });
-        console.log("Data send",formData);
-        formDatatToSend.append('content',content);
-        const res = await dispatch(addBlog(formDatatToSend));
+        // const formDatatToSend = new FormData();
+        // Object.entries(formData).forEach(([key,value]) => {
+        //     if(value!==null){
+        //         formDatatToSend.append(key,value)
+        //     }
+        // });
+        // console.log("Data send",formData);
+        // formDatatToSend.append('content',content);
+        const res = await dispatch(addBlog({
+            title: formData.title,
+            penName: formData.penName,
+            tags: formData.tags,
+            description: formData.description,
+            thumbnail: formData.thumbnail,
+            content: content
+        }));
         setIsSubmitting(false);
         console.log(res);
         setFormData({
