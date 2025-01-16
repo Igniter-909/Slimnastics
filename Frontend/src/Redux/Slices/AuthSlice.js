@@ -32,7 +32,9 @@ export const enrollIntoPlan =createAsyncThunk(
     "/plan/:id",
     async(data) => {
         try {
-            const res = axiosInstance.post(`/users/add-plan`,data);
+            const res = axiosInstance.post(`/users/add-plan`,data,{
+                withCredentials: true,
+            });
             toast.promise(res,{
                 loading:"Wait! enrolling in plan progress...",
                 success:"enrollment in plan successfully",

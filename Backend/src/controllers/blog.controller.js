@@ -17,7 +17,7 @@ const addBlog = asyncHandler(async(req,res) => {
         const thumbnail = await uploadOnCloudinary(thumbnailFilePath)
         const newBlog = await Blog.create({
             title,
-            tags: tags,
+            tags,
             description,
             content,
             penName,
