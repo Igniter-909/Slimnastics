@@ -114,8 +114,10 @@ const loginUser = asyncHandler( async (req,res ) => {
     );
     
     const options = {
+        maxAge: 24 * 60 * 60*7*1000,
         httpOnly: true,
-        securee: true
+        secure: true,
+        sameSite: 'None',
     };
 
     return res
@@ -413,6 +415,7 @@ const viewPlan = asyncHandler( async (req,res) => {
 
 const addPlan = asyncHandler( async(req,res) => {
     try { 
+        console.log("Hello guys!!")
 
         const { planId, startDate } = req.body;
         
