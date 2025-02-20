@@ -13,11 +13,11 @@ export const getAllPlans = createAsyncThunk(
     async (_,{rejectWithValue}) => {
         try {
             const res = axiosInstance.get("membership/all-plans")
-            toast.promise(res,{
-                loading: "Wait fetching all plans...",
-                success: "All plans fetched successfully",
-                error: "Failed to fetch all plans"
-            })
+            // toast.promise(res,{
+            //     loading: "Wait fetching all plans...",
+            //     success: "All plans fetched successfully",
+            //     error: "Failed to fetch all plans"
+            // })
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -33,11 +33,11 @@ export const getAPlan = createAsyncThunk(
     async (id) => {
         try {
             const res = axiosInstance.get(`/membership/get-plan/${id}`);
-            toast.promise(res,{
-                loading: "Wait! fetching plan...",
-                success: "Plan fetched successfully",
-                error: "Failed to fetch plan"
-            })
+            // toast.promise(res,{
+            //     loading: "Wait! fetching plan...",
+            //     success: "Plan fetched successfully",
+            //     error: "Failed to fetch plan"
+            // })
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -50,11 +50,11 @@ export const updatePlan = createAsyncThunk(
     async(data) => {
         try {
             const res = axiosInstance.put(`/membership/update-membership-plan`,data);
-            toast.promise(res,{
-                loading: "Wait! Updating plan...",
-                success: "Plan updated successfully",
-                error: "Failed to update plan"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! Updating plan...",
+            //     success: "Plan updated successfully",
+            //     error: "Failed to update plan"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -68,11 +68,11 @@ export const addPlan = createAsyncThunk(
         try {
             console.log("receivedd",data)
             const res = axiosInstance.post(`/membership/add-plan`,data);
-            toast.promise(res,{
-                loading: "Wait! Adding plan...",
-                success: "Plan added successfully",
-                error: "Failed to add plan"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! Adding plan...",
+            //     success: "Plan added successfully",
+            //     error: "Failed to add plan"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -86,11 +86,11 @@ export const deletePlan = createAsyncThunk(
     async (id) => {
         try {
             const res = axiosInstance.delete(`/membership/delete-membership-plan/${id}`);
-            toast.promise(res,{
-                loading: "Wait! Deleting plan...",
-                success: "Plan deleted successfully",
-                error: "Failed to delete plan"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! Deleting plan...",
+            //     success: "Plan deleted successfully",
+            //     error: "Failed to delete plan"
+            // });
             console.log("delete pressed")
             return (await res).data;
         } catch (error) {

@@ -22,11 +22,11 @@ export const getAllUsers = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/admin/get-all-users");
-            toast.promise(res,{
-                loading: "Wait! fetching all users...",
-                success: "Got all users",
-                error: "Failed to fetch all users"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching all users...",
+            //     success: "Got all users",
+            //     error: "Failed to fetch all users"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -39,11 +39,11 @@ export const removeUser = createAsyncThunk(
     async(id) => {
         try {
             const res = axiosInstance.delete(`/admin/removeUser/${id}`);
-            toast.promise(res,{
-                loading: "Wait! Deleting user...",
-                success: "User deleted successfully",
-                error: "Failed to delete user"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! Deleting user...",
+            //     success: "User deleted successfully",
+            //     error: "Failed to delete user"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -57,11 +57,11 @@ export const getActiveUserCount = createAsyncThunk(
         try {
             console.log("receiving at slice")
             const res = axiosInstance.get("/admin/getActiveUserCount");
-            toast.promise(res,{
-                loading: "Wait! fetching active user count...",
-                success: "Active user count successfully",
-                error: "Failed to fetch active user count"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching active user count...",
+            //     success: "Active user count successfully",
+            //     error: "Failed to fetch active user count"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -74,11 +74,11 @@ export const getUserCountByGender = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/admin/getUserbyGender");
-            toast.promise(res,{
-                loading: "Wait! fetching user count by gender...",
-                success: "received user count by gender",
-                error: "Failed to fetch user count by gender"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching user count by gender...",
+            //     success: "received user count by gender",
+            //     error: "Failed to fetch user count by gender"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -92,11 +92,11 @@ export const NewUserCount = createAsyncThunk(
         try {
             console.log("reaching")
             const res = axiosInstance.get("/admin/newusersCount");
-            toast.promise(res,{
-                loading: "Wait! fetching new user count...",
-                success: "received new user count",
-                error: "Failed to fetch new user count"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching new user count...",
+            //     success: "received new user count",
+            //     error: "Failed to fetch new user count"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -109,11 +109,11 @@ export const getAttendanceSummaryy = createAsyncThunk(
     async() => {
         try {
             const res =axiosInstance.get("/admin/getAttendanceSummary");
-            toast.promise(res,{
-                loading: "Wait! fetching attendance summary...",
-                success: "fetched attendance summary",
-                error: "Failed to fetch attendance summary"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching attendance summary...",
+            //     success: "fetched attendance summary",
+            //     error: "Failed to fetch attendance summary"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -126,11 +126,11 @@ export const getLastDayPresntUserC = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/admin/lastDayPresentUserCount");
-            toast.promise(res,{
-                loading: "Wait! fetching last day present user count...",
-                success: "fetched last day present user count",
-                error: "Failed to fetch last day present user count"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching last day present user count...",
+            //     success: "fetched last day present user count",
+            //     error: "Failed to fetch last day present user count"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -143,11 +143,11 @@ export const upcomingExpiryData = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get('/admin/upcomingExpirations')
-            toast.promise(res,{
-                loading: "Wait! fetching upcoming expiry data...",
-                success: "fetched upcoming expiry data",
-                error: "Failed to fetch upcoming expiry data"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching upcoming expiry data...",
+            //     success: "fetched upcoming expiry data",
+            //     error: "Failed to fetch upcoming expiry data"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -160,11 +160,11 @@ export const getProductRatings = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get('/admin/getProductSalesSummary');
-            toast.promise(res,{
-                loading: "Wait! fetching product ratings...",
-                success: "fetched product ratings",
-                error: "Failed to fetch product ratings"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching product ratings...",
+            //     success: "fetched product ratings",
+            //     error: "Failed to fetch product ratings"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -177,11 +177,11 @@ export const getUserGrowthData = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/admin/getUserGrowthData");
-            toast.promise(res,{
-                loading: "Wait! fetching user growth data...",
-                success: "success user growth data",
-                error: "Failed to fetch user growth data"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching user growth data...",
+            //     success: "success user growth data",
+            //     error: "Failed to fetch user growth data"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -194,11 +194,11 @@ export const getAllContacts = createAsyncThunk(
     async () => {
         try {
             const res = axiosInstance.get("/admin/getAllContact");
-            toast.promise(res,{
-                loading: "Wait! fetching all contacts...",
-                success: "succes",
-                error: "Failed to fetch all contacts"
-            });
+            // toast.promise(res,{
+            //     loading: "Wait! fetching all contacts...",
+            //     success: "succes",
+            //     error: "Failed to fetch all contacts"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)

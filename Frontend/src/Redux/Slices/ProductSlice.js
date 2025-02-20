@@ -30,11 +30,11 @@ export const getAProduct = createAsyncThunk(
     async(id) => {
         try {
             const res = axiosInstance.get(`/product/get-product/${id}`);
-                toast.promise(res,{
-                    loading: "Fetching Product...",
-                    success: "fetched the product",
-                    failed: "Failed to fetch the product"
-                })
+                // toast.promise(res,{
+                //     loading: "Fetching Product...",
+                //     success: "fetched the product",
+                //     failed: "Failed to fetch the product"
+                // })
                 return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -47,11 +47,11 @@ export const getAllProducts = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/product/get-all-products");
-            toast.promise(res,{
-                loading: "Fetching all products...",
-                success: "fetched all products...",
-                failed: "Failed to fetch all products"
-            })
+            // toast.promise(res,{
+            //     loading: "Fetching all products...",
+            //     success: "fetched all products...",
+            //     failed: "Failed to fetch all products"
+            // })
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -65,11 +65,11 @@ export const updateProduct = createAsyncThunk(
         try {
             console.log("received",data);
             const res = axiosInstance.put(`/product/update-product/${id}`,data);
-            toast.promise(res,{
-                loading: "Updating Product...",
-                success: "update successful",
-                failed: "Failed to update the product"
-            })
+            // toast.promise(res,{
+            //     loading: "Updating Product...",
+            //     success: "update successful",
+            //     failed: "Failed to update the product"
+            // })
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)

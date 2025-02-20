@@ -16,11 +16,11 @@ export const getAllUsers = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/users/allUsers");
-            toast.promise(res,{
-                loading:"Wait! fetching all users...",
-                success:"Fetched all users successfully",
-                error: "Failed to fetch users"
-            })
+            // toast.promise(res,{
+            //     loading:"Wait! fetching all users...",
+            //     success:"Fetched all users successfully",
+            //     error: "Failed to fetch users"
+            // })
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -33,11 +33,11 @@ export const getAttendanceData = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/users/attendanceData");
-            toast.promise(res,{
-                loading: "Fetching Attendance Data...",
-                success: "Fetched attendance data successfully",
-                error: "Failed to Fetch Attendance Data"
-            });
+            // toast.promise(res,{
+            //     loading: "Fetching Attendance Data...",
+            //     success: "Fetched attendance data successfully",
+            //     error: "Failed to Fetch Attendance Data"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -63,11 +63,11 @@ export const allTrainers = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/users/getTrainers");
-            toast.promise(res,{
-                loading: "Fetching all trainers...",
-                success: "Successfully fetched trainers...",
-                error: "Failed to fetch trainers"
-            });
+            // toast.promise(res,{
+            //     loading: "Fetching all trainers...",
+            //     success: "Successfully fetched trainers...",
+            //     error: "Failed to fetch trainers"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);

@@ -120,11 +120,11 @@ export const getUser = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("users/current-user");
-            toast.promise(res,{
-                loading:"Wait! fetching user data...",
-                success:"Got user data",
-                error: "Failed to fetch user"
-            })
+            // toast.promise(res,{
+            //     loading:"Wait! fetching user data...",
+            //     success:"Got user data",
+            //     error: "Failed to fetch user"
+            // })
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);

@@ -12,7 +12,7 @@ export const markAttendance = createAsyncThunk(
     async(data) => {
         try {
             const res = await axiosInstance.post("/attendance/mark", data);
-            toast.success("Attendance Marked Successfully");
+            // toast.success("Attendance Marked Successfully");
             return res.data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -28,7 +28,7 @@ export const deleteAttendance = createAsyncThunk(
             const res = await axiosInstance.post("/attendance/delete-attendance/", {
                 date: data.date,
             });
-            toast.success("Attendance Deleted Successfully");
+            // toast.success("Attendance Deleted Successfully");
             return res.data;
         } catch (error) {
             toast.error(error?.response?.data?.message);

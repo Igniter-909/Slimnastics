@@ -35,7 +35,7 @@ export const getProgress = createAsyncThunk(
     async() => {
         try {
             const res = await axiosInstance.get("/progress/get-progress");
-            console.log('Get progress response:', res.data); // Log the response
+            // console.log('Get progress response:', res.data); // Log the response
             
             if (res.data.success) {
                 return res.data.data || []; // Return the actual progress data array

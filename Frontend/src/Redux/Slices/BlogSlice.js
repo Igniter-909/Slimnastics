@@ -13,11 +13,11 @@ export const addBlog = createAsyncThunk(
         try {
             console.log("Data received",data);
             const res = axiosInstance.post("/users/addBlog", data);
-            toast.promise(res,{
-                loading: "Adding Blog...",
-                success: "Blog Added Successfully",
-                error: "Failed to Add Blog"
-            });
+            // toast.promise(res,{
+            //     loading: "Adding Blog...",
+            //     success: "Blog Added Successfully",
+            //     error: "Failed to Add Blog"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
@@ -30,11 +30,11 @@ export const getAllBlogs = createAsyncThunk(
     async() => {
         try {
             const res = axiosInstance.get("/users/getAllBlogs");
-            toast.promise(res,{
-                loading: "Fetching Blogs...",
-                success: "Successfullt fetched",
-                error: "Failed to Fetch Blogs"
-            });
+            // toast.promise(res,{
+            //     loading: "Fetching Blogs...",
+            //     success: "Successfullt fetched",
+            //     error: "Failed to Fetch Blogs"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message)
@@ -47,11 +47,11 @@ export const deleteBlog = createAsyncThunk(
     async(id) => {
         try {
             const res = axiosInstance.delete(`/users/deleteBlog/${id}`);
-            toast.promise(res,{
-                loading: "Deleting Blog...",
-                success: "Blog deleted successfully",
-                error: "Failed to delete Blog"
-            });
+            // toast.promise(res,{
+            //     loading: "Deleting Blog...",
+            //     success: "Blog deleted successfully",
+            //     error: "Failed to delete Blog"
+            // });
             return (await res).data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
