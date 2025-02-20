@@ -27,16 +27,16 @@ const ProfileComp = () => {
 
   const attendanceRecords = useSelector(state => state.user?.attendanceRecords)
   const user = useSelector(state => state.auth?.data?.data || {});
-  const progressStat = useSelector(state => state.user?.progressStat)
+  const { progressData = [] } = useSelector(state => state.user?.progressStat || { progressData: [] });
 
-  const currentUserAttendanceRecords = attendanceRecords?.data?.map(record => ({
-    date: record?.date,
-    count: record?.value
-  })) || [];
+  // Filter out entries with null values and sort by date
+  const validProgressData = progressData
+    .filter(record => record.weight != null && record.fatPercent != null)
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  const labels = progressStat.map(record => new Date(record?.date).toISOString().split("T")[0]);
-  const weights = progressStat.map(record => record?.weight);
-  const fatPercents = progressStat.map(record => record?.fatPercent);
+  const labels = validProgressData.map(record => moment(record.date).format('MMM DD, YYYY'));
+  const weights = validProgressData.map(record => record.weight);
+  const fatPercents = validProgressData.map(record => record.fatPercent);
 
   const weightData = {
     labels: labels,
@@ -44,9 +44,14 @@ const ProfileComp = () => {
       {
         label: 'Weight (kg)',
         data: weights,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: '#D20C13',
+        backgroundColor: 'rgba(210, 12, 19, 0.2)',
         fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#D20C13',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#D20C13'
       },
     ],
   };
@@ -57,9 +62,14 @@ const ProfileComp = () => {
       {
         label: 'Fat Percentage',
         data: fatPercents,
-        borderColor: 'rgba(255, 99, 132, 1)',
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: '#CC4E17',
+        backgroundColor: 'rgba(204, 78, 23, 0.2)',
         fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#CC4E17',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#CC4E17'
       },
     ],
   };
@@ -70,16 +80,64 @@ const ProfileComp = () => {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          color: '#fff'
+        }
       },
       title: {
         display: true,
         text: 'Progress Over Time',
-      },
+        color: '#fff'
+      }
     },
+    scales: {
+      x: {
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)'
+        },
+        ticks: {
+          color: '#fff'
+        }
+      },
+      y: {
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)'
+        },
+        ticks: {
+          color: '#fff'
+        }
+      }
+    }
   };
+
+  const customStyles = `
+    <style>
+      .react-calendar-heatmap {
+        width: 100%;
+      }
+      .react-calendar-heatmap .color-empty {
+        fill: #2d2d2d;
+      }
+      .react-calendar-heatmap .color-scale-0 {
+        fill: #1a1a1a;
+      }
+      .react-calendar-heatmap .color-scale-1 {
+        fill: #D20C13;
+      }
+      .react-calendar-heatmap text {
+        fill: #fff;
+        font-size: 8px;
+      }
+      .react-calendar-heatmap rect {
+        stroke: #111;
+        stroke-width: 1px;
+      }
+    </style>
+  `;
 
   return (
     <div className='w-full h-full p-4 flex flex-col border-2 rounded-lg border-red-500/40'>
+      <div dangerouslySetInnerHTML={{ __html: customStyles }} />
       <h1 className='w-full text-2xl md:text-3xl font-vazirmatn mb-4'>Profile</h1>
       <div className='w-full flex flex-col md:flex-row gap-6'>
         <div className='w-full md:w-1/4 flex justify-center'>
@@ -102,24 +160,39 @@ const ProfileComp = () => {
           </div>
           <div className='w-full flex flex-col gap-4 border-2 border-red-500/40 rounded-lg p-4'>
             <div className='flex flex-col md:flex-row gap-4'>
-              <div className='w-full md:w-1/2 h-64'>
+              <div className='w-full md:w-1/2 h-64 p-4 bg-[#111]/50 rounded-lg'>
                 <Line ref={weightChartRef} data={weightData} options={options} />
               </div>
-              <div className='w-full md:w-1/2 h-64'>
+              <div className='w-full md:w-1/2 h-64 p-4 bg-[#111]/50 rounded-lg'>
                 <Line ref={fatPercentChartRef} data={fatPercentData} options={options} />
               </div>
             </div>
-            <div className='w-full pt-4'>
-              <div className='flex flex-col md:flex-row justify-between items-center mb-2'>
+            <div className='w-full pt-4 bg-[#111]/50 rounded-lg p-4'>
+              <div className='flex flex-col md:flex-row justify-between items-center mb-4'>
                 <h3 className='font-aclonica text-gray-400'>Attendance</h3>
-                <p className='font-vazirmatn text-sm text-gray-600'>Active : {attendanceRecords?.presentCount || 0} days</p>
+                <div className='flex items-center gap-4'>
+                  <div className='flex items-center gap-2'>
+                    <div className='w-4 h-4 bg-[#1a1a1a] border border-[#111]'></div>
+                    <span className='text-sm text-gray-400'>Absent</span>
+                  </div>
+                  <div className='flex items-center gap-2'>
+                    <div className='w-4 h-4 bg-[#D20C13] border border-[#111]'></div>
+                    <span className='text-sm text-gray-400'>Present</span>
+                  </div>
+                </div>
+                <p className='font-vazirmatn text-sm text-gray-400'>
+                  Present: {attendanceRecords?.presentCount || 0} days
+                </p>
               </div>
               <CalendarHeatmap
-                endDate={new Date(attendanceRecords?.endDate)}
-                startDate={new Date(attendanceRecords?.startDate)}
-                values={currentUserAttendanceRecords}
+                endDate={new Date()}
+                startDate={new Date(new Date().setDate(new Date().getDate() - 365))}
+                values={attendanceRecords?.data?.map(record => ({
+                  date: record.date,
+                  count: record.value === 0 ? 0 : 1  // Convert any non-zero value to 1 for present
+                })) || []}
                 classForValue={(value) => {
-                  if (!value || value.count === 0) {
+                  if (!value) {
                     return 'color-empty';
                   }
                   return `color-scale-${value.count}`;
@@ -128,10 +201,12 @@ const ProfileComp = () => {
                   if (!value) {
                     return 'No data';
                   }
-                  return `Date: ${value.date}, Status: ${
-                    value.count === 0 ? 'Absent' : value.count === 10 ? 'Present' : 'On Leave'
-                  }`;
+                  return `Date: ${value.date}, Status: ${value.count === 0 ? 'Absent' : 'Present'}`;
                 }}
+                showWeekdayLabels={true}
+                weekdayLabels={['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}
+                monthLabels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']}
+                gutterSize={4}
               />
             </div>
           </div>

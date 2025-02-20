@@ -50,7 +50,7 @@ router.route("/add-plan").post(verifyJWT,addPlan);
 router.route("/addToCart").post(verifyJWT,addToCart);
 router.route("/removeFromCart/:id").delete(verifyJWT,removeFromCart);
 router.route("/attendanceData").get(verifyJWT,attendanceData);
-router.route("/progressStat").get(verifyJWT,getProgressStats);
+router.route("/progress").get(verifyJWT,getProgressStats);
 router.route("/addBlog").post(verifyJWT,
     upload.fields([{
         name:"thumbnail",

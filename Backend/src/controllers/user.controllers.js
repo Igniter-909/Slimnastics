@@ -415,8 +415,6 @@ const viewPlan = asyncHandler( async (req,res) => {
 
 const addPlan = asyncHandler( async(req,res) => {
     try { 
-        console.log("Hello guys!!")
-
         const { planId, startDate } = req.body;
         
         if(!startDate){
@@ -431,12 +429,21 @@ const addPlan = asyncHandler( async(req,res) => {
             new Date(startDate).getTime() + plan.duration * 24 * 60 *60 *1000 * 30
         );
 
+        const currentDate = new Date();
         let status;
-        if(startDate < Date.now() && endDate > Date.now()){
-            status="active";
+        
+        // Convert dates to timestamps for accurate comparison
+        const startTimestamp = new Date(startDate).getTime();
+        const endTimestamp = endDate.getTime();
+        const currentTimestamp = currentDate.getTime();
+
+        // Plan is active if current date falls between start and end dates
+        if(startTimestamp <= currentTimestamp && currentTimestamp <= endTimestamp) {
+            status = "active";
         }
+        // Plan is inactive if current date is before start date or after end date
         else {
-            status="inactive";
+            status = "inactive"; 
         }
 
         const membershipPlan = {
@@ -609,19 +616,75 @@ const getProgressStats = asyncHandler(async(req,res) => {
         if(!user){
             throw new ApiError(404, "User not found");
         }
-        const today = moment().startOf('day');
-        const sixMonthAgo = moment().subtract(6,'month').startOf('day');
 
+        // Get date range (last 6 months)
+        const today = moment().endOf('day');
+        const sixMonthsAgo = moment().subtract(6, 'months').startOf('day');
+
+        // Get all progress entries for the last 6 months
         const progressData = await Progress.find({
             userId: user._id,
-            date:{$gte:sixMonthAgo, $lte:today}
-        }).select('date weight fatPercent')
+            date: { $gte: sixMonthsAgo.toDate(), $lte: today.toDate() }
+        })
+        .sort({ date: 1 }) // Sort by date ascending
+        .select('date weight fatPercent height targetWeight bmi');
 
-        return res.status(200).json(new ApiResponse(200,progressData,"Succefully fetched progress data"))
+        // Create an array of all months in the range
+        const monthsArray = [];
+        let currentMonth = sixMonthsAgo.clone();
+        while (currentMonth.isSameOrBefore(today, 'month')) {
+            monthsArray.push(currentMonth.format('YYYY-MM'));
+            currentMonth.add(1, 'month');
+        }
 
+        // Group progress data by month
+        const monthlyProgress = monthsArray.map(monthStr => {
+            const monthMoment = moment(monthStr, 'YYYY-MM');
+            const monthData = progressData.find(entry => 
+                moment(entry.date).format('YYYY-MM') === monthStr
+            );
+
+            return {
+                date: monthMoment.format('YYYY-MM-DD'),
+                weight: monthData?.weight || null,
+                fatPercent: monthData?.fatPercent || null,
+                height: monthData?.height || null,
+                targetWeight: monthData?.targetWeight || null,
+                bmi: monthData?.bmi || null
+            };
+        }).filter(entry => entry.weight !== null || entry.fatPercent !== null);
+
+        // Calculate statistics
+        const stats = {
+            currentWeight: progressData[progressData.length - 1]?.weight || 0,
+            startingWeight: progressData[0]?.weight || 0,
+            currentFatPercent: progressData[progressData.length - 1]?.fatPercent || 0,
+            startingFatPercent: progressData[0]?.fatPercent || 0,
+            weightChange: progressData.length > 1 
+                ? progressData[progressData.length - 1]?.weight - progressData[0]?.weight 
+                : 0,
+            fatPercentChange: progressData.length > 1
+                ? progressData[progressData.length - 1]?.fatPercent - progressData[0]?.fatPercent
+                : 0
+        };
+
+        return res.status(200).json(
+            new ApiResponse(
+                200,
+                {
+                    progressData: monthlyProgress,
+                    statistics: stats,
+                    dateRange: {
+                        start: sixMonthsAgo.format('YYYY-MM-DD'),
+                        end: today.format('YYYY-MM-DD')
+                    }
+                },
+                "Successfully fetched progress data"
+            )
+        );
 
     } catch (error) {
-        throw new ApiError(500,error?.message || "Something went wrong while fetching progress");
+        throw new ApiError(500, error?.message || "Something went wrong while fetching progress");
     }
 })
 

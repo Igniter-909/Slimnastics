@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import axiosInstance from "../../Helpers/axiosInstance";
 
 const initialState = {
-    currentAttendance : [],
+    currentAttendance: [],
     allAttendance: []
 }
 
@@ -11,15 +11,12 @@ export const markAttendance = createAsyncThunk(
     "/attendance/mark",
     async(data) => {
         try {
-            const res = axiosInstance.post("/attendance/mark",data);
-            toast.promise(res,{
-                loading: "Marking Attendance...",
-                success: "Attendance Marked Successfully",
-                error: "Failed to Mark Attendance"
-            });
-            return (await res).data;
+            const res = await axiosInstance.post("/attendance/mark", data);
+            toast.success("Attendance Marked Successfully");
+            return res.data;
         } catch (error) {
-            toast.error(error?.response?.data?.message)
+            toast.error(error?.response?.data?.message);
+            throw error;
         }
     }
 )
@@ -28,17 +25,14 @@ export const deleteAttendance = createAsyncThunk(
     "/attendance/delete",
     async (data) => {
         try {
-            const res = axiosInstance.post("/attendance/delete-attendance/", {
+            const res = await axiosInstance.post("/attendance/delete-attendance/", {
                 date: data.date,
             });
-            toast.promise(res, {
-                loading: "Deleting Attendance...",
-                success: "Attendance Deleted Successfully",
-                error: "Failed to Delete Attendance",
-            });
-            return (await res).data;
+            toast.success("Attendance Deleted Successfully");
+            return res.data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
+            throw error;
         }
     }
 );
@@ -47,15 +41,11 @@ export const getAttendance = createAsyncThunk(
     "/attendance/get-attendance",
     async() => {
         try {
-            const res = axiosInstance.get("/attendance/get-attendance");
-            toast.promise(res,{
-                loading: "Fetching Attendance...",
-                success: "Attendance Fetched Successfully",
-                error: "Failed to Fetch Attendance"
-            });
-            return (await res).data;
+            const res = await axiosInstance.get("/attendance/get-attendance");
+            return res.data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
+            throw error;
         }
     }
 )
@@ -65,16 +55,26 @@ const AttendanceSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(markAttendance.fulfilled, (state,action) => {
-            state.currentAttendance = action.payload;
-        })
-        builder.addCase(deleteAttendance.fulfilled, (state,action) => {
-            state.currentAttendance = action.payload;
-        })
-        builder.addCase(getAttendance.fulfilled, (state,action) => {
-            state.allAttendance = action.payload;
-        })
+        builder
+            .addCase(markAttendance.fulfilled, (state, action) => {
+                state.currentAttendance = action.payload;
+            })
+            .addCase(markAttendance.rejected, (state) => {
+                state.currentAttendance = [];
+            })
+            .addCase(deleteAttendance.fulfilled, (state, action) => {
+                state.currentAttendance = action.payload;
+            })
+            .addCase(deleteAttendance.rejected, (state) => {
+                state.currentAttendance = [];
+            })
+            .addCase(getAttendance.fulfilled, (state, action) => {
+                state.allAttendance = action.payload;
+            })
+            .addCase(getAttendance.rejected, (state) => {
+                state.allAttendance = [];
+            });
     }
-})
+});
 
 export default AttendanceSlice.reducer;

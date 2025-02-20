@@ -6,6 +6,7 @@ import AttendanceReducer from "./Slices/AttendanceSlice.js"
 import ProductReducer from "./Slices/ProductSlice.js"
 import AdminReducer from "./Slices/AdminSlice.js"
 import BlogReducer from "./Slices/BlogSlice.js"
+import progressReducer from "./Slices/ProgressSlice.js"
 
 const store = configureStore({
     reducer : {
@@ -15,7 +16,8 @@ const store = configureStore({
         attendance: AttendanceReducer,
         product: ProductReducer,
         admin: AdminReducer,
-        blog: BlogReducer
+        blog: BlogReducer,
+        progress: progressReducer
     },
     devTools : true
 })

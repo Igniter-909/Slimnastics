@@ -46,18 +46,14 @@ export const getAttendanceData = createAsyncThunk(
 )
 
 export const getProgress = createAsyncThunk(
-    "/users/progressStat",
+    "/user/progress",
     async() => {
         try {
-            const res = axiosInstance.get("/users/progressStat");
-            toast.promise(res,{
-                loading: "Fetching Progress Statistics...",
-                success: "Successfully fetched progress...",
-                error: "Failed to Fetch Progress Statistics"
-            });
-            return (await res).data;
+            const res = await axiosInstance.get("/users/progress");
+            return res.data;
         } catch (error) {
             toast.error(error?.response?.data?.message);
+            throw error;
         }
     }
 )
@@ -92,8 +88,10 @@ const UserSlice = createSlice({
             console.log("Attendance data fetched successfully", action.payload);
         })
         builder.addCase(getProgress.fulfilled,(state,action) => {
-            state.progressStat = action.payload.data;
-            console.log("Progress statistics fetched successfully", action.payload);
+            state.progressStat = action.payload?.data || { progressData: [], statistics: {} };
+        })
+        builder.addCase(getProgress.rejected,(state) => {
+            state.progressStat = { progressData: [], statistics: {} };
         })
         builder.addCase(allTrainers.fulfilled,(state,action) => {
             state.allTrainersData = action.payload.data

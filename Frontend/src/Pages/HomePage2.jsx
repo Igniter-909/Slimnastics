@@ -273,6 +273,8 @@ function TestimonialNavigation({ onPrev, onNext }) {
 }
 
 function FAQItem({ faq, index, activeIndex, toggleFAQ }) {
+    const isDarkMode = useSelector(state => state.auth.darkmode);
+    
     return (
         <div className="border border-red-500 rounded-lg overflow-hidden shadow-md">
             <div
@@ -289,7 +291,7 @@ function FAQItem({ faq, index, activeIndex, toggleFAQ }) {
                 </span>
             </div>
             {activeIndex === index && (
-                <div className={`p-4 ${isDarkMode ?  "text-white/50" :"text-black"}  `}>
+                <div className={`p-4 ${isDarkMode ? "text-white/50" : "text-black"}`}>
                     <p>{faq.answer}</p>
                 </div>
             )}

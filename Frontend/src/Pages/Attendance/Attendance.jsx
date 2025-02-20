@@ -5,62 +5,80 @@ import toast from 'react-hot-toast';
 
 function Attendance() {
   const dispatch = useDispatch();
+  const allData = useSelector(state => state.attendance.allAttendance);
 
   const [markData, setMarkData] = useState({
     date: "",
     status: "Present"
-  })
+  });
 
   const [deleteData, setDeleteData] = useState({
     date: ""
   });
 
+  const fetchAttendance = async () => {
+    try {
+      await dispatch(getAttendance()).unwrap();
+    } catch (error) {
+      console.error("Failed to fetch attendance:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAttendance();
+  }, []);
+
   const handleMarkChange = (e) => {
     setMarkData({
       ...markData,
       [e.target.name]: e.target.value
-    })
-  }
+    });
+  };
  
   const MarkSubmit = async (e) => {
     e.preventDefault();
-    const formattedDate = new Date(markData.date).toISOString().split("T")[0];
-    const formattedData = { ...markData, date: formattedDate };
-    console.log(formattedData);
-    await dispatch(markAttendance(formattedData));
-    setMarkData({
-      date: "",
-      status: "Present",
-    });
+    try {
+      const formattedDate = new Date(markData.date).toISOString().split("T")[0];
+      const formattedData = { ...markData, date: formattedDate };
+      await dispatch(markAttendance(formattedData)).unwrap();
+      await fetchAttendance(); // Refresh attendance data after marking
+      setMarkData({
+        date: "",
+        status: "Present",
+      });
+    } catch (error) {
+      console.error("Failed to mark attendance:", error);
+    }
   };
 
   const handleDeleteChange = (e) => {
     setDeleteData({
       ...deleteData,
       [e.target.name]: e.target.value
-    })
-  }
-
-  const DeleteAtt = async (e) => {
-    e.preventDefault();
-    const formattedDate = new Date(deleteData.date).toISOString().split("T")[0];
-    const formattedData = { date: formattedDate };
-    console.log("Delete Data", formattedData);
-    await dispatch(deleteAttendance(formattedData));
-    setDeleteData({
-      date: "",
     });
   };
 
-  useEffect(() => {
-    const getAttendanceAll = async() => {
-      await dispatch(getAttendance());
+  const DeleteAtt = async (e) => {
+    e.preventDefault();
+    try {
+      const formattedDate = new Date(deleteData.date).toISOString().split("T")[0];
+      const formattedData = { date: formattedDate };
+      await dispatch(deleteAttendance(formattedData)).unwrap();
+      await fetchAttendance(); // Refresh attendance data after deleting
+      setDeleteData({
+        date: "",
+      });
+    } catch (error) {
+      console.error("Failed to delete attendance:", error);
     }
-    getAttendanceAll();
-  }, [dispatch])
+  };
 
-  const allData = useSelector(state => state.attendance.allAttendance);
-  console.log("Attendance", allData);
+  // Display current attendance data
+  useEffect(() => {
+    if (allData) {
+      console.log("Attendance Data:", allData);
+    }
+  }, [allData]);
 
   return (
     <div className='w-full h-full border-2 border-red-500/50 rounded-lg p-4 md:p-6'>
@@ -96,8 +114,8 @@ function Attendance() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Attendance
+export default Attendance;
 

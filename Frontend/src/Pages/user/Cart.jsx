@@ -33,9 +33,9 @@ function Cart() {
 
     if (cartData.length === 0) {
         return (
-            <HomeLayout>
+    
                 <div className='text-center mt-10'>Your cart is empty.</div>
-            </HomeLayout>
+            
         );
     }
 
@@ -43,7 +43,6 @@ function Cart() {
 
 
   return (
-    <HomeLayout>
             <div className='w-full h-fit m-10'>
                 <p className='font-aclonica text-3xl text-center mb-6'>My Cart</p>
                 <div className='w-full h-fit grid grid-cols-4 gap-6'>
@@ -71,7 +70,6 @@ function Cart() {
                     </div>
                 </div>
             </div>
-        </HomeLayout>
 )
 }
 
