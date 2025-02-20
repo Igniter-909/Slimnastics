@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://slimnastics-backend.vercel.app/";
+const BASE_URL = "https://slimnastics-backend.vercel.app/api/v1/";
 
 const axiosInstance = axios.create();
 
